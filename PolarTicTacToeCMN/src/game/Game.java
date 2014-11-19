@@ -2,15 +2,32 @@ package game;
 //This is the game definition which can be used to keep track of the current game state an implement win checks
 public class Game {
 	//board keeps track of game state
-	String[][] board;
+	String[][] board = new String[4][12];
 	//winCheck returns the winning player if a player has one, null otherwise
-	public String winCheck() {
+	private String winCheck(int x, int y) {
 		String winningPlayer = null;
+		//check for 4-in-a-row here
 		return winningPlayer;
 	}
 	//move allows a player to make a move
-	public void move(String player, int x, int y) {
-		
+	//returns true if player wins, false otherwise
+	public boolean move(String player, int x, int y) {
+		board[x][y] = player;
+		String winningPlayer = winCheck(x,y);
+		if(winningPlayer != null) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	//resets the game
+	public void resetGame() {
+		for(int i=0; i<4; i++) {
+			for(int j=0; j<12; j++) {
+				board[i][j] = null;
+			}
+		}
 	}
 	
 }
