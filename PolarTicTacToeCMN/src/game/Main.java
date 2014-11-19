@@ -35,10 +35,14 @@ public class Main {
             	    choices[0]);
             	
             	while(!done){
+            		
             	    switch(choice){
+            	    	    // Human vs. Human
             		    case 0:
             			    //Start game
             			    break;
+            			    
+            	            // Human vs. Computer
             		    case 1:
             			    int aiOption = JOptionPane.showOptionDialog(
             				    null,
@@ -50,9 +54,12 @@ public class Main {
             				    aiChoices[0]);
             				
             		            switch(aiOption){
+            		            	    //
             		        	    case 0:
             		        		
             		        		    break;
+            		        		    
+            		        	    //
             		        	    case 1:
             		        		
             		        		    break;
@@ -62,9 +69,13 @@ public class Main {
             		        			    "Invalid Option");
             		            }
             			    break;
+            			    
+            		    // Computer vs. Computer
             		    case 2:
             			    //Choose two AIs to compete against each other.
             			    break;
+            			    
+            	            // Quit
             		    case 3:
             			    done = true;
             		    	    break;
