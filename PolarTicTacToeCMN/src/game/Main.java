@@ -6,6 +6,8 @@ public class Main {
 	public static void main(String[] args) {
 		boolean done = false;  //Boolean for while loop below
 		
+		Game game = new Game;
+		
 		/* 
 		 * Choices for game include:
 		 * Human vs. Human
@@ -23,7 +25,13 @@ public class Main {
 		 * Heuristic Function
 		 * Naive Bayes/Nearest Neighbor/Decision Tree
 		 */
-		String[] aiChoices = {"", "", "", "", ""},
+		String[] aiChoices = {"Basic Game Heuristic", "Naive Bayes/Decision Tree/Nearest Neighbor Heuristic",
+		"Temporal Difference Neural Network", "Alpha-Beta Pruning?"};
+		
+		/*
+		 * Player choose either be either X or O
+		 */
+		String[] playerVariable = {"x", "o"};
 		
                 int choice = JOptionPane.showOptionDialog(
             	    null,
@@ -39,7 +47,31 @@ public class Main {
             	    switch(choice){
             	    	    // Human vs. Human
             		    case 0:
-            			    //Start game
+            		    	    int playerVariable = JOptionPane.showOptionDialog(
+            		    	    	null,
+            		    	    	"Choose X or O",
+            		    	    	JOptionPane.YES_NO_CANCEL_OPTION,
+            		    	    	JOptionPane.QUESTION_MESSAGE,
+            		    	    	null,
+            		    	    	playerVariable,
+            		    	    	playerVariable[0]);
+            		    	    	
+            		    	    switch(playerVariable){
+            		    	    	case 0:
+            		    	    		player.Variable = "x"; // Need to create a player class with method Variable and some others...
+            		    	    		break;
+            		    	    	case 1:
+            		    	    		player.Variable = "o";
+            		    	    		break;
+            		    	    	default:
+            		    	    	        JOptionPane.showMessageDialog(
+            		        		    null,
+            		        		    "Invalid Option");
+            		        		break;
+            		    	    }
+            			    game.resetGame();  // Start new game
+            			    game.printState(); // Print the blank board
+            			    
             			    break;
             			    
             	            // Human vs. Computer
@@ -54,15 +86,23 @@ public class Main {
             				    aiChoices[0]);
             				
             		            switch(aiOption){
-            		            	    //
+            		            	    // Heuristic created from excercise 5.9 in book
             		        	    case 0:
             		        		
             		        		    break;
             		        		    
-            		        	    //
+            		        	    // Naive Bayes/Decision Tree/Nearest Neighbor Heuristic whichever we choose to implement
             		        	    case 1:
             		        		
             		        		    break;
+            		        	    // temporal Difference Neural Network Heuristic  
+            		                    case 2:
+            		                    	
+            		                    	    break;
+            		                    // Implement Alpha-Beta Pruning to heuristic function
+            		                    case 3: 
+            		                    	
+            		                    	    break;
             		        	    default:
             		        		    JOptionPane.showMessageDialog(
             		        			    null,
