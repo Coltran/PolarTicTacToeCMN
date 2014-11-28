@@ -2,7 +2,13 @@ package game;
 //This is the game definition which can be used to keep track of the current game state an implement win checks
 public class Game {
 	//board keeps track of game state
-	String[][] board = new String[4][12];
+	public Board board;
+	public String player;
+	
+	//constructor
+	public Game() {
+		board = new Board();
+	}
 	//winCheck returns the winning player if a player has one, null otherwise
 	private String winCheck(int x, int y) {
 		String winningPlayer = null;
@@ -12,7 +18,7 @@ public class Game {
 	//move allows a player to make a move
 	//returns true if player wins, false otherwise
 	public boolean move(String player, int x, int y) {
-		board[x][y] = player;
+		board.theBoard[x][y] = player;
 		String winningPlayer = winCheck(x,y);
 		if(winningPlayer != null) {
 			return true;
@@ -25,7 +31,7 @@ public class Game {
 	public void resetGame() {
 		for(int i=0; i<4; i++) {
 			for(int j=0; j<12; j++) {
-				board[i][j] = null;
+				board.theBoard[i][j] = null;
 			}
 		}
 	}

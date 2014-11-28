@@ -6,7 +6,7 @@ public class Main {
 	public static void main(String[] args) {
 		boolean done = false;  //Boolean for while loop below
 		
-		Game game = new Game;
+		Game game = new Game();
 		
 		/* 
 		 * Choices for game include:
