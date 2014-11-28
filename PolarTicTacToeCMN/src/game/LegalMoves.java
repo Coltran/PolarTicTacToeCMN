@@ -12,7 +12,7 @@ public class LegalMoves {
 	/**
 	 * Returns all legal moves that can be made for a given game state
 	 */
-	public boolean[][] Moves(Board board, String player) {
+	public static boolean[][] Moves(Board board) {
 		//array that holds all legal spaces to move to
 		boolean[][] moves = new boolean[4][12];
 		//for each row in the board

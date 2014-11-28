@@ -6,8 +6,9 @@ public class Game {
 	public String player;
 	
 	//constructor
-	public Game() {
+	public Game(String playerChoice) {
 		board = new Board();
+		player = playerChoice;
 	}
 	//winCheck returns the winning player if a player has one, null otherwise
 	private String winCheck(int x, int y) {
