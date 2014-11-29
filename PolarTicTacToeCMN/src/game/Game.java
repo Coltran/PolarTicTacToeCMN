@@ -13,7 +13,7 @@ public class Game {
 	}
 
 	//winCheck returns the winning player if a player has one, null otherwise
-	private String winCheck(int x, int y) {
+	private String winCheck(int x, int y, Board board) {
 		String winningPlayer = null;
 		//check for 4-in-a-row here
 		return winningPlayer;
