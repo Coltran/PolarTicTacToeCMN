@@ -32,7 +32,7 @@ public class WinCheck {
 	 */
 	private int Heuristic() {
 
-		char[][] win = new char[7][4];
+		Character[][] win = new Character[7][4];
 		
 		for (int i = 0; i < 4; i++)
 		{

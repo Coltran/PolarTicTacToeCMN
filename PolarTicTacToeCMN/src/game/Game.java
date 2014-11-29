@@ -3,26 +3,26 @@ package game;
 public class Game {
 	//board keeps track of game state
 	public Board board;
-	public String player1, player2;
+	public Character player1, player2;
 	
 	//constructor
-	public Game(String playerChoice1, String playerChoice2) {
+	public Game(Character playerChoice1, Character playerChoice2) {
 		board = new Board();
 		player1 = playerChoice1;
 		player2 = playerChoice2;
 	}
 
 	//winCheck returns the winning player if a player has one, null otherwise
-	private String winCheck(int x, int y, Board board) {
-		String winningPlayer = null;
+	private Character winCheck(int x, int y, Board board) {
+		Character winningPlayer = null;
 		//check for 4-in-a-row here
 		return winningPlayer;
 	}
 	//move allows a player to make a move
 	//returns true if player wins, false otherwise
-	public boolean move(String player, int x, int y) {
+	public boolean move(Character player, int x, int y) {
 		board.theBoard[x][y] = player;
-		String winningPlayer = winCheck(x,y);
+		Character winningPlayer = winCheck(x,y, board);
 		if(winningPlayer != null) {
 			return true;
 		}

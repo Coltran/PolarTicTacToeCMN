@@ -3,8 +3,8 @@ package game;
 import javax.swing.JOptionPane;
 
 public class Main {
-	static String player1 = null;
-	static String player2 = null;
+	static Character player1 = null;
+	static Character player2 = null;
 	static Game game = new Game(player1, player2);
 	
 	public static void main(String[] args) {
@@ -64,16 +64,16 @@ public class Main {
             		    	    	
             		    	    switch(playerVariables){
             		    	    	case 0:
-            		    	    		game.player1 = "x";// Need to create a player class with method Variable and some others...
-            		    	    		game.player2 = "o";
+            		    	    		game.player1 = 'x';// Need to create a player class with method Variable and some others...
+            		    	    		game.player2 = 'o';
             		    	    		
             		    	    		game.resetGame();  // Start new game
                         			    game.printState(); // Print the blank board
                         			    playGame(game.player1, game.player2);
             		    	    		break;
             		    	    	case 1:
-            		    	    		game.player1 = "o";
-            		    	    		game.player2 = "x";
+            		    	    		game.player1 = 'o';
+            		    	    		game.player2 = 'x';
             		    	    		game.resetGame();  // Start new game
                         			    game.printState(); // Print the blank board
                         			    playGame(game.player1, game.player2);
@@ -143,10 +143,10 @@ public class Main {
             	}  
         }
 	
-	public static void playGame(String person1, String person2) {
+	public static void playGame(Character person1, Character person2) {
 		boolean done = false;
-		String player1 = person1;
-		String player2 = person2;
+		Character player1 = person1;
+		Character player2 = person2;
 		int x = 0;
 		int y = 0;
 		

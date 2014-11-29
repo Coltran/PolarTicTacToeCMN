@@ -9,13 +9,13 @@ package game;
  */
 class Board {
 
-	public char[][] theBoard;
+	public Character[][] theBoard;
 
 	/**
 	 * 
 	 */
 	public Board() {
-		theBoard = new char[4][12];
+		theBoard = new Character[4][12];
 	}
 	
 	public static Board clone(Board source) {
