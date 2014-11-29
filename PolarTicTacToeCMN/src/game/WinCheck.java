@@ -12,9 +12,9 @@ import java.util.Arrays;
 public class WinCheck {
 	
 	/**
-	 * uses for loops to create arrays that match the rules shown in comments
-	 * @param board
-	 * @return value
+	 * Uses for loops to create arrays that match the rules shown in comments
+	 * @param x, y, board
+	 * @return result of Unify function
 	 */
 	public static boolean check(int x, int y, Board board) {
 
@@ -75,6 +75,11 @@ public class WinCheck {
 		return Unify(win, checkVal, 0);
 	}
 	
+	/**
+	 * Uses unification to check rule arrays off winning array
+	 * @param winCheck, winValue, i
+	 * @return unified
+	 */
 	private static boolean Unify(Character[][] winCheck, Character[] winValue, int i)
 	{
 		 boolean unified = Arrays.equals(winCheck[i],winValue);
