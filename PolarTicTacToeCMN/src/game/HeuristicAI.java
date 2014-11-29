@@ -9,12 +9,12 @@ package game;
  */
 public class HeuristicAI {
 	
-	private String player;
+	private Character player;
 
 	/**
 	 * 
 	 */
-	public HeuristicAI(String playerChoice) {
+	public HeuristicAI(Character playerChoice) {
 		player = playerChoice;
 	}
 	public void move(Game game) {
@@ -147,6 +147,7 @@ public class HeuristicAI {
 					value += value3;
 				}
 			}
+			//add 10000 if wincheck returns true
 		}
 		return value;
 	}
