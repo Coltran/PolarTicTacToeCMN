@@ -6,12 +6,13 @@ public class Main {
 	static Character player1 = null;
 	static Character player2 = null;
 	static Game game = new Game(player1, player2);
+	static HeuristicAI heuristicAI = new HeuristicAI(player2);
 
 	public static void main(String[] args) {
 		boolean done = false; // Boolean for while loop below
 
 		/*
-		 * Choices for game include: Human vs. Human Human vs. Computer Computer
+		 * Choices for game include: Human vs. Human, Human vs. Computer, Computer
 		 * vs. Computer or the user can quit.
 		 */
 		String[] choices = { "HvH", "HvC", "CvC", "Quit" };
@@ -32,7 +33,7 @@ public class Main {
 
 		String[] playerVariable = { "X", "O" };
 
-		int choice = JOptionPane.showOptionDialog(null, "Pick an Option",
+		int choice = JOptionPane.showOptionDialog(null, "Options",
 				"Pick an Option", JOptionPane.YES_NO_CANCEL_OPTION,
 				JOptionPane.QUESTION_MESSAGE, null, choices, choices[0]);
 
@@ -42,15 +43,14 @@ public class Main {
 			// Human vs. Human
 			case 0:
 				int playerVariables = JOptionPane.showOptionDialog(null,
-						"Choose X or O", "Choose X or O",
+						"X or O", "Choose X or O",
 						JOptionPane.YES_NO_CANCEL_OPTION,
 						JOptionPane.QUESTION_MESSAGE, null, playerVariable,
 						playerVariable[0]);
 
 				switch (playerVariables) {
 				case 0:
-					game.player1 = 'X';// Need to create a player class with
-										// method Variable and some others...
+					game.player1 = 'X';
 					game.player2 = 'O';
 
 					game.resetGame(); // Start new game
@@ -77,7 +77,7 @@ public class Main {
 			// Human vs. Computer
 			case 1:
 				int aiOption = JOptionPane.showOptionDialog(null,
-						"Choose an AI Opponent", "Choose an AI Opponent",
+						"AI Opponent", "Choose an AI Opponent",
 						JOptionPane.YES_NO_CANCEL_OPTION,
 						JOptionPane.QUESTION_MESSAGE, null, aiChoices,
 						aiChoices[0]);
@@ -85,7 +85,12 @@ public class Main {
 				switch (aiOption) {
 				// Heuristic created from exercise 5.9 in book
 				case 0:
-
+					game.player1 = 'X';
+					heuristicAI = 'O'; //Heuristic AI
+					
+					game.resetGame();
+					game.printState();
+					playGame(game.player1, game.player2);
 					break;
 
 				// Naive Bayes/Decision Tree/Nearest Neighbor Heuristic
@@ -144,38 +149,40 @@ public class Main {
 		while (!done) {
 			if (count % 2 == 0) {
 				// Play the game until a winner is declared
-				p1x = JOptionPane.showOptionDialog(null, "Player 1",
+				p1x = JOptionPane.showOptionDialog(null, "Player X",
 						"Input a Row value", JOptionPane.YES_NO_CANCEL_OPTION,
 						JOptionPane.QUESTION_MESSAGE, null, xOptions,
 						xOptions[0]);
 
-				p1y = JOptionPane.showOptionDialog(null, "Player 1",
+				p1y = JOptionPane.showOptionDialog(null, "Player X",
 						"Input a Column value", JOptionPane.YES_NO_CANCEL_OPTION,
 						JOptionPane.QUESTION_MESSAGE, null, yOptions,
 						yOptions[0]);
 				
 				//Check if move is legal
-				if(LegalMoves.Moves(game.board) == true) {
+				if(LegalMoves.Moves(game.board)[p1x][p1y] == true) {
 					//If move is legal, check if it's a winning move.
+					game.move(player1, p1x, p1y);
 					if (game.move(player1, p1x, p1y) == true) {
 						done = true;
 				    }
 				} else {
 				}
 			} else {
-				p2x = JOptionPane.showOptionDialog(null, "Player 2",
+				p2x = JOptionPane.showOptionDialog(null, "Player Y",
 						"Input a Row value", JOptionPane.YES_NO_CANCEL_OPTION,
 						JOptionPane.QUESTION_MESSAGE, null, xOptions,
 						xOptions[0]);
 
-				p2y = JOptionPane.showOptionDialog(null, "Player 2",
+				p2y = JOptionPane.showOptionDialog(null, "Player Y",
 						"Input a Column value", JOptionPane.YES_NO_CANCEL_OPTION,
 						JOptionPane.QUESTION_MESSAGE, null, yOptions,
 						yOptions[0]);
 
 				//Check if move is legal
-				if(LegalMoves.Moves(game.board) == true) {
+				if(LegalMoves.Moves(game.board)[p2x][p2y] == true) {
 					//If move is legal, check if it's a winning move.
+					game.move(player2, p2x, p2y);
 					if (game.move(player2, p2x, p2y) == true) {
 						done = true;
 				    }
