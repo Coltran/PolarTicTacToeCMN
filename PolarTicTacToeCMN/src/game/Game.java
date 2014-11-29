@@ -38,8 +38,11 @@ public class Game {
 		}
 	}
 	
+	// Prints the board
 	public void printState() {
+		String[] row = {"A", "B", "C", "D"};
 		for(int i = 0; i<4; i++) {
+			System.out.print(row[i] + " ");
 			for(int j = 0; j < 12; j++) {
 				System.out.print(board.theBoard[i][j]);
 			}

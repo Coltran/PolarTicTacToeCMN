@@ -6,7 +6,8 @@ public class Main {
 	public static void main(String[] args) {
 		boolean done = false;  //Boolean for while loop below
 		
-		Game game = new Game();
+		String player = null;
+		Game game = new Game(player);
 		
 		/* 
 		 * Choices for game include:
@@ -61,15 +62,17 @@ public class Main {
             		    	    switch(playerVariables){
             		    	    	case 0:
             		    	    		game.player = "x"; // Need to create a player class with method Variable and some others...
+            		    	    		// Create player 2 to be "o"
             		    	    		break;
             		    	    	case 1:
             		    	    		game.player = "o";
+            		    	    		// Create player 2 to be "x"
             		    	    		break;
             		    	    	default:
-            		    	    	        JOptionPane.showMessageDialog(
-            		        		    null,
-            		        		    "Invalid Option");
-            		        		break;
+            		    	    	    JOptionPane.showMessageDialog(
+            		        		        null,
+            		        		        "Invalid Option");
+            		        		    break;
             		    	    }
             			    game.resetGame();  // Start new game
             			    game.printState(); // Print the blank board
