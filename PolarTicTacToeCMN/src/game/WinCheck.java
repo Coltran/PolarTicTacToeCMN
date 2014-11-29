@@ -11,28 +11,12 @@ import java.util.Arrays;
  */
 public class WinCheck {
 	
-	int x, y;
-	Board board;
-	
-
 	/**
-	 * 
-	 */
-	public WinCheck(int xLoc, int yLoc, Board boardIn) {
-		x = xLoc;
-		y = yLoc;
-		board = boardIn;
-		
-	}
-
-	/**
-	 * calculates and returns an integer heuristic value for a provided board state
-	 * 2 in a row combinations get a value of 4 
-	 * 3 in a row combinations get a value of 9+2*4=17
+	 * uses for loops to create arrays that match the rules shown in comments
 	 * @param board
 	 * @return value
 	 */
-	private boolean UseRules() {
+	public static boolean check(int x, int y, Board board) {
 
 		Character[][] win = new Character[7][4];
 		Character player = board.theBoard[x][y];
@@ -40,9 +24,6 @@ public class WinCheck {
 		//all values in of x are player (entire column is player)
 		for (int i = 0; i < 4; i++)
 		{
-			player = Unify(player, board.theBoard[i][y]);
-			if (player != null)
-				break;
 			win[0][i] = board.theBoard[i][y];
 		}
 		
@@ -94,15 +75,7 @@ public class WinCheck {
 		return Unify(win, checkVal, 0);
 	}
 	
-//	private Character Unify(Character player, Character win)
-//	{
-//		if (player == win)
-//			return null;
-//		else
-//			return player;
-//	}
-	
-	private boolean Unify(Character[][] winCheck, Character[] winValue, int i)
+	private static boolean Unify(Character[][] winCheck, Character[] winValue, int i)
 	{
 		 boolean unified = Arrays.equals(winCheck[i],winValue);
 		 if (!unified)
@@ -112,5 +85,11 @@ public class WinCheck {
 		 return unified;
 	}
 	
-
+//	private Character Unify(Character player, Character win)
+//	{
+//		if (player == win)
+//			return null;
+//		else
+//			return player;
+//	}
 }
