@@ -28,47 +28,74 @@ public class WinCheck {
 		}
 		
 		//all values of x+1,y+1 and x-1,y-1 are player (within bounds)
-		for (int i = x; i >= 0; i--)
+		for (int i = x; i >= (x-3); i--)
 		{
-			win[1][i] = board.theBoard[x-i][y-i];
+			if (i > y)
+				win[1][i] = board.theBoard[x-i][12-(i-y)];
+			else if ((y-i) > 11)
+				win[1][i] = board.theBoard[x-i][(y-i)-12];
+			else
+				win[1][i] = board.theBoard[x-i][y-i];
 		}
-		for (int i = 1; i <= (3 - x); i++)
-		{
-			win[1][i] = board.theBoard[x+i][y+i];
-		}
+//		for (int i = 1; i <= (3 - x); i++)
+//		{
+//			
+//			win[1][i] = board.theBoard[x+i][y+i];
+//		}
 		
 		//all values of x-1,y+1 and x+1,y-1 are player (within bounds)
-		for (int i = x; i >= 0; i--)
+		for (int i = x; i >= (x-3); i--)
 		{
-			win[2][i] = board.theBoard[x-i][y+i];
+			if ((y+i) > 11)
+				win[2][i] = board.theBoard[x-i][(y+i)-12];
+			else if (y < -i)
+				win[2][i] = board.theBoard[x-i][12+(y+i)];
+			else
+				win[2][i] = board.theBoard[x-i][y+i];
 		}
-		for (int i = 1; i <= (3 - x); i++)
-		{
-			win[2][i] = board.theBoard[x+i][y-i];
-		}
+//		for (int i = 1; i <= (3 - x); i++)
+//		{
+//			win[2][i] = board.theBoard[x+i][y-i];
+//		}
 		
 		//y-3,y-2,y-1 are player
 		for (int i = 0; i < 4; i++)
 		{
-			win[3][i] = board.theBoard[x][y-i];
+			if (y-i < 0)
+				win[3][i] = board.theBoard[x][12-(y-i)];
+			else
+				win[3][i] = board.theBoard[x][y-i];
 		}
 		
 		//y-2,y-1,y+1 are player
 		for (int i = -1; i < 3; i++)
 		{
-			win[4][i] = board.theBoard[x][y-i];
+			if (y-i < 0)
+				win[4][i] = board.theBoard[x][12-(y-i)];
+			else if (y-i > 11)
+				win[4][i] = board.theBoard[x][(y-i)-12];
+			else
+				win[4][i] = board.theBoard[x][y-i];
 		}
 		
 		//y-1,y+1,y+2 are player
 		for (int i = -2; i < 2; i++)
 		{
-			win[5][i] = board.theBoard[x][y-i];
+			if (y-i < 0)
+				win[5][i] = board.theBoard[x][12-(y-i)];
+			else if (y-i > 11)
+				win[5][i] = board.theBoard[x][(y-i)-12];
+			else
+				win[5][i] = board.theBoard[x][y-i];
 		}
 		
 		//y+1,y+2,y+3 are player
 		for (int i = -3; i < 1; i++)
 		{
-			win[6][i] = board.theBoard[x][y-i];
+			if (y-i > 11)
+				win[6][i] = board.theBoard[x][(y-i)-12];
+			else
+				win[6][i] = board.theBoard[x][y-i];
 		}
 		
 		Character[] checkVal = new Character[]{player,player,player,player};
