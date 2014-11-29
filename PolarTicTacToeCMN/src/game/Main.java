@@ -3,12 +3,14 @@ package game;
 import javax.swing.JOptionPane;
 
 public class Main {
+	static String player1 = null;
+	static String player2 = null;
+	static Game game = new Game(player1, player2);
+	
 	public static void main(String[] args) {
 		boolean done = false;  //Boolean for while loop below
 		
-		String player1 = null;
-		String player2 = null;
-		Game game = new Game(player1, player2);
+		
 		
 		/* 
 		 * Choices for game include:
@@ -141,7 +143,7 @@ public class Main {
             	}  
         }
 	
-	public void playGame(String person1, String person2) {
+	public static void playGame(String person1, String person2) {
 		boolean done = false;
 		String player1 = person1;
 		String player2 = person2;
