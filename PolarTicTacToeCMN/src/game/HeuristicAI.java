@@ -9,12 +9,12 @@ package game;
  */
 public class HeuristicAI {
 	
-	private char player;
+	private Character player;
 
 	/**
 	 * 
 	 */
-	public HeuristicAI(char playerChoice) {
+	public HeuristicAI(Character playerChoice) {
 		player = playerChoice;
 	}
 	public void move(Game game) {

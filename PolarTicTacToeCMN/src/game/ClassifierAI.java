@@ -8,12 +8,14 @@ package game;
  *
  */
 public class ClassifierAI {
+	
+	Character player;
 
 	/**
 	 * 
 	 */
-	public ClassifierAI() {
-		// TODO Auto-generated constructor stub
+	public ClassifierAI(Character playerChoice) {
+		player = playerChoice;
 	}
 
 }
