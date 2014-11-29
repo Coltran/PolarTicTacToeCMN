@@ -6,8 +6,9 @@ public class Main {
 	public static void main(String[] args) {
 		boolean done = false;  //Boolean for while loop below
 		
-		String player = null;
-		Game game = new Game(player);
+		String player1 = null;
+		String player2 = null;
+		Game game = new Game(player1, player2);
 		
 		/* 
 		 * Choices for game include:
@@ -61,12 +62,19 @@ public class Main {
             		    	    	
             		    	    switch(playerVariables){
             		    	    	case 0:
-            		    	    		game.player = "x"; // Need to create a player class with method Variable and some others...
-            		    	    		// Create player 2 to be "o"
+            		    	    		game.player1 = "x";// Need to create a player class with method Variable and some others...
+            		    	    		game.player2 = "o";
+            		    	    		
+            		    	    		game.resetGame();  // Start new game
+                        			    game.printState(); // Print the blank board
+                        			    playGame(game.player1, game.player2);
             		    	    		break;
             		    	    	case 1:
-            		    	    		game.player = "o";
-            		    	    		// Create player 2 to be "x"
+            		    	    		game.player1 = "o";
+            		    	    		game.player2 = "x";
+            		    	    		game.resetGame();  // Start new game
+                        			    game.printState(); // Print the blank board
+                        			    playGame(game.player1, game.player2);
             		    	    		break;
             		    	    	default:
             		    	    	    JOptionPane.showMessageDialog(
@@ -74,8 +82,6 @@ public class Main {
             		        		        "Invalid Option");
             		        		    break;
             		    	    }
-            			    game.resetGame();  // Start new game
-            			    game.printState(); // Print the blank board
             			    
             			    break;
             			    
@@ -101,14 +107,16 @@ public class Main {
             		        	    case 1:
             		        		
             		        		    break;
+            		        		    
             		        	    // temporal Difference Neural Network Heuristic  
-            		                    case 2:
+            		                case 2:
             		                    	
-            		                    	    break;
+            		                    break;
+            		                    
             		                    // Implement Alpha-Beta Pruning to heuristic function
-            		                    case 3: 
+            		                case 3: 
             		                    	
-            		                    	    break;
+            		                    break;
             		        	    default:
             		        		    JOptionPane.showMessageDialog(
             		        			    null,
@@ -132,4 +140,22 @@ public class Main {
             	    }
             	}  
         }
+	
+	public void playGame(String person1, String person2) {
+		boolean done = false;
+		String player1 = person1;
+		String player2 = person2;
+		int x = 0;
+		int y = 0;
+		
+		Game game = new Game(player1, player2);
+		while(!done) {
+			//Play the game until a winner is declared
+			if(game.move(player1, x, y) == true) {
+				done = true;
+			}else if(game.move(player2, x, y) == true) {
+				done = true;
+			}
+		}
+	}
 }
