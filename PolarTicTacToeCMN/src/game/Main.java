@@ -36,6 +36,7 @@ public class Main {
                 int choice = JOptionPane.showOptionDialog(
             	    null,
             	    "Pick an Option",
+            	    "Pick an Option",
             	    JOptionPane.YES_NO_CANCEL_OPTION,
             	    JOptionPane.QUESTION_MESSAGE,
             	    null,
@@ -47,8 +48,9 @@ public class Main {
             	    switch(choice){
             	    	    // Human vs. Human
             		    case 0:
-            		    	    int playerVariable = JOptionPane.showOptionDialog(
+            		    	    int playerVariables = JOptionPane.showOptionDialog(
             		    	    	null,
+            		    	    	"Choose X or O",
             		    	    	"Choose X or O",
             		    	    	JOptionPane.YES_NO_CANCEL_OPTION,
             		    	    	JOptionPane.QUESTION_MESSAGE,
@@ -56,12 +58,12 @@ public class Main {
             		    	    	playerVariable,
             		    	    	playerVariable[0]);
             		    	    	
-            		    	    switch(playerVariable){
+            		    	    switch(playerVariables){
             		    	    	case 0:
-            		    	    		player.Variable = "x"; // Need to create a player class with method Variable and some others...
+            		    	    		game.player = "x"; // Need to create a player class with method Variable and some others...
             		    	    		break;
             		    	    	case 1:
-            		    	    		player.Variable = "o";
+            		    	    		game.player = "o";
             		    	    		break;
             		    	    	default:
             		    	    	        JOptionPane.showMessageDialog(
@@ -78,6 +80,7 @@ public class Main {
             		    case 1:
             			    int aiOption = JOptionPane.showOptionDialog(
             				    null,
+            				    "Choose an AI Opponent",
             				    "Choose an AI Opponent",
             				    JOptionPane.YES_NO_CANCEL_OPTION,
             				    JOptionPane.QUESTION_MESSAGE,

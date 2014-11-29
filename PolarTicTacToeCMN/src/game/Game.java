@@ -10,6 +10,7 @@ public class Game {
 		board = new Board();
 		player = playerChoice;
 	}
+
 	//winCheck returns the winning player if a player has one, null otherwise
 	private String winCheck(int x, int y) {
 		String winningPlayer = null;
@@ -34,6 +35,15 @@ public class Game {
 			for(int j=0; j<12; j++) {
 				board.theBoard[i][j] = null;
 			}
+		}
+	}
+	
+	public void printState() {
+		for(int i = 0; i<4; i++) {
+			for(int j = 0; j < 12; j++) {
+				System.out.print(board.theBoard[i][j]);
+			}
+			System.out.println();
 		}
 	}
 	
