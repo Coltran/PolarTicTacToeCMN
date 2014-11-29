@@ -4,26 +4,23 @@ public class Game {
 	//board keeps track of game state
 	public Board board;
 	public Character player1, player2;
+	public boolean done;
 	
 	//constructor
 	public Game(Character playerChoice1, Character playerChoice2) {
 		board = new Board();
 		player1 = playerChoice1;
 		player2 = playerChoice2;
+		done = false;
 	}
 
-	//winCheck returns the winning player if a player has one, null otherwise
-	private Character winCheck(int x, int y, Board board) {
-		Character winningPlayer = null;
-		//check for 4-in-a-row here
-		return winningPlayer;
-	}
 	//move allows a player to make a move
 	//returns true if player wins, false otherwise
 	public boolean move(Character player, int x, int y) {
 		board.theBoard[x][y] = player;
-		Character winningPlayer = winCheck(x,y, board);
-		if(winningPlayer != null) {
+		boolean win = WinCheck.check(x,y, board);
+		if(win) {
+			done = true;
 			return true;
 		}
 		else {

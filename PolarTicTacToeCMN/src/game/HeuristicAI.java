@@ -17,7 +17,7 @@ public class HeuristicAI {
 	public HeuristicAI(Character playerChoice) {
 		player = playerChoice;
 	}
-	public void move(Game game) {
+	public boolean move(Game game) {
 		int movex = 0;//best move in x direction (there should always be a valid move when this is called
 		int movey = 0;//best move in y direction ''
 		int maxvalue = -999999999;//maximum heuristic value of returned move
@@ -41,7 +41,8 @@ public class HeuristicAI {
 				}
 			}
 		}
-		game.move(player, movex, movey);
+		boolean win = game.move(player, movex, movey);
+		return win;
 	}
 	/**
 	 * calculates and returns an integer heuristic value for a provided board state

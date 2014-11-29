@@ -58,6 +58,17 @@ public class NearestNeighborAI {
 	
 	private void learn() {
 		//play lots of games, saving every board state and classifying each game as win or loss
+		for(int i=0; i<numberExamples; i++) {
+			Game trainingGame = new Game('x','o');
+			HeuristicAI playerX = new HeuristicAI('x');
+			HeuristicAI playerO = new HeuristicAI('o');
+			if(player == 'x'){
+				while(trainingGame.winCheck() == null) {
+					
+				}
+				playerX.move(trainingGame);
+			}
+		}
 	}
 
 }
