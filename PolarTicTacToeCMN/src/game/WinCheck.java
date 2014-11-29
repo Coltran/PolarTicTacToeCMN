@@ -32,12 +32,40 @@ public class WinCheck {
 	 */
 	private int Heuristic() {
 
-		char[] win1 = new char[4];
+		char[][] win = new char[7][4];
 		
+		for (int i = 0; i < 4; i++)
+		{
+			win1[1][i] = board.theBoard[i][y];
+		}
 		for (int i = 0; i < 4; i++)
 		{
 			win1[i] = board.theBoard[i][y];
 		}
+		for (int i = 0; i < 4; i++)
+		{
+			win1[i] = board.theBoard[i][y];
+		}
+		for (int i = 0; i < 4; i++)
+		{
+			win1[i] = board.theBoard[i][y];
+		}
+		for (int i = 0; i < 4; i++)
+		{
+			win1[i] = board.theBoard[i][y];
+		}
+		for (int i = 0; i < 4; i++)
+		{
+			win1[i] = board.theBoard[i][y];
+		}
+		for (int i = 0; i < 4; i++)
+		{
+			win1[i] = board.theBoard[i][y];
+		}
+		
+		
+		
+		
 		
 		return 0;
 	}
