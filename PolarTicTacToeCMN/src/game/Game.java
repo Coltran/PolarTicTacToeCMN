@@ -5,6 +5,7 @@ public class Game {
 	public Board board;
 	public Character player1, player2;
 	public boolean done;
+	public Character winningPlayer;
 	
 	//constructor
 	public Game(Character playerChoice1, Character playerChoice2) {
@@ -12,6 +13,7 @@ public class Game {
 		player1 = playerChoice1;
 		player2 = playerChoice2;
 		done = false;
+		winningPlayer = null;
 	}
 
 	//move allows a player to make a move

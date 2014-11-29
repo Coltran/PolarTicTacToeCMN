@@ -11,7 +11,7 @@ public class NearestNeighborAI {
 	
 	private Character player;
 	private Board[][] examples;
-	int result[];
+	boolean result[];
 	int numberExamples;
 	int similarity[];
 
@@ -23,11 +23,11 @@ public class NearestNeighborAI {
 		examples = new Board[inNumberExamples][48];
 		numberExamples = inNumberExamples;
 		similarity = new int[inNumberExamples];
-		result = new int[inNumberExamples];
+		result = new boolean[inNumberExamples];
 		learn();
 	}
-	
-	public int predict(Board board) {
+	//true means win false means loose
+	public boolean predict(Board board) {
 		int moveNumber = 0;
 		for(int x=0; x<4; x++) {
 			for(int y=0; y<12; y++) {
@@ -63,10 +63,19 @@ public class NearestNeighborAI {
 			HeuristicAI playerX = new HeuristicAI('x');
 			HeuristicAI playerO = new HeuristicAI('o');
 			if(player == 'x'){
-				while(trainingGame.winCheck() == null) {
-					
+				//until game is done
+				while(trainingGame.done == false) {
+					playerX.move(trainingGame);
+					if(trainingGame.winningPlayer == 'x') {
+						result[i] = true;
+					}
+					else if(trainingGame.done == false) {
+						playerO.move(trainingGame);
+						if(trainingGame.winningPlayer == 'y') {
+							result[i] = false;
+						}
+					}
 				}
-				playerX.move(trainingGame);
 			}
 		}
 	}
