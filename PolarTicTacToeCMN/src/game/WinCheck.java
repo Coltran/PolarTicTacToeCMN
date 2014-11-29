@@ -31,11 +31,11 @@ public class WinCheck {
 		for (int i = x; i >= (x-3); i--)
 		{
 			if (i > y)
-				win[1][i] = board.theBoard[x-i][12-(i-y)];
+				win[1][x-i] = board.theBoard[x-i][12-(i-y)];
 			else if ((y-i) > 11)
-				win[1][i] = board.theBoard[x-i][(y-i)-12];
+				win[1][x-i] = board.theBoard[x-i][(y-i)-12];
 			else
-				win[1][i] = board.theBoard[x-i][y-i];
+				win[1][x-i] = board.theBoard[x-i][y-i];
 		}
 //		for (int i = 1; i <= (3 - x); i++)
 //		{
@@ -47,11 +47,11 @@ public class WinCheck {
 		for (int i = x; i >= (x-3); i--)
 		{
 			if ((y+i) > 11)
-				win[2][i] = board.theBoard[x-i][(y+i)-12];
+				win[2][x-i] = board.theBoard[x-i][(y+i)-12];
 			else if (y < -i)
-				win[2][i] = board.theBoard[x-i][12+(y+i)];
+				win[2][x-i] = board.theBoard[x-i][12+(y+i)];
 			else
-				win[2][i] = board.theBoard[x-i][y+i];
+				win[2][x-i] = board.theBoard[x-i][y+i];
 		}
 //		for (int i = 1; i <= (3 - x); i++)
 //		{
@@ -71,31 +71,31 @@ public class WinCheck {
 		for (int i = -1; i < 3; i++)
 		{
 			if (y-i < 0)
-				win[4][i] = board.theBoard[x][12-(y-i)];
+				win[4][i+1] = board.theBoard[x][12-(y-i)];
 			else if (y-i > 11)
-				win[4][i] = board.theBoard[x][(y-i)-12];
+				win[4][i+1] = board.theBoard[x][(y-i)-12];
 			else
-				win[4][i] = board.theBoard[x][y-i];
+				win[4][i+1] = board.theBoard[x][y-i];
 		}
 		
 		//y-1,y+1,y+2 are player
 		for (int i = -2; i < 2; i++)
 		{
 			if (y-i < 0)
-				win[5][i] = board.theBoard[x][12-(y-i)];
+				win[5][i+2] = board.theBoard[x][12-(y-i)];
 			else if (y-i > 11)
-				win[5][i] = board.theBoard[x][(y-i)-12];
+				win[5][i+2] = board.theBoard[x][(y-i)-12];
 			else
-				win[5][i] = board.theBoard[x][y-i];
+				win[5][i+2] = board.theBoard[x][y-i];
 		}
 		
 		//y+1,y+2,y+3 are player
 		for (int i = -3; i < 1; i++)
 		{
 			if (y-i > 11)
-				win[6][i] = board.theBoard[x][(y-i)-12];
+				win[6][i+3] = board.theBoard[x][(y-i)-12];
 			else
-				win[6][i] = board.theBoard[x][y-i];
+				win[6][i+3] = board.theBoard[x][y-i];
 		}
 		
 		Character[] checkVal = new Character[]{player,player,player,player};
