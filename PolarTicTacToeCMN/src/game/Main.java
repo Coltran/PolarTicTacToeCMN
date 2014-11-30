@@ -2,12 +2,14 @@ package game;
 
 import javax.swing.JOptionPane;
 
-public class Main {
+public class Main
+{
 	static Character player1 = null;
 	static Character player2 = null;
 	static Game game = new Game(player1, player2);
 
-	public static void main(String[] args) {
+	public static void main(String[] args)
+	{
 		boolean done = false; // Boolean for while loop below
 
 		/*
@@ -36,102 +38,107 @@ public class Main {
 				"Pick an Option", JOptionPane.YES_NO_CANCEL_OPTION,
 				JOptionPane.QUESTION_MESSAGE, null, choices, choices[0]);
 
-		while (!done) {
+		while (!done)
+		{
 
-			switch (choice) {
-			// Human vs. Human
-			case 0:
-				int playerVariables = JOptionPane.showOptionDialog(null,
-						"X or O", "Choose X or O",
-						JOptionPane.YES_NO_CANCEL_OPTION,
-						JOptionPane.QUESTION_MESSAGE, null, playerVariable,
-						playerVariable[0]);
-
-				switch (playerVariables) {
+			switch (choice)
+			{
+				// Human vs. Human
 				case 0:
-					game.player1 = 'X';
-					game.player2 = 'O';
-
-					game.resetGame(); // Start new game
-					game.printState(); // Print the blank board
-					playGame(game.player1, game.player2);
+					int playerVariables = JOptionPane.showOptionDialog(null,
+							"X or O", "Choose X or O",
+							JOptionPane.YES_NO_CANCEL_OPTION,
+							JOptionPane.QUESTION_MESSAGE, null, playerVariable,
+							playerVariable[0]);
+	
+					switch (playerVariables)
+					{
+						case 0:
+							game.player1 = 'X';
+							game.player2 = 'O';
+		
+							game.resetGame(); // Start new game
+							game.printState(); // Print the blank board
+							playGame(game.player1, game.player2);
+							break;
+		
+						case 1:
+							game.player1 = 'O';
+							game.player2 = 'X';
+		
+							game.resetGame(); // Start new game
+							game.printState(); // Print the blank board
+							playGame(game.player1, game.player2);
+							break;
+		
+						default:
+							System.exit(0);
+							break;
+					}
+	
 					break;
-
+	
+				// Human vs. Computer
 				case 1:
-					game.player1 = 'O';
-					game.player2 = 'X';
-
-					game.resetGame(); // Start new game
-					game.printState(); // Print the blank board
-					playGame(game.player1, game.player2);
+					int aiOption = JOptionPane.showOptionDialog(null,
+							"AI Opponent", "Choose an AI Opponent",
+							JOptionPane.YES_NO_CANCEL_OPTION,
+							JOptionPane.QUESTION_MESSAGE, null, aiChoices,
+							aiChoices[0]);
+	
+					switch (aiOption)
+					{
+						// Heuristic created from exercise 5.9 in book
+						case 0:
+							game.player1 = 'X';
+							HeuristicAI heuristicAI = new HeuristicAI('O'); //Heuristic AI
+							
+							game.resetGame();
+							game.printState();
+							playGame(game.player1, heuristicAI.player);
+							break;
+		
+						//Nearest Neighbor Heuristic
+						case 1:
+							game.player1 = 'X';
+							
+							break;
+		
+						// temporal Difference Neural Network Heuristic
+						case 2:
+							game.player1 = 'X';
+							
+							break;
+		
+						// Implement Alpha-Beta Pruning to heuristic function
+						case 3:
+							game.player1 = 'X';
+							
+							break;
+		
+						default:
+							System.exit(0);
+					}
 					break;
-
-				default:
-					System.exit(0);
-					break;
-				}
-
-				break;
-
-			// Human vs. Computer
-			case 1:
-				int aiOption = JOptionPane.showOptionDialog(null,
-						"AI Opponent", "Choose an AI Opponent",
-						JOptionPane.YES_NO_CANCEL_OPTION,
-						JOptionPane.QUESTION_MESSAGE, null, aiChoices,
-						aiChoices[0]);
-
-				switch (aiOption) {
-				// Heuristic created from exercise 5.9 in book
-				case 0:
-					game.player1 = 'X';
-					HeuristicAI heuristicAI = new HeuristicAI('O'); //Heuristic AI
-					
-					game.resetGame();
-					game.printState();
-					playGame(game.player1, heuristicAI.player);
-					break;
-
-				//Nearest Neighbor Heuristic
-				case 1:
-					game.player1 = 'X';
-					
-					break;
-
-				// temporal Difference Neural Network Heuristic
+	
+				// Computer vs. Computer
 				case 2:
-					game.player1 = 'X';
-					
+					// Choose two AIs to compete against each other.
 					break;
-
-				// Implement Alpha-Beta Pruning to heuristic function
+	
+				// Quit
 				case 3:
-					game.player1 = 'X';
-					
+	
+					done = true;
 					break;
-
 				default:
 					System.exit(0);
-				}
-				break;
-
-			// Computer vs. Computer
-			case 2:
-				// Choose two AIs to compete against each other.
-				break;
-
-			// Quit
-			case 3:
-
-				done = true;
-				break;
-			default:
-				System.exit(0);
 			}
 		}
 	}
 	
-	public static void playGame(Character person1, Character person2) {
+	public static void playGame(Character person1, Character person2)
+	{
 		int count = 0;
 		boolean done = false;
 		Character player1 = person1;
@@ -145,10 +152,12 @@ public class Main {
 		
 		String[] xOptions = { "A", "B", "C", "D" };
 		String[] yOptions = { "1", "2", "3", "4", "5", "6", "7", "8", "9",
-				"A", "B", "C" };
+				"10", "11", "12" };
 
-		while (!done) {
-			if (count % 2 == 0) {
+		while (!done)
+		{
+			if (count % 2 == 0)
+			{
 				// Play the game until a winner is declared
 				p1x = JOptionPane.showOptionDialog(null, "Player X",
 						"Input a Row value", JOptionPane.YES_NO_CANCEL_OPTION,
@@ -167,9 +176,9 @@ public class Main {
 				}
 				else if(LegalMoves.Moves(game.board)[p1x][p1y] == true)
 				{
-					//If move is legal, check if it's a winning move.
-					//game.move(player1, p1x, p1y);
+					//Only increment turn if move is legal, else repeat turn
 					count++;
+					//If move is legal, check if it's a winning move.
 					if (game.move(player1, p1x, p1y) == true)
 					{
 						done = true;
@@ -179,7 +188,9 @@ public class Main {
 				{
 					System.out.println("Not a legal move.");
 				}
-			} else {
+			}
+			else
+			{
 				p2x = JOptionPane.showOptionDialog(null, "Player O",
 						"Input a Row value", JOptionPane.YES_NO_CANCEL_OPTION,
 						JOptionPane.QUESTION_MESSAGE, null, xOptions,
@@ -191,11 +202,13 @@ public class Main {
 						yOptions[0]);
 				
 				//Check if move is legal
-				if(LegalMoves.Moves(game.board)[p2x][p2y] == true) {
-					//If move is legal, check if it's a winning move.
-					//game.move(player2, p2x, p2y);
+				if(LegalMoves.Moves(game.board)[p2x][p2y] == true)
+				{
+					//Only increment turn if move is legal, else repeat turn
 					count++;
-					if (game.move(player2, p2x, p2y) == true) {
+					//If move is legal, check if it's a winning move.
+					if (game.move(player2, p2x, p2y) == true)
+					{
 						done = true;
 				    }
 				}

@@ -37,11 +37,6 @@ public class WinCheck {
 			else
 				win[1][x-i] = board.theBoard[x-i][y-i];
 		}
-//		for (int i = 1; i <= (3 - x); i++)
-//		{
-//			
-//			win[1][i] = board.theBoard[x+i][y+i];
-//		}
 		
 		//all values of x-1,y+1 and x+1,y-1 are player (within bounds)
 		for (int i = x; i >= (x-3); i--)
@@ -53,10 +48,6 @@ public class WinCheck {
 			else
 				win[2][x-i] = board.theBoard[x-i][y+i];
 		}
-//		for (int i = 1; i <= (3 - x); i++)
-//		{
-//			win[2][i] = board.theBoard[x+i][y-i];
-//		}
 		
 		//y-3,y-2,y-1 are player
 		for (int i = 0; i < 4; i++)

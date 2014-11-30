@@ -46,16 +46,18 @@ public class Game {
 		System.out.print("  ");
 		
 		for(int i = 0; i < 12; i++) {
-			System.out.print(column[i] + "  ");
+			System.out.format("%3s", column[i]);
 		}
 		
 		System.out.println();
 		
-		for(int i = 0; i<4; i++) {
-			System.out.print(row[i] + " ");
+		for(int i = 0; i<4; i++)
+		{
+			System.out.format("%2s", row[i]);
 			
-			for(int j = 0; j < 12; j++) {
-				System.out.print(board.theBoard[i][j] + "  ");
+			for(int j = 0; j < 12; j++)
+			{
+				System.out.format("%3c", board.theBoard[i][j]);
 			}
 			
 			System.out.println();
