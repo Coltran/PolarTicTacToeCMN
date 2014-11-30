@@ -33,7 +33,7 @@ public class Game {
 	public void resetGame() {
 		for(int i=0; i<4; i++) {
 			for(int j=0; j<12; j++) {
-				board.theBoard[i][j] = null;
+				board.theBoard[i][j] = 0;
 			}
 		}
 	}
