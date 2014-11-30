@@ -9,7 +9,7 @@ package game;
  */
 public class HeuristicAI {
 	
-	private Character player;
+	public Character player;
 
 	/**
 	 * 
