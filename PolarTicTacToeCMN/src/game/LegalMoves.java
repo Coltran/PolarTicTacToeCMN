@@ -21,49 +21,50 @@ public class LegalMoves {
 			for(int j=0; j<12; j++) {
 				//if someone has made a move in this space check all surrounding spaces
 				//add surrounding space if it is free
-				if(board.theBoard[i][j] != null) {
+				if(board.theBoard[i][j] != 0)
+				{
 					moves[i][j] = false; //can't move to already taken space
-					if(i>0 && j>0 && board.theBoard[i-1][j-1]==null) {
+					if(i>0 && j>0 && board.theBoard[i-1][j-1]==0) {
 						moves[i-1][j-1] = true;
 					}
-					else if(i>0 && j<11 && board.theBoard[i-1][j+1]==null) {
+					if(i>0 && j<11 && board.theBoard[i-1][j+1]==0) {
 						moves[i-1][j+1] = true;
 					}
-					else if(i>0 && board.theBoard[i-1][j]==null) {
+					if(i>0 && board.theBoard[i-1][j]==0) {
 						moves[i-1][j] = true;
 					}
-					else if(i<3 && j>0 && board.theBoard[i+1][j-1]==null) {
+					if(i<3 && j>0 && board.theBoard[i+1][j-1]==0) {
 						moves[i+1][j-1] = true;
 					}
-					else if(i<3 && j<11 && board.theBoard[i+1][j+1]==null) {
+					if(i<3 && j<11 && board.theBoard[i+1][j+1]==0) {
 						moves[i+1][j+1] = true;
 					}
-					else if(i<3 && board.theBoard[i+1][j]==null) {
+					if(i<3 && board.theBoard[i+1][j]==0) {
 						moves[i+1][j] = true;
 					}
-					else if(j>0 && board.theBoard[i][j-1]==null) {
+					if(j>0 && board.theBoard[i][j-1]==0) {
 						moves[i][j-1] = true;
 					}
-					else if(j<11 && board.theBoard[i][j+1]==null) {
+					if(j<11 && board.theBoard[i][j+1]==0) {
 						moves[i][j+1] = true;
 					}
 					//wrap around cases
-					else if(j==0 && i>0 && board.theBoard[i-1][11]==null) {
+					if(j==0 && i>0 && board.theBoard[i-1][11]==0) {
 						moves[i-1][11] = true;
 					}
-					else if(j==0 && i<3 && board.theBoard[i+1][11]==null) {
+					if(j==0 && i<3 && board.theBoard[i+1][11]==0) {
 						moves[i+1][11] = true;
 					}
-					else if(j==0 && board.theBoard[i][11]==null) {
+					if(j==0 && board.theBoard[i][11]==0) {
 						moves[i][11] = true;
 					}
-					else if(j==11 && i>0 && board.theBoard[i-1][0]==null) {
+					if(j==11 && i>0 && board.theBoard[i-1][0]==0) {
 						moves[i-1][0] = true;
 					}
-					else if(j==11 && i<3 && board.theBoard[i+1][0]==null) {
+					if(j==11 && i<3 && board.theBoard[i+1][0]==0) {
 						moves[i+1][0] = true;
 					}
-					else if(j==11 && board.theBoard[i][0]==null) {
+					if(j==11 && board.theBoard[i][0]==0) {
 						moves[i][0] = true;
 					}
 				}

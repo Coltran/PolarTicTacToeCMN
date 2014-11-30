@@ -46,7 +46,7 @@ public class Game {
 		System.out.print("  ");
 		
 		for(int i = 0; i < 12; i++) {
-			System.out.print(column[i] + "   ");
+			System.out.print(column[i] + "  ");
 		}
 		
 		System.out.println();
@@ -55,7 +55,7 @@ public class Game {
 			System.out.print(row[i] + " ");
 			
 			for(int j = 0; j < 12; j++) {
-				System.out.print(board.theBoard[i][j]);
+				System.out.print(board.theBoard[i][j] + "  ");
 			}
 			
 			System.out.println();

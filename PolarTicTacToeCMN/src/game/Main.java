@@ -163,14 +163,20 @@ public class Main {
 				//Check if move is legal
 				if(count == 0){
 					game.move(player1, p1x, p1y);
-				} else if(LegalMoves.Moves(game.board)[p1x][p1y] == true) {
+				}
+				else if(LegalMoves.Moves(game.board)[p1x][p1y] == true)
+				{
 					//If move is legal, check if it's a winning move.
-					game.move(player1, p1x, p1y);
+					//game.move(player1, p1x, p1y);
 					
-					if (game.move(player1, p1x, p1y) == true) {
+					if (game.move(player1, p1x, p1y) == true)
+					{
 						done = true;
 				    }
-				} else {
+				}
+				else
+				{
+					System.out.println("Not Legal");
 				}
 			} else {
 				p2x = JOptionPane.showOptionDialog(null, "Player O",
@@ -186,11 +192,15 @@ public class Main {
 				//Check if move is legal
 				if(LegalMoves.Moves(game.board)[p2x][p2y] == true) {
 					//If move is legal, check if it's a winning move.
-					game.move(player2, p2x, p2y);
+					//game.move(player2, p2x, p2y);
 					
 					if (game.move(player2, p2x, p2y) == true) {
 						done = true;
 				    }
+				}
+				else
+				{
+					System.out.println("Not Legal");
 				}
 			}
 			game.printState();
