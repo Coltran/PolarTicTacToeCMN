@@ -62,7 +62,7 @@ public class WinCheck {
 		for (int i = 0; i < 4; i++)
 		{
 			if (y-i < 0)
-				win[3][i] = board.theBoard[x][12-(y-i)];
+				win[3][i] = board.theBoard[x][12+(y-i)];
 			else
 				win[3][i] = board.theBoard[x][y-i];
 		}
@@ -71,7 +71,7 @@ public class WinCheck {
 		for (int i = -1; i < 3; i++)
 		{
 			if (y-i < 0)
-				win[4][i+1] = board.theBoard[x][12-(y-i)];
+				win[4][i+1] = board.theBoard[x][12+(y-i)];
 			else if (y-i > 11)
 				win[4][i+1] = board.theBoard[x][(y-i)-12];
 			else
@@ -82,7 +82,7 @@ public class WinCheck {
 		for (int i = -2; i < 2; i++)
 		{
 			if (y-i < 0)
-				win[5][i+2] = board.theBoard[x][12-(y-i)];
+				win[5][i+2] = board.theBoard[x][12+(y-i)];
 			else if (y-i > 11)
 				win[5][i+2] = board.theBoard[x][(y-i)-12];
 			else
