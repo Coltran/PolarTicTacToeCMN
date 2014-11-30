@@ -109,12 +109,12 @@ public class WinCheck {
 	 */
 	private static boolean Unify(Character[][] winCheck, Character[] winValue, int i)
 	{
-		 boolean unified = Arrays.equals(winCheck[i],winValue);
-		 if (!unified)
-		 {
-			 unified = Unify(winCheck, winValue, i+1);
-		 }
-		 return unified;
+		boolean unified = Arrays.equals(winCheck[i],winValue);
+		if (!unified && (i != 6))
+		{
+			unified = Unify(winCheck, winValue, i+1);
+		}
+		return unified;
 	}
 	
 //	private Character Unify(Character player, Character win)
