@@ -6,7 +6,6 @@ public class Main {
 	static Character player1 = null;
 	static Character player2 = null;
 	static Game game = new Game(player1, player2);
-	static HeuristicAI heuristicAI = new HeuristicAI(player2);
 
 	public static void main(String[] args) {
 		boolean done = false; // Boolean for while loop below
@@ -86,27 +85,29 @@ public class Main {
 				// Heuristic created from exercise 5.9 in book
 				case 0:
 					game.player1 = 'X';
-					heuristicAI = 'O'; //Heuristic AI
+					HeuristicAI heuristicAI = new HeuristicAI('O'); //Heuristic AI
 					
 					game.resetGame();
 					game.printState();
-					playGame(game.player1, game.player2);
+					playGame(game.player1, heuristicAI.player);
 					break;
 
-				// Naive Bayes/Decision Tree/Nearest Neighbor Heuristic
-				// whichever we choose to implement
+				//Nearest Neighbor Heuristic
 				case 1:
-
+					game.player1 = 'X';
+					
 					break;
 
 				// temporal Difference Neural Network Heuristic
 				case 2:
-
+					game.player1 = 'X';
+					
 					break;
 
 				// Implement Alpha-Beta Pruning to heuristic function
 				case 3:
-
+					game.player1 = 'X';
+					
 					break;
 
 				default:
@@ -142,9 +143,9 @@ public class Main {
 		int p2x = 0;
 		int p2y = 0;
 		
-		String[] xOptions = { "1", "2", "3", "4" };
+		String[] xOptions = { "A", "B", "C", "D" };
 		String[] yOptions = { "1", "2", "3", "4", "5", "6", "7", "8", "9",
-				"10", "11", "12" };
+				"A", "B", "C" };
 
 		while (!done) {
 			if (count % 2 == 0) {
@@ -158,31 +159,35 @@ public class Main {
 						"Input a Column value", JOptionPane.YES_NO_CANCEL_OPTION,
 						JOptionPane.QUESTION_MESSAGE, null, yOptions,
 						yOptions[0]);
-				
+
 				//Check if move is legal
-				if(LegalMoves.Moves(game.board)[p1x][p1y] == true) {
+				if(count == 0){
+					game.move(player1, p1x, p1y);
+				} else if(LegalMoves.Moves(game.board)[p1x][p1y] == true) {
 					//If move is legal, check if it's a winning move.
 					game.move(player1, p1x, p1y);
+					
 					if (game.move(player1, p1x, p1y) == true) {
 						done = true;
 				    }
 				} else {
 				}
 			} else {
-				p2x = JOptionPane.showOptionDialog(null, "Player Y",
+				p2x = JOptionPane.showOptionDialog(null, "Player O",
 						"Input a Row value", JOptionPane.YES_NO_CANCEL_OPTION,
 						JOptionPane.QUESTION_MESSAGE, null, xOptions,
 						xOptions[0]);
 
-				p2y = JOptionPane.showOptionDialog(null, "Player Y",
+				p2y = JOptionPane.showOptionDialog(null, "Player O",
 						"Input a Column value", JOptionPane.YES_NO_CANCEL_OPTION,
 						JOptionPane.QUESTION_MESSAGE, null, yOptions,
 						yOptions[0]);
-
+				
 				//Check if move is legal
 				if(LegalMoves.Moves(game.board)[p2x][p2y] == true) {
 					//If move is legal, check if it's a winning move.
 					game.move(player2, p2x, p2y);
+					
 					if (game.move(player2, p2x, p2y) == true) {
 						done = true;
 				    }
