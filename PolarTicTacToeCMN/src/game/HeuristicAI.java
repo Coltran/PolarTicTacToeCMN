@@ -4,8 +4,12 @@
 package game;
 
 /**
- * @author
+ * @author Coltran
  * This class Implements the Heuristic based AI to play Polar Tic Tac Toe
+ * Instantiate with HeuristicAI name = new HeuristicAI(playerChoice) 
+ * where playerChoice is 'x' or 'o'
+ * To have the AI make a move: name.move(game) 
+ * where game is a Game
  */
 public class HeuristicAI {
 	
@@ -28,7 +32,7 @@ public class HeuristicAI {
 				if(moves[i][j]) {
 					Board candidate = Board.clone(game.board);
 					candidate.theBoard[i][j] = player;
-					values[i][j] = Heuristic(candidate);
+					values[i][j] = Heuristic(candidate, i, j);
 				}
 			}
 		}
@@ -51,106 +55,210 @@ public class HeuristicAI {
 	 * @param board
 	 * @return value
 	 */
-	private int Heuristic(Board board) {
+	private int Heuristic(Board board, int movex, int movey) {
 		int value2 = 4;
 		int value3 = 9;
 		int value = 0;
-		//check for 2/3 in a row in x (i) direction
-		for(int j=0; j<12; j++) {
+		Character opponent;
+		if(player == 'x') {
+			opponent = 'o';
+		}
+		else {
+			opponent = 'x';
+		}
+		//check for win
+		if(WinCheck.check(movex, movey, board)) {
+			//if we wone
+			if(board.theBoard[movex][movey] == player) {
+				return 10000;
+			}
+			//if our opponent wone
+			else {
+				return -10000;
+			}
+		}
+		else {
+			//check for 2/3 in a row in x (i) direction
+			for(int j=0; j<12; j++) {
+				//2 in a row
+				for(int i=0; i<3; i++) {
+					//player
+					if(board.theBoard[i][j]==player && board.theBoard[i+1][j]==player) {
+						value += value2;
+					}
+					//opponent
+					if(board.theBoard[i][j]==opponent && board.theBoard[i+1][j]==opponent) {
+						value -= value2;
+					}
+				}
+				//3 in a row
+				for(int i=0; i<2; i++) {
+					//player
+					if(board.theBoard[i][j]==player && board.theBoard[i+1][j]==player && board.theBoard[i+1][j]==player) {
+						value += value3;
+					}
+					//opponent
+					if(board.theBoard[i][j]==opponent && board.theBoard[i+1][j]==opponent && board.theBoard[i+1][j]==opponent) {
+						value -= value3;
+					}
+				}
+			}
+			//check for 2/3 in a row in y (j) direction
 			//2 in a row
 			for(int i=0; i<3; i++) {
-				if(board.theBoard[i][j]==player && board.theBoard[i+1][j]==player) {
-					value += value2;
+				for(int j=0; j<11; j++) {
+					//player
+					if(board.theBoard[i][j]==player && board.theBoard[i][j+1]==player) {
+						value += value2;
+					}
+					//opponent
+					if(board.theBoard[i][j]==opponent && board.theBoard[i][j+1]==opponent) {
+						value -= value2;
+					}
+				}
+				//2 in a row wrap-around
+				//player
+				if(board.theBoard[i][0]==player && board.theBoard[i][11]==player) {
+					value += value2; 
+				}
+				//opponent
+				if(board.theBoard[i][0]==opponent && board.theBoard[i][11]==opponent) {
+					value -= value2; 
+				}
+				//3 in a row
+				for(int j=0; j<10; j++) {
+					//player
+					if(board.theBoard[i][j]==player && board.theBoard[i][j+1]==player && board.theBoard[i][j+2]==player){
+						value += value3;
+					}
+					//opponent
+					if(board.theBoard[i][j]==opponent && board.theBoard[i][j+1]==opponent && board.theBoard[i][j+2]==opponent){
+						value -= value3;
+					}
+				}
+				//3 in a row wrap-around
+				//player
+				if(board.theBoard[i][0]==player && board.theBoard[i][1]==player && board.theBoard[i][11]==player) {
+					value += value3;
+				}
+				//opponent
+				if(board.theBoard[i][0]==opponent && board.theBoard[i][1]==opponent && board.theBoard[i][11]==opponent) {
+					value -= value3;
+				}
+				//player
+				if(board.theBoard[i][0]==player && board.theBoard[i][11]==player && board.theBoard[i][10]==player) {
+					value += value3;
+				}
+				//opponent
+				if(board.theBoard[i][0]==opponent && board.theBoard[i][11]==opponent && board.theBoard[i][10]==opponent) {
+					value -= value3;
+				}
+			}
+			//check for 2/3 in a row diagonally
+			//2 in a row
+			for(int i=0; i<3; i++) {
+				//wrap around case left-to-right
+				//player
+				if(board.theBoard[i][0]==player && board.theBoard[i+1][11]==player) {
+					value += value2; 
+				}
+				//opponent
+				if(board.theBoard[i][0]==opponent && board.theBoard[i+1][11]==opponent) {
+					value -= value2; 
+				}
+				//wrap around case right-to-left
+				//player
+				if(board.theBoard[i][11]==player && board.theBoard[i+1][0]==player) {
+					value += value2; 
+				}
+				//opponent
+				if(board.theBoard[i][11]==opponent && board.theBoard[i+1][0]==opponent) {
+					value -= value2; 
+				}
+				//left to right
+				for(int j=0; j<11; j++) {
+					//player
+					if(board.theBoard[i][j]==player && board.theBoard[i+1][j+1]==player) {
+						value += value2;
+					}
+					//opponent
+					if(board.theBoard[i][j]==opponent && board.theBoard[i+1][j+1]==opponent) {
+						value -= value2;
+					}
+				}
+				//right to left
+				for(int j=1; j<12; j++) {
+					//player
+					if(board.theBoard[i][j]==player && board.theBoard[i+1][j-1]==player) {
+						value += value2;
+					}
+					//opponent
+					if(board.theBoard[i][j]==opponent && board.theBoard[i+1][j-1]==opponent) {
+						value -= value2;
+					}
 				}
 			}
 			//3 in a row
 			for(int i=0; i<2; i++) {
-				if(board.theBoard[i][j]==player && board.theBoard[i+1][j]==player && board.theBoard[i+1][j]==player) {
-					value += value3;
+				//wrap around case left-to-right
+				//player
+				if(board.theBoard[i][0]==player && board.theBoard[i+1][11]==player && board.theBoard[i+2][10]==player) {
+					value += value3; 
+				}
+				//opponent
+				if(board.theBoard[i][0]==opponent && board.theBoard[i+1][11]==opponent && board.theBoard[i+2][10]==opponent) {
+					value -= value3; 
+				}
+				//player
+				if(board.theBoard[i][1]==player && board.theBoard[i+1][0]==player && board.theBoard[i+2][11]==player) {
+					value += value3; 
+				}
+				//opponent
+				if(board.theBoard[i][1]==opponent && board.theBoard[i+1][0]==opponent && board.theBoard[i+2][11]==opponent) {
+					value -= value3; 
+				}
+				//wrap around case right-to-left
+				//player
+				if(board.theBoard[i][11]==player && board.theBoard[i+1][0]==player && board.theBoard[i+2][1]==player) {
+					value += value3; 
+				}
+				//opponent
+				if(board.theBoard[i][11]==opponent && board.theBoard[i+1][0]==opponent && board.theBoard[i+2][1]==opponent) {
+					value -= value3; 
+				}
+				//player
+				if(board.theBoard[i][10]==player && board.theBoard[i+1][11]==player && board.theBoard[i+2][0]==player) {
+					value += value3; 
+				}
+				//opponent
+				if(board.theBoard[i][10]==opponent && board.theBoard[i+1][11]==opponent && board.theBoard[i+2][0]==opponent) {
+					value -= value3; 
+				}
+				//left to right
+				for(int j=0; j<10; j++) {
+					//player
+					if(board.theBoard[i][j]==player && board.theBoard[i+1][j+1]==player && board.theBoard[i+2][j+2]==player) {
+						value += value3;
+					}
+					//opponent
+					if(board.theBoard[i][j]==opponent && board.theBoard[i+1][j+1]==opponent && board.theBoard[i+2][j+2]==opponent) {
+						value -= value3;
+					}
+				}
+				//right to left
+				for(int j=2; j<12; j++) {
+					//player
+					if(board.theBoard[i][j]==player && board.theBoard[i+1][j-1]==player && board.theBoard[i+2][j-2]==player) {
+						value += value3;
+					}
+					//opponent
+					if(board.theBoard[i][j]==opponent && board.theBoard[i+1][j-1]==opponent && board.theBoard[i+2][j-2]==opponent) {
+						value -= value3;
+					}
 				}
 			}
+			return value;
 		}
-		//check for 2/3 in a row in y (j) direction
-		//2 in a row
-		for(int i=0; i<3; i++) {
-			for(int j=0; j<11; j++) {
-				if(board.theBoard[i][j]==player && board.theBoard[i][j+1]==player) {
-					value += value2;
-				}
-			}
-			//2 in a row wrap-around
-			if(board.theBoard[i][0]==player && board.theBoard[i][11]==player) {
-				value += value2; 
-			}
-			//3 in a row
-			for(int j=0; j<10; j++) {
-				if(board.theBoard[i][j]==player && board.theBoard[i][j+1]==player && board.theBoard[i][j+2]==player){
-					value += value3;
-				}
-			}
-			//3 in a row wrap-around
-			if(board.theBoard[i][0]==player && board.theBoard[i][1]==player && board.theBoard[i][11]==player) {
-				value += value3;
-			}
-			if(board.theBoard[i][0]==player && board.theBoard[i][11]==player && board.theBoard[i][10]==player) {
-				value += value3;
-			}
-		}
-		//check for 2/3 in a row diagonally
-		//2 in a row
-		for(int i=0; i<3; i++) {
-			//wrap around case left-to-right
-			if(board.theBoard[i][0]==player && board.theBoard[i+1][11]==player) {
-				value += value2; 
-			}
-			//wrap around case right-to-left
-			if(board.theBoard[i][11]==player && board.theBoard[i+1][0]==player) {
-				value += value2; 
-			}
-			//left to right
-			for(int j=0; j<11; j++) {
-				if(board.theBoard[i][j]==player && board.theBoard[i+1][j+1]==player) {
-					value += value2;
-				}
-			}
-			//right to left
-			for(int j=1; j<12; j++) {
-				if(board.theBoard[i][j]==player && board.theBoard[i+1][j-1]==player) {
-					value += value2;
-				}
-			}
-		}
-		//3 in a row
-		for(int i=0; i<2; i++) {
-			//wrap around case left-to-right
-			if(board.theBoard[i][0]==player && board.theBoard[i+1][11]==player && board.theBoard[i+2][10]==player) {
-				value += value3; 
-			}
-			if(board.theBoard[i][1]==player && board.theBoard[i+1][0]==player && board.theBoard[i+2][11]==player) {
-				value += value3; 
-			}
-			//wrap around case right-to-left
-			if(board.theBoard[i][11]==player && board.theBoard[i+1][0]==player && board.theBoard[i+2][1]==player) {
-				value += value3; 
-			}
-			if(board.theBoard[i][10]==player && board.theBoard[i+1][11]==player && board.theBoard[i+2][0]==player) {
-				value += value3; 
-			}
-			//left to right
-			for(int j=0; j<10; j++) {
-				if(board.theBoard[i][j]==player && board.theBoard[i+1][j+1]==player && board.theBoard[i+2][j+2]==player) {
-					value += value3;
-				}
-			}
-			//right to left
-			for(int j=2; j<12; j++) {
-				if(board.theBoard[i][j]==player && board.theBoard[i+1][j-1]==player && board.theBoard[i+2][j-2]==player) {
-					value += value3;
-				}
-			}
-			//add 10000 if wincheck returns true
-		}
-		return value;
 	}
 
 }
