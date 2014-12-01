@@ -34,13 +34,12 @@ public class Main
 
 		String[] playerVariable = { "X", "O" };
 
-		int choice = JOptionPane.showOptionDialog(null, "Options",
-				"Pick an Option", JOptionPane.YES_NO_CANCEL_OPTION,
-				JOptionPane.QUESTION_MESSAGE, null, choices, choices[0]);
-
 		while (!done)
 		{
-
+			int choice = JOptionPane.showOptionDialog(null, "Options",
+				"Pick an Option", JOptionPane.YES_NO_CANCEL_OPTION,
+				JOptionPane.QUESTION_MESSAGE, null, choices, choices[0]);
+				
 			switch (choice)
 			{
 				// Human vs. Human
