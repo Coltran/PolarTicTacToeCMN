@@ -26,7 +26,20 @@ public class HeuristicAI {
 		int movey = 0;//best move in y direction ''
 		int maxvalue = -999999999;//maximum heuristic value of returned move
 		int[][] values = new int[4][12];//array that holds heuristic value for all possible moves
-		boolean moves[][] = LegalMoves.Moves(game.board);
+		boolean moves[][];
+		//on first move, all the board is legal
+		if(game.moveNumber == 0) {
+			moves = new boolean[4][12];
+			for(int i=0; i<4; i++) {
+				for(int j=0; j<12; j++) {
+					moves[i][j] = true;
+				}
+			}
+		}
+		//otherwise get legal moves
+		else {
+			moves = LegalMoves.Moves(game.board);
+		}
 		for(int i=0; i<4; i++) {
 			for(int j=0; j<12; j++) {
 				if(moves[i][j]) {

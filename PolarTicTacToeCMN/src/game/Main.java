@@ -58,7 +58,7 @@ public class Main
 		
 							game.resetGame(); // Start new game
 							game.printState(); // Print the blank board
-							playGame(game.player1, game.player2);
+							playGame(game.player1, game.player2, null, null);
 							break;
 		
 						case 1:
@@ -67,7 +67,7 @@ public class Main
 		
 							game.resetGame(); // Start new game
 							game.printState(); // Print the blank board
-							playGame(game.player1, game.player2);
+							playGame(game.player1, game.player2, null, null);
 							break;
 		
 						default:
@@ -91,10 +91,9 @@ public class Main
 						case 0:
 							game.player1 = 'X';
 							HeuristicAI heuristicAI = new HeuristicAI('O'); //Heuristic AI
-							
 							game.resetGame();
 							game.printState();
-							playGame(game.player1, heuristicAI.player);
+							playGame(game.player1, heuristicAI.player, null, heuristicAI);
 							break;
 		
 						//Nearest Neighbor Heuristic
@@ -136,7 +135,7 @@ public class Main
 		}
 	}
 	
-	public static void playGame(Character person1, Character person2)
+	public static void playGame(Character person1, Character person2, HeuristicAI ai1, HeuristicAI ai2)
 	{
 		int count = 0;
 		boolean done = false;
@@ -157,63 +156,86 @@ public class Main
 		{
 			if (count % 2 == 0)
 			{
-				// Play the game until a winner is declared
-				p1x = JOptionPane.showOptionDialog(null, "Player X",
-						"Input a Row value", JOptionPane.YES_NO_CANCEL_OPTION,
-						JOptionPane.QUESTION_MESSAGE, null, xOptions,
-						xOptions[0]);
-
-				p1y = JOptionPane.showOptionDialog(null, "Player X",
-						"Input a Column value", JOptionPane.YES_NO_CANCEL_OPTION,
-						JOptionPane.QUESTION_MESSAGE, null, yOptions,
-						yOptions[0]);
-
-				//Check if move is legal
-				if(count == 0){
-					game.move(player1, p1x, p1y);
+				//if player1 is AI ai.move
+				if(ai1 != null) {
+					ai1.move(game);
 					count++;
-				}
-				else if(LegalMoves.Moves(game.board)[p1x][p1y] == true)
-				{
-					//Only increment turn if move is legal, else repeat turn
-					count++;
-					//If move is legal, check if it's a winning move.
-					if (game.move(player1, p1x, p1y) == true)
-					{
+					if(game.done) {
 						done = true;
-				    }
+					}
 				}
-				else
-				{
-					System.out.println("Not a legal move.");
+				//else 
+				else {
+					// Play the game until a winner is declared
+					p1x = JOptionPane.showOptionDialog(null, "Player X",
+							"Input a Row value", JOptionPane.YES_NO_CANCEL_OPTION,
+							JOptionPane.QUESTION_MESSAGE, null, xOptions,
+							xOptions[0]);
+
+					p1y = JOptionPane.showOptionDialog(null, "Player X",
+							"Input a Column value", JOptionPane.YES_NO_CANCEL_OPTION,
+							JOptionPane.QUESTION_MESSAGE, null, yOptions,
+							yOptions[0]);
+
+					//Check if move is legal
+					if(count == 0){
+						game.move(player1, p1x, p1y);
+						count++;
+					}
+					else if(LegalMoves.Moves(game.board)[p1x][p1y] == true)
+					{
+						//Only increment turn if move is legal, else repeat turn
+						count++;
+						//If move is legal, check if it's a winning move.
+						if (game.move(player1, p1x, p1y) == true)
+						{
+							done = true;
+						}
+					}
+					else
+					{
+						System.out.println("Not a legal move.");
+					}
 				}
 			}
 			else
 			{
-				p2x = JOptionPane.showOptionDialog(null, "Player O",
-						"Input a Row value", JOptionPane.YES_NO_CANCEL_OPTION,
-						JOptionPane.QUESTION_MESSAGE, null, xOptions,
-						xOptions[0]);
-
-				p2y = JOptionPane.showOptionDialog(null, "Player O",
-						"Input a Column value", JOptionPane.YES_NO_CANCEL_OPTION,
-						JOptionPane.QUESTION_MESSAGE, null, yOptions,
-						yOptions[0]);
-				
-				//Check if move is legal
-				if(LegalMoves.Moves(game.board)[p2x][p2y] == true)
-				{
-					//Only increment turn if move is legal, else repeat turn
+				//if player2 is AI ai.move
+				//if player1 is AI ai.move
+				if(ai2 != null) {
+					ai2.move(game);
 					count++;
-					//If move is legal, check if it's a winning move.
-					if (game.move(player2, p2x, p2y) == true)
-					{
+					if(game.done) {
 						done = true;
-				    }
+					}
 				}
-				else
-				{
-					System.out.println("Not a legal move.");
+				//else 
+				else {
+					p2x = JOptionPane.showOptionDialog(null, "Player O",
+							"Input a Row value", JOptionPane.YES_NO_CANCEL_OPTION,
+							JOptionPane.QUESTION_MESSAGE, null, xOptions,
+							xOptions[0]);
+
+					p2y = JOptionPane.showOptionDialog(null, "Player O",
+							"Input a Column value", JOptionPane.YES_NO_CANCEL_OPTION,
+							JOptionPane.QUESTION_MESSAGE, null, yOptions,
+							yOptions[0]);
+
+					//Check if move is legal
+					if(LegalMoves.Moves(game.board)[p2x][p2y] == true)
+					{
+						//Only increment turn if move is legal, else repeat turn
+						count++;
+						//If move is legal, check if it's a winning move.
+						if (game.move(player2, p2x, p2y) == true)
+						{
+							done = true;
+						}
+					}
+					else
+					{
+						System.out.println("Not a legal move.");
+					}
 				}
 			}
 			game.printState();

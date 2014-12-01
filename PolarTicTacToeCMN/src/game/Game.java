@@ -6,6 +6,7 @@ public class Game {
 	public Character player1, player2;
 	public boolean done;
 	public Character winningPlayer;
+	public int moveNumber;
 	
 	//constructor
 	public Game(Character playerChoice1, Character playerChoice2) {
@@ -14,12 +15,15 @@ public class Game {
 		player2 = playerChoice2;
 		done = false;
 		winningPlayer = null;
+		moveNumber = 0;
 	}
 
 	//move allows a player to make a move
 	//returns true if player wins, false otherwise
 	public boolean move(Character player, int x, int y) {
 		board.theBoard[x][y] = player;
+		moveNumber++;
+		System.out.println(moveNumber);
 		boolean win = WinCheck.check(x,y, board);
 		if(win) {
 			done = true;
@@ -57,7 +61,12 @@ public class Game {
 			
 			for(int j = 0; j < 12; j++)
 			{
-				System.out.format("%3c", board.theBoard[i][j]);
+				if(board.theBoard[i][j] == null) {
+					System.out.format("%3c", ' ');
+				}
+				else {
+					System.out.format("%3c", board.theBoard[i][j]);
+				}
 			}
 			
 			System.out.println();
