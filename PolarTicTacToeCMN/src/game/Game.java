@@ -23,7 +23,6 @@ public class Game {
 	public boolean move(Character player, int x, int y) {
 		board.theBoard[x][y] = player;
 		moveNumber++;
-		System.out.println(moveNumber);
 		boolean win = WinCheck.check(x,y, board);
 		if(win) {
 			done = true;
@@ -61,7 +60,7 @@ public class Game {
 			
 			for(int j = 0; j < 12; j++)
 			{
-				if(board.theBoard[i][j] == null) {
+				if(board.theBoard[i][j] == 0) {
 					System.out.format("%3c", ' ');
 				}
 				else {

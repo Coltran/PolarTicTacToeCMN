@@ -135,7 +135,7 @@ public class Main
 		}
 	}
 	
-	public static void playGame(Character person1, Character person2, HeuristicAI ai1, HeuristicAI ai2)
+	public static void playGame(Character person1, Character person2, AI ai1, AI ai2)
 	{
 		int count = 0;
 		boolean done = false;

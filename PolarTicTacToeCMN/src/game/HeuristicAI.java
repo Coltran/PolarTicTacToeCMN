@@ -11,9 +11,11 @@ package game;
  * To have the AI make a move: name.move(game) 
  * where game is a Game
  */
-public class HeuristicAI {
+public class HeuristicAI implements AI {
 	
 	public Character player;
+	private int movex;
+	private int movey;
 
 	/**
 	 * 
@@ -22,45 +24,114 @@ public class HeuristicAI {
 		player = playerChoice;
 	}
 	public boolean move(Game game) {
-		int movex = 0;//best move in x direction (there should always be a valid move when this is called
-		int movey = 0;//best move in y direction ''
-		int maxvalue = -999999999;//maximum heuristic value of returned move
-		int[][] values = new int[4][12];//array that holds heuristic value for all possible moves
-		boolean moves[][];
-		//on first move, all the board is legal
+		movex = 0;//best move in x direction (there should always be a valid move when this is called
+		movey = 0;//best move in y direction ''
+//		int maxvalue = -999999999;//maximum heuristic value of returned move
+//		System.out.println(maxvalue);
+//		Integer[][] values = new Integer[4][12];//array that holds heuristic value for all possible moves
+//		boolean moves[][];
+//		//on first move, all the board is legal
+//		if(game.moveNumber == 0) {
+//			moves = new boolean[4][12];
+//			for(int i=0; i<4; i++) {
+//				for(int j=0; j<12; j++) {
+//					moves[i][j] = true;
+//				}
+//			}
+//		}
+//		//otherwise get legal moves
+//		else {
+//			moves = LegalMoves.Moves(game.board);
+//		}
+//		for(int i=0; i<4; i++) {
+//			for(int j=0; j<12; j++) {
+//				if(moves[i][j]) {
+//					Board candidate = Board.clone(game.board);
+//					candidate.theBoard[i][j] = player;
+//					values[i][j] = lookahead(candidate, opponent, );//change to lookahead
+//				}
+//				else {
+//					values[i][j] = null;
+//				}
+//			}
+//		}
+//		for(int i=0; i<4; i++) {
+//			for(int j=0; j<12; j++) {
+//				if(values[i][j] != null && values[i][j] > maxvalue) {
+//					maxvalue = values[i][j];
+//					movex = i;
+//					movey = j;
+//				}
+//			}
+//		}
 		if(game.moveNumber == 0) {
-			moves = new boolean[4][12];
-			for(int i=0; i<4; i++) {
-				for(int j=0; j<12; j++) {
-					moves[i][j] = true;
-				}
-			}
+			//movex and movey = random integers within bounds
 		}
-		//otherwise get legal moves
-		else {
-			moves = LegalMoves.Moves(game.board);
-		}
-		for(int i=0; i<4; i++) {
-			for(int j=0; j<12; j++) {
-				if(moves[i][j]) {
-					Board candidate = Board.clone(game.board);
-					candidate.theBoard[i][j] = player;
-					values[i][j] = Heuristic(candidate, i, j);
-				}
-			}
-		}
-		for(int i=0; i<4; i++) {
-			for(int j=0; j<12; j++) {
-				if(values[i][j]>maxvalue) {
-					maxvalue = values[i][j];
-					movex = i;
-					movey = j;
-				}
-			}
+		else{
+			int ply = 2;
+			int depth = ply*2;
+			lookAhead(game.board, player, depth);
 		}
 		boolean win = game.move(player, movex, movey);
 		return win;
 	}
+	
+	private Integer lookAhead(Board board, Character thisPlayer, int depth) {
+		boolean[][] moves = LegalMoves.Moves(board);
+		Integer[][] values = new Integer[4][12];
+		for(int i=0; i<4; i++) {
+			for(int j=0; j<12; j++) {
+				if(moves[i][j]==true) {
+					Board candidate = Board.clone(board);
+					candidate.theBoard[i][j] = thisPlayer;
+					if(depth <= 1 || WinCheck.check(i, j, candidate) == true) {
+						if(WinCheck.check(i, j, candidate)==true) {
+							System.out.println("win detected");//why is a win never detected except when player can make it on his next move??
+						}//even when he detects a win, he still just makes the first move available to him
+						values[i][j] = Heuristic(board, i, j);
+					}
+					else {
+						Character otherPlayer = 'x';
+						if(thisPlayer == 'x') {
+							otherPlayer = 'o';
+						}
+						values[i][j] = lookAhead(candidate, otherPlayer, depth-1);
+					}
+				}
+				else {
+					values[i][j] = null;
+				}
+			}
+		}
+		if(thisPlayer == player) {
+			int maxvalue = -999999999;//maximum heuristic value of returned move
+			for(int i=0; i<4; i++) {
+				for(int j=0; j<12; j++) {
+					if(values[i][j] != null && values[i][j] > maxvalue) {
+						maxvalue = values[i][j];
+						movex = i;
+						movey = j;
+					}
+				}
+			}
+			return maxvalue;
+		}
+		else {
+			int maxvalue = 999999999;//maximum heuristic value of returned move
+			for(int i=0; i<4; i++) {
+				for(int j=0; j<12; j++) {
+					if(values[i][j] != null && values[i][j] < maxvalue) {
+						maxvalue = values[i][j];
+						movex = i;
+						movey = j;
+					}
+				}
+			}
+			return maxvalue;
+		}
+		
+	}
+	
 	/**
 	 * calculates and returns an integer heuristic value for a provided board state
 	 * 2 in a row combinations get a value of 4 
