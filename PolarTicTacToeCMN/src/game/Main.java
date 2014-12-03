@@ -99,13 +99,19 @@ public class Main
 						//Nearest Neighbor Heuristic
 						case 1:
 							game.player1 = 'X';
-							
+							NearestNeighborAI nearestNeighborAI = new NearestNeighborAI('O'); //Nearest Neighbor AI
+							game.resetGame();
+							game.printState();
+							playGame(game.player1, nearestNeighborAI.player, null, nearestNeighborAI);
 							break;
 		
 						// temporal Difference Neural Network Heuristic
 						case 2:
 							game.player1 = 'X';
-							
+							TemporalDifferenceAI temporalDifferenceAI = new TemporalDifferenceAI('O');
+							game.resetGame();
+							game.printState();
+							playGame(game.player1, temporalDifferenceAI.player, null, temporalDifferenceAI);
 							break;
 		
 						// Implement Alpha-Beta Pruning to heuristic function
@@ -122,6 +128,38 @@ public class Main
 				// Computer vs. Computer
 				case 2:
 					// Choose two AIs to compete against each other.
+					int aiOption1 = JOptionPane.showOptionDialog(null,
+							"AI Opponent", "Choose an AI Opponent",
+							JOptionPane.YES_NO_CANCEL_OPTION,
+							JOptionPane.QUESTION_MESSAGE, null, aiChoices,
+							aiChoices[0]);
+					
+					int aiOption2 = JOptionPane.showOptionDialog(null,
+							"AI Opponent", "Choose an AI Opponent",
+							JOptionPane.YES_NO_CANCEL_OPTION,
+							JOptionPane.QUESTION_MESSAGE, null, aiChoices,
+							aiChoices[0]);
+					
+					if(aiOption1 == 0 && aiOption2 == 0){
+						HeuristicAI heuristicAI1 = new HeuristicAI('X'); //Heuristic AI
+						HeuristicAI heuristicAI2 = new HeuristicAI('O'); //Heuristic AI
+						game.resetGame();
+						game.printState();
+						playGame(heuristicAI1.player, heuristicAI2.player, heuristicAI1, heuristicAI2);
+					}else if(aiOption1 == 0 && aiOption2 == 1){
+						HeuristicAI heuristicAI = new HeuristicAI('X'); //Heuristic AI
+						NearestNeighborAI nearestNeighborAI = new NearestNeighborAI('O');
+						game.resetGame();
+						game.printState();
+						playGame(heuristicAI.player, nearestNeighborAI.player, heuristicAI, nearestNeighborAI);
+					}else if(aiOption1 == 0 && aiOption2 == 2){
+						HeuristicAI heuristicAI = new HeuristicAI('X'); //Heuristic AI
+						TemporalDifferenceAI temporalDifferenceAI = new TemporalDifferenceAI('O');
+						game.resetGame();
+						game.printState();
+						playGame(heuristicAI.player, temporalDifferenceAI.player, heuristicAI, temporalDifferenceAI);
+					}else if(aiOption1 == )
+					
 					break;
 	
 				// Quit
