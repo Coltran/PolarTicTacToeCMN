@@ -3,11 +3,13 @@
  */
 package game;
 
+import java.util.Random;
+
 /**
  * @author Coltran
  * This class Implements the Heuristic based AI to play Polar Tic Tac Toe
  * Instantiate with HeuristicAI name = new HeuristicAI(playerChoice) 
- * where playerChoice is 'x' or 'o'
+ * where playerChoice is 'X' or 'O'
  * To have the AI make a move: name.move(game) 
  * where game is a Game
  */
@@ -24,110 +26,134 @@ public class HeuristicAI implements AI {
 		player = playerChoice;
 	}
 	public boolean move(Game game) {
-		movex = 0;//best move in x direction (there should always be a valid move when this is called
+		movex = 0;//best move in x direction (there should always be a valid move when this is called)
 		movey = 0;//best move in y direction ''
-//		int maxvalue = -999999999;//maximum heuristic value of returned move
-//		System.out.println(maxvalue);
-//		Integer[][] values = new Integer[4][12];//array that holds heuristic value for all possible moves
-//		boolean moves[][];
-//		//on first move, all the board is legal
-//		if(game.moveNumber == 0) {
-//			moves = new boolean[4][12];
-//			for(int i=0; i<4; i++) {
-//				for(int j=0; j<12; j++) {
-//					moves[i][j] = true;
-//				}
-//			}
-//		}
-//		//otherwise get legal moves
-//		else {
-//			moves = LegalMoves.Moves(game.board);
-//		}
-//		for(int i=0; i<4; i++) {
-//			for(int j=0; j<12; j++) {
-//				if(moves[i][j]) {
-//					Board candidate = Board.clone(game.board);
-//					candidate.theBoard[i][j] = player;
-//					values[i][j] = lookahead(candidate, opponent, );//change to lookahead
-//				}
-//				else {
-//					values[i][j] = null;
-//				}
-//			}
-//		}
-//		for(int i=0; i<4; i++) {
-//			for(int j=0; j<12; j++) {
-//				if(values[i][j] != null && values[i][j] > maxvalue) {
-//					maxvalue = values[i][j];
-//					movex = i;
-//					movey = j;
-//				}
-//			}
-//		}
-		if(game.moveNumber == 0) {
-			//movex and movey = random integers within bounds
+		if(game.moveNumber == 0) {//just pick a random move if we're going first
+			Random generator = new Random(System.nanoTime());
+			movex = generator.nextInt(4);
+			movey = generator.nextInt(12);
 		}
 		else{
-			int ply = 2;
-			int depth = ply*2;
-			lookAhead(game.board, player, depth);
+			int ply = 2;//number of plys to search
+			int depth = ply*2;//moves to look ahead = ply * 2
+			lookAhead(game.board, player, depth);//call recursive lookahead function
+			//lookahead will set movex and movey to best values
 		}
-		boolean win = game.move(player, movex, movey);
-		return win;
+		boolean win = game.move(player, movex, movey);//make move
+		return win;//return if we wone the game
 	}
-	
+	/**
+	 * recursively checks ahead and returns best heuristic value
+	 * sets movex and movey corrosponding to the best move found
+	 * @param board
+	 * @param thisPlayer
+	 * @param depth
+	 * @return
+	 */
 	private Integer lookAhead(Board board, Character thisPlayer, int depth) {
-		boolean[][] moves = LegalMoves.Moves(board);
-		Integer[][] values = new Integer[4][12];
+		boolean[][] moves = LegalMoves.Moves(board);//all available moves
+		Integer[][] values = new Integer[4][12];//stores heuristic values for each available move
 		for(int i=0; i<4; i++) {
 			for(int j=0; j<12; j++) {
-				if(moves[i][j]==true) {
-					Board candidate = Board.clone(board);
-					candidate.theBoard[i][j] = thisPlayer;
+				if(moves[i][j]==true) {//if we can move there...
+					Board candidate = Board.clone(board);//copy the board to pass forward
+					candidate.theBoard[i][j] = thisPlayer;//make move on copy
+					//if we don't need to search any farther
 					if(depth <= 1 || WinCheck.check(i, j, candidate) == true) {
 						if(WinCheck.check(i, j, candidate)==true) {
-							System.out.println("win detected");//why is a win never detected except when player can make it on his next move??
-						}//even when he detects a win, he still just makes the first move available to him
-						values[i][j] = Heuristic(board, i, j);
-					}
-					else {
-						Character otherPlayer = 'x';
-						if(thisPlayer == 'x') {
-							otherPlayer = 'o';
+							//if we can win
+							if(candidate.theBoard[i][j] == player) {
+								values[i][j] = 10000;
+								return values[i][j];//just return the winning move
+							}
+							//if our opponent won
+							else {
+								values[i][j] = -10000;
+							}
 						}
+						//if we need to evaluate the current board
+						else {
+							values[i][j] = Heuristic(board, i, j);//call heuristic and save returned value
+						}
+					}
+					//if we need to look farther ahead
+					else {
+						//determine next player
+						Character otherPlayer = 'X';
+						if(thisPlayer == 'X') {
+							otherPlayer = 'O';
+						}
+						//recursive function call
 						values[i][j] = lookAhead(candidate, otherPlayer, depth-1);
 					}
 				}
+				//if we can't move there
 				else {
 					values[i][j] = null;
 				}
 			}
 		}
+		//if us (max player)
 		if(thisPlayer == player) {
 			int maxvalue = -999999999;//maximum heuristic value of returned move
 			for(int i=0; i<4; i++) {
 				for(int j=0; j<12; j++) {
 					if(values[i][j] != null && values[i][j] > maxvalue) {
 						maxvalue = values[i][j];
-						movex = i;
-						movey = j;
 					}
 				}
 			}
-			return maxvalue;
-		}
-		else {
-			int maxvalue = 999999999;//maximum heuristic value of returned move
+			//break ties randomly
+			int[] tiesx = new int[48];//will hold x coordinate for ties
+			int[] tiesy = new int[48];//will hold y coordinate for ties
+			int count = 0;//tracks number of ties
 			for(int i=0; i<4; i++) {
 				for(int j=0; j<12; j++) {
-					if(values[i][j] != null && values[i][j] < maxvalue) {
-						maxvalue = values[i][j];
+					if(values[i][j] != null && values[i][j] == maxvalue) {//if we found one of the best moves
+						tiesx[count] = i;//add x value to list
+						tiesy[count] = j;//add coorosponding y value to list
+						count++;//increment count
+					}
+				}
+			}
+			Random generator = new Random(System.nanoTime());
+			int randomChoice = generator.nextInt(count);//pick a random best move
+			//make move
+			movex = tiesx[randomChoice];
+			movey = tiesy[randomChoice];
+			return maxvalue;//we will choose best move for us
+		}
+		//otherwise it's our opponent (min player)
+		else {
+			int minvalue = 999999999;//minimum heuristic value of returned move
+			for(int i=0; i<4; i++) {
+				for(int j=0; j<12; j++) {
+					if(values[i][j] != null && values[i][j] < minvalue) {
+						minvalue = values[i][j];
 						movex = i;
 						movey = j;
 					}
 				}
 			}
-			return maxvalue;
+			//break ties randomly
+			int[] tiesx = new int[48];//will hold x coordinate for ties
+			int[] tiesy = new int[48];//will hold y coordinate for ties
+			int count = 0;//tracks number of ties
+			for(int i=0; i<4; i++) {
+				for(int j=0; j<12; j++) {
+					if(values[i][j] != null && values[i][j] == minvalue) {//if we found one of the best moves
+						tiesx[count] = i;//add x value to list
+						tiesy[count] = j;//add coorosponding y value to list
+						count++;//increment count
+					}
+				}
+			}
+			Random generator = new Random(System.nanoTime());
+			int randomChoice = generator.nextInt(count);//pick a random best move
+			//make move
+			movex = tiesx[randomChoice];
+			movey = tiesy[randomChoice];
+			return minvalue;//assume opponent will choose the best move for them
 		}
 		
 	}
@@ -140,28 +166,16 @@ public class HeuristicAI implements AI {
 	 * @return value
 	 */
 	private int Heuristic(Board board, int movex, int movey) {
-		int value2 = 4;
-		int value3 = 9;
+		int value2 = 4;//value of 2 in a row
+		int value3 = 9;//value of 3 in a row is this + 2*value2
 		int value = 0;
 		Character opponent;
-		if(player == 'x') {
-			opponent = 'o';
+		if(player == 'X') {
+			opponent = 'O';
 		}
 		else {
-			opponent = 'x';
+			opponent = 'X';
 		}
-		//check for win
-		if(WinCheck.check(movex, movey, board)) {
-			//if we wone
-			if(board.theBoard[movex][movey] == player) {
-				return 10000;
-			}
-			//if our opponent wone
-			else {
-				return -10000;
-			}
-		}
-		else {
 			//check for 2/3 in a row in x (i) direction
 			for(int j=0; j<12; j++) {
 				//2 in a row
@@ -342,7 +356,6 @@ public class HeuristicAI implements AI {
 				}
 			}
 			return value;
-		}
 	}
 
 }
