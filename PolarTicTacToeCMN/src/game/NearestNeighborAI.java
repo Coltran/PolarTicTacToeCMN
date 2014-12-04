@@ -3,17 +3,22 @@
  */
 package game;
 
+import java.util.Random;
+
 /**
  * @author Coltran
  *
  */
-public class NearestNeighborAI implements AI {
+public class NearestNeighborAI implements AI{
 	
-	public Character player;//not used currently
+	private Character player;//not used currently
+	private Character opponent;
 	private Board[][] examples;//holds all of our examples to compare against
 	Character result[];//holds the results for all the example games (x,o or d)
 	int numberExamples;//number of example games to run can be chosen by user
 	int similarity[];//holds the similarity to each example at the same turn level
+	private int movex;
+	private int movey;
 
 	/**
 	 * 
@@ -25,10 +30,148 @@ public class NearestNeighborAI implements AI {
 		numberExamples = inNumberExamples;
 		similarity = new int[inNumberExamples];
 		result = new Character[inNumberExamples];
+		opponent = 'X';
+		if(playerChoice == 'X') {
+			opponent = 'O';
+		}
 		learn();
 	}
+	
+	public boolean move(Game game) {
+		movex = 0;//best move in x direction (there should always be a valid move when this is called)
+		movey = 0;//best move in y direction ''
+		if(game.moveNumber == 0) {//just pick a random move if we're going first
+			Random generator = new Random(System.nanoTime());
+			movex = generator.nextInt(4);
+			movey = generator.nextInt(12);
+		}
+		else{
+			int ply = 2;//number of plys to search
+			int depth = ply*2;//moves to look ahead = ply * 2
+			lookAhead(game.board, player, depth);//call recursive lookahead function
+			//lookahead will set movex and movey to best values
+		}
+		boolean win = game.move(player, movex, movey);//make move
+		return win;//return if we wone the game
+	}
+	/**
+	 * recursively checks ahead and returns best heuristic value
+	 * sets movex and movey corrosponding to the best move found
+	 * @param board
+	 * @param thisPlayer
+	 * @param depth
+	 * @return
+	 */
+	private Integer lookAhead(Board board, Character thisPlayer, int depth) {
+		boolean[][] moves = LegalMoves.Moves(board);//all available moves
+		Integer[][] values = new Integer[4][12];//stores heuristic values for each available move
+		for(int i=0; i<4; i++) {
+			for(int j=0; j<12; j++) {
+				if(moves[i][j]==true) {//if we can move there...
+					Board candidate = Board.clone(board);//copy the board to pass forward
+					candidate.theBoard[i][j] = thisPlayer;//make move on copy
+					//if we don't need to search any farther
+					if(depth <= 1 || WinCheck.check(i, j, candidate) == true) {
+						if(WinCheck.check(i, j, candidate)==true) {
+							//if we can win
+							if(candidate.theBoard[i][j] == player) {
+								values[i][j] = 1;
+								return values[i][j];//just return the winning move
+							}
+							//if our opponent won
+							else {
+								values[i][j] = -1;
+							}
+						}
+						//if we need to evaluate the current board
+						else {
+							values[i][j] = predict(board);//call heuristic and save returned value
+						}
+					}
+					//if we need to look farther ahead
+					else {
+						//determine next player
+						Character otherPlayer = 'X';
+						if(thisPlayer == 'X') {
+							otherPlayer = 'O';
+						}
+						//recursive function call
+						values[i][j] = lookAhead(candidate, otherPlayer, depth-1);
+					}
+				}
+				//if we can't move there
+				else {
+					values[i][j] = null;
+				}
+			}
+		}
+		//if us (max player)
+		if(thisPlayer == player) {
+			int maxvalue = -999999999;//maximum heuristic value of returned move
+			for(int i=0; i<4; i++) {
+				for(int j=0; j<12; j++) {
+					if(values[i][j] != null && values[i][j] > maxvalue) {
+						maxvalue = values[i][j];
+					}
+				}
+			}
+			//break ties randomly
+			int[] tiesx = new int[48];//will hold x coordinate for ties
+			int[] tiesy = new int[48];//will hold y coordinate for ties
+			int count = 0;//tracks number of ties
+			for(int i=0; i<4; i++) {
+				for(int j=0; j<12; j++) {
+					if(values[i][j] != null && values[i][j] == maxvalue) {//if we found one of the best moves
+						tiesx[count] = i;//add x value to list
+						tiesy[count] = j;//add coorosponding y value to list
+						count++;//increment count
+					}
+				}
+			}
+			Random generator = new Random(System.nanoTime());
+			int randomChoice = generator.nextInt(count);//pick a random best move
+			//make move
+			movex = tiesx[randomChoice];
+			movey = tiesy[randomChoice];
+			return maxvalue;//we will choose best move for us
+		}
+		//otherwise it's our opponent (min player)
+		else {
+			int minvalue = 999999999;//minimum heuristic value of returned move
+			for(int i=0; i<4; i++) {
+				for(int j=0; j<12; j++) {
+					if(values[i][j] != null && values[i][j] < minvalue) {
+						minvalue = values[i][j];
+						movex = i;
+						movey = j;
+					}
+				}
+			}
+			//break ties randomly
+			int[] tiesx = new int[48];//will hold x coordinate for ties
+			int[] tiesy = new int[48];//will hold y coordinate for ties
+			int count = 0;//tracks number of ties
+			for(int i=0; i<4; i++) {
+				for(int j=0; j<12; j++) {
+					if(values[i][j] != null && values[i][j] == minvalue) {//if we found one of the best moves
+						tiesx[count] = i;//add x value to list
+						tiesy[count] = j;//add coorosponding y value to list
+						count++;//increment count
+					}
+				}
+			}
+			Random generator = new Random(System.nanoTime());
+			int randomChoice = generator.nextInt(count);//pick a random best move
+			//make move
+			movex = tiesx[randomChoice];
+			movey = tiesy[randomChoice];
+			return minvalue;//assume opponent will choose the best move for them
+		}
+		
+	}
+	
 	//returns a prediction (x,o or d) for which player will win (or a draw)
-	public Character predict(Board board) {
+	public int predict(Board board) {
 		int moveNumber = 0;
 		//count number of moves made so far
 		for(int x=0; x<4; x++) {
@@ -59,7 +202,15 @@ public class NearestNeighborAI implements AI {
 				maxLocation = example;//set max location to location of new max
 			}
 		}
-		return result[maxLocation];//return result of most similar (nearest) example
+		if(result[maxLocation] == player) {
+			return 1;
+		}
+		else if(result[maxLocation] == opponent) {
+			return -1;
+		}
+		else {
+			return 0;
+		}
 	}
 	//play lots of games, saving every board state and classifying each game as win or loss
 	private void learn() {
@@ -76,26 +227,22 @@ public class NearestNeighborAI implements AI {
 				examples[i][turnNumber] = Board.clone(trainingGame.board);//save game board
 				turnNumber++;//next turn
 				if(trainingGame.winningPlayer == 'x') {
-					result[i] = 'x';//set result to x win if x won
+					result[i] = 'x';//set result to x win if x wone
 				}
 				//if the game is not done
 				else if(trainingGame.done == false) {
-					playerO.move(trainingGame);//second player moves
+					playerO.move(trainingGame);//seccond player moves
 					examples[i][turnNumber] = Board.clone(trainingGame.board);//save game board
 					turnNumber++;//next turn
 					if(trainingGame.winningPlayer == 'y') {
-						result[i] = 'y';//set result to y win if y won
+						result[i] = 'y';//set result to x win if x wone
 					}
 				}
 				if(trainingGame.done && trainingGame.winningPlayer == null) {
-					result[i] = 'd';//set result to draw if game is over and nobody won
+					result[i] = 'd';//set result to draw if game is over and nobody wone
 				}
 			}
 		}
 	}
-	@Override
-	public boolean move(Game game) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+
 }
