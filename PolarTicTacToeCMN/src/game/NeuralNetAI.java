@@ -92,6 +92,14 @@ public class NeuralNetAI implements AI {
 		}
 	}
 }
+//Some websites
+
+//http://en.literateprograms.org/Perceptron_%28Java%29
+//https://code.google.com/p/aima-java/		go to TD code
+//http://aima-java.googlecode.com/svn/trunk/aima-all/release/aima3ejavademos.html		has tictactoe minmax and AlphaBeta
+//http://aispace.org/neural/help/tutorial4.shtml
+
+
 //loop and find all legal moves
 //These moves are the input to the current state in the neural net?
 //Whichever move is best would be weighted 1, rest would be -1.
