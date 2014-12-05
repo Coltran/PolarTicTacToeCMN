@@ -166,7 +166,32 @@ public class NearestNeighborAI implements AI{
 				}
 			}
 			Random generator = new Random(System.nanoTime());
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			// ERRORS OCCUR AT THIS LINE OF CODE
+			// ERRORS OCCUR AT THIS LINE OF CODE
+			// ERRORS OCCUR AT THIS LINE OF CODE
+			// ERRORS OCCUR AT THIS LINE OF CODE
 			int randomChoice = generator.nextInt(count);//pick a random best move
+			// ERRORS OCCUR AT THIS LINE OF CODE
+			// ERRORS OCCUR AT THIS LINE OF CODE
+			// ERRORS OCCUR AT THIS LINE OF CODE
+			// ERRORS OCCUR AT THIS LINE OF CODE
+			
+			
+			
+			
+			
+			
+			
+			
 			//make move
 			movex = tiesx[randomChoice];
 			movey = tiesy[randomChoice];
