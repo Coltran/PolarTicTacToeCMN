@@ -111,6 +111,10 @@ public class NeuralNetAI implements AI {
 //can enter any state to start with, will go to end.
 	//Opposing playing will return multiple different results to any state, this should be factored in automatically after enough tests
 
+//Input is current state, outputs are all possible legal moves?
+
+
+
 //input percept indicating current state s` and reward r`
 //persistent
 	//pi is fixed policy?
@@ -121,9 +125,22 @@ public class NeuralNetAI implements AI {
 //if s is not null then
 	//N[s]++
 	//U[s] = U[s] + alpha*(N[s])*(r + gamma*U[s`] - U[s])
-//if s`.TERMINAL? then s, a, r = null else s, a, r = s`,pi[s`],r`
+//if s`.TERMINAL? then s, a, r = null else s, a, r = s`,pi[s`],r` (end state)
 //return a
 
 //1, 0, -1 are reward options
 //gamma is discount factor set to 1 for now, never more then 1?
 //alpha is learning rate, don't know what to set as
+
+
+//input current board and reward (0?)
+//if U[currentBoard] does not exist then U[currentBoard] = reward
+//if s (previous state) exists then 
+	//N[s]++
+	//U[s] = U[s] + alpha*(N[s])*(r + gamma*U[s`] - U[s])
+//if s' is end state then
+	//s, a, r = null
+//else
+	//s = currentBaord
+	//a = pi[currenBoard]
+	//r = reward
