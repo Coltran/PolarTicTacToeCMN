@@ -36,7 +36,7 @@ public class HeuristicAI implements AI {
 		else{
 			int ply = 2;//number of plys to search
 			int depth = ply*2;//moves to look ahead = ply * 2
-			lookAhead(game.board, player, depth);//call recursive lookahead function
+			lookAhead(game.board, player, depth, game);//call recursive lookahead function
 			//lookahead will set movex and movey to best values
 		}
 		boolean win = game.move(player, movex, movey);//make move
@@ -50,7 +50,7 @@ public class HeuristicAI implements AI {
 	 * @param depth
 	 * @return
 	 */
-	private Integer lookAhead(Board board, Character thisPlayer, int depth) {
+	private Integer lookAhead(Board board, Character thisPlayer, int depth, Game game) {
 		boolean[][] moves = LegalMoves.Moves(board);//all available moves
 		Integer[][] values = new Integer[4][12];//stores heuristic values for each available move
 		for(int i=0; i<4; i++) {
@@ -76,6 +76,9 @@ public class HeuristicAI implements AI {
 							values[i][j] = Heuristic(board, i, j);//call heuristic and save returned value
 						}
 					}
+					else if(game.done) {
+						return 0;
+					}
 					//if we need to look farther ahead
 					else {
 						//determine next player
@@ -84,7 +87,7 @@ public class HeuristicAI implements AI {
 							otherPlayer = 'O';
 						}
 						//recursive function call
-						values[i][j] = lookAhead(candidate, otherPlayer, depth-1);
+						values[i][j] = lookAhead(candidate, otherPlayer, depth-1, game);
 					}
 				}
 				//if we can't move there
