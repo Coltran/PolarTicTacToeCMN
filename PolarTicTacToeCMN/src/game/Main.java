@@ -26,7 +26,7 @@ public class Main
 		 */
 		String[] aiChoices = { "Basic Game Heuristic",
 				"Nearest Neighbor Heuristic",
-				"Temporal Difference Neural Network", "BGHABP", "NNHABP" };
+				"Temporal Difference Neural Network", "HeuristicAIAB", "NearestNeighborAIAB" };
 
 		/*
 		 * Player choose either be either X or O
@@ -120,18 +120,18 @@ public class Main
 						// Implement Alpha-Beta Pruning to heuristic function
 						case 3:
 							game.player1 = 'X';
-							//BGHABP bghabp = new BGHABP('O');
+							//HeuristicAIAB heuristicAIAB = new HeuristicAIAB('O');
 							game.resetGame();
 							game.printState();
-							//playGame(game.player1, bghabp.player, null, bghabp);
+							//playGame(game.player1, heuristicAIAB.player, null, heuristicAIAB);
 							break;
 							
 						case 4:
 							game.player1 = 'X';
-							//NNHABP nnhabp = new NNHABP('O');
+							//NearestNeighborAIAB nearestNeighborAIAB = new NearestNeighborAIAB('O');
 							game.resetGame();
 							game.printState();
-							//playGame(game.player1, nnhabp.player, null, nnhabp);
+							//playGame(game.player1, nearestNeighborAIAB.player, null, nearestNeighborAIAB);
 							break;
 		
 						default:
@@ -260,6 +260,7 @@ public class Main
 					count++;
 					if(game.done) {
 						done = true;
+						System.out.println("AI 1 Wins!");
 					}
 				}
 				//else 
@@ -288,6 +289,7 @@ public class Main
 						if (game.move(player1, p1x, p1y) == true)
 						{
 							done = true;
+							System.out.println("Player 1 Wins!");
 						}
 					}
 					else
@@ -305,6 +307,7 @@ public class Main
 					count++;
 					if(game.done) {
 						done = true;
+						System.out.println("AI 2 Wins!");
 					}
 				}
 				//else 
@@ -328,6 +331,7 @@ public class Main
 						if (game.move(player2, p2x, p2y) == true)
 						{
 							done = true;
+							System.out.println("Player 2 wins!");
 						}
 					}
 					else

@@ -48,7 +48,7 @@ public class NearestNeighborAI implements AI{
 		else{
 			int ply = 2;//number of plys to search
 			int depth = ply*2;//moves to look ahead = ply * 2
-			lookAhead(game.board, player, depth);//call recursive lookahead function
+			lookAhead(game.board, player, depth, game);//call recursive lookahead function
 			//lookahead will set movex and movey to best values
 		}
 		boolean win = game.move(player, movex, movey);//make move
@@ -62,7 +62,7 @@ public class NearestNeighborAI implements AI{
 	 * @param depth
 	 * @return
 	 */
-	private Integer lookAhead(Board board, Character thisPlayer, int depth) {
+	private Integer lookAhead(Board board, Character thisPlayer, int depth, Game game) {
 		boolean[][] moves = LegalMoves.Moves(board);//all available moves
 		Integer[][] values = new Integer[4][12];//stores heuristic values for each available move
 		for(int i=0; i<4; i++) {
@@ -85,6 +85,9 @@ public class NearestNeighborAI implements AI{
 								values[i][j] = -1;
 							}
 						}
+						else if(game.done) {
+							return 0;
+						}
 						//if we need to evaluate the current board
 						else {
 							values[i][j] = predict(board);//call heuristic and save returned value
@@ -98,7 +101,7 @@ public class NearestNeighborAI implements AI{
 							otherPlayer = 'O';
 						}
 						//recursive function call
-						values[i][j] = lookAhead(candidate, otherPlayer, depth-1);
+						values[i][j] = lookAhead(candidate, otherPlayer, depth-1, game);
 					}
 				}
 				//if we can't move there
