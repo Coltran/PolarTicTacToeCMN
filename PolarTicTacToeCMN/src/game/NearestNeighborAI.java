@@ -11,7 +11,7 @@ import java.util.Random;
  */
 public class NearestNeighborAI implements AI{
 	
-	private Character player;//not used currently
+	public Character player;//not used currently
 	private Character opponent;
 	private Board[][] examples;//holds all of our examples to compare against
 	Character result[];//holds the results for all the example games (x,o or d)
@@ -52,7 +52,7 @@ public class NearestNeighborAI implements AI{
 			//lookahead will set movex and movey to best values
 		}
 		boolean win = game.move(player, movex, movey);//make move
-		return win;//return if we wone the game
+		return win;//return if we won the game
 	}
 	/**
 	 * recursively checks ahead and returns best heuristic value
@@ -75,6 +75,8 @@ public class NearestNeighborAI implements AI{
 						if(WinCheck.check(i, j, candidate)==true) {
 							//if we can win
 							if(candidate.theBoard[i][j] == player) {
+								movex = i;
+								movey = j;
 								values[i][j] = 1;
 								return values[i][j];//just return the winning move
 							}
@@ -148,8 +150,8 @@ public class NearestNeighborAI implements AI{
 				}
 			}
 			//break ties randomly
-			int[] tiesx = new int[48];//will hold x coordinate for ties
-			int[] tiesy = new int[48];//will hold y coordinate for ties
+			int[] tiesx = new int[49];//will hold x coordinate for ties
+			int[] tiesy = new int[49];//will hold y coordinate for ties
 			int count = 0;//tracks number of ties
 			for(int i=0; i<4; i++) {
 				for(int j=0; j<12; j++) {
@@ -176,7 +178,7 @@ public class NearestNeighborAI implements AI{
 		//count number of moves made so far
 		for(int x=0; x<4; x++) {
 			for(int y=0; y<12; y++) {
-				if(board.theBoard[x][y] != null) {
+				if(board.theBoard[x][y] != 0) {
 					moveNumber++;//for each move made increment moveNumber
 				}
 			}
@@ -186,7 +188,7 @@ public class NearestNeighborAI implements AI{
 			similarity[example] = 0;//set to 0 initially
 			for(int x=0; x<4; x++) {
 				for(int y=0; y<12; y++) {
-					if(board.theBoard[x][y] == examples[example][moveNumber].theBoard[x][y]) {
+					if(examples[example][moveNumber] != null && board.theBoard[x][y] == examples[example][moveNumber].theBoard[x][y]) {
 						similarity[example]++;//increment similarity for each board position that matches
 					}
 				}
@@ -216,30 +218,30 @@ public class NearestNeighborAI implements AI{
 	private void learn() {
 		//loop once for each desired example
 		for(int i=0; i<numberExamples; i++) {
-			Game trainingGame = new Game('x','o');//make a game
+			Game trainingGame = new Game('X','O');//make a game
 			//Heuristic based AIs to play the game
-			HeuristicAI playerX = new HeuristicAI('x');
-			HeuristicAI playerO = new HeuristicAI('o');
+			HeuristicAI playerX = new HeuristicAI('X');
+			HeuristicAI playerO = new HeuristicAI('O');
 			int turnNumber = 0;//tracks turn for saving intermediate game boards
 			//until game is done
 			while(trainingGame.done == false) {
 				playerX.move(trainingGame);//first player moves
 				examples[i][turnNumber] = Board.clone(trainingGame.board);//save game board
 				turnNumber++;//next turn
-				if(trainingGame.winningPlayer == 'x') {
-					result[i] = 'x';//set result to x win if x wone
+				if(trainingGame.done == true && trainingGame.winningPlayer != null && trainingGame.winningPlayer == 'X') {
+					result[i] = 'x';//set result to x win if x won
 				}
 				//if the game is not done
 				else if(trainingGame.done == false) {
 					playerO.move(trainingGame);//seccond player moves
 					examples[i][turnNumber] = Board.clone(trainingGame.board);//save game board
 					turnNumber++;//next turn
-					if(trainingGame.winningPlayer == 'y') {
-						result[i] = 'y';//set result to x win if x wone
+					if(trainingGame.done == true && trainingGame.winningPlayer!= null && trainingGame.winningPlayer == 'Y') {
+						result[i] = 'y';//set result to x win if x won
 					}
 				}
 				if(trainingGame.done && trainingGame.winningPlayer == null) {
-					result[i] = 'd';//set result to draw if game is over and nobody wone
+					result[i] = 'd';//set result to draw if game is over and nobody won
 				}
 			}
 		}

@@ -16,6 +16,7 @@ public class Game {
 		done = false;
 		winningPlayer = null;
 		moveNumber = 0;
+		resetGame();
 	}
 
 	//move allows a player to make a move
@@ -24,7 +25,7 @@ public class Game {
 		board.theBoard[x][y] = player;
 		moveNumber++;
 		boolean win = WinCheck.check(x,y, board);
-		if(win) {
+		if(win || moveNumber >= 48) {
 			done = true;
 			return true;
 		}
