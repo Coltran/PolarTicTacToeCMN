@@ -120,10 +120,10 @@ public class Main
 						// Implement Alpha-Beta Pruning to heuristic function
 						case 3:
 							game.player1 = 'X';
-							//HeuristicAIAB heuristicAIAB = new HeuristicAIAB('O');
+							HeuristicAIAB heuristicAIAB = new HeuristicAIAB('O');
 							game.resetGame();
 							game.printState();
-							//playGame(game.player1, heuristicAIAB.player, null, heuristicAIAB);
+							playGame(game.player1, heuristicAIAB.player, null, heuristicAIAB);
 							break;
 							
 						case 4:
