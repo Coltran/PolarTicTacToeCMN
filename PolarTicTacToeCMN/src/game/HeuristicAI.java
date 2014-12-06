@@ -53,9 +53,11 @@ public class HeuristicAI implements AI {
 	private Integer lookAhead(Board board, Character thisPlayer, int depth, Game game) {
 		boolean[][] moves = LegalMoves.Moves(board);//all available moves
 		Integer[][] values = new Integer[4][12];//stores heuristic values for each available move
+		int numberLegalMoves = 0;
 		for(int i=0; i<4; i++) {
 			for(int j=0; j<12; j++) {
 				if(moves[i][j]==true) {//if we can move there...
+					numberLegalMoves++;
 					Board candidate = Board.clone(board);//copy the board to pass forward
 					candidate.theBoard[i][j] = thisPlayer;//make move on copy
 					//if we don't need to search any farther
@@ -76,9 +78,6 @@ public class HeuristicAI implements AI {
 							values[i][j] = Heuristic(board, i, j);//call heuristic and save returned value
 						}
 					}
-					else if(game.done) {
-						return 0;
-					}
 					//if we need to look farther ahead
 					else {
 						//determine next player
@@ -95,6 +94,9 @@ public class HeuristicAI implements AI {
 					values[i][j] = null;
 				}
 			}
+		}
+		if(numberLegalMoves == 0) {
+			return 0;
 		}
 		//if us (max player)
 		if(thisPlayer == player) {
@@ -120,22 +122,7 @@ public class HeuristicAI implements AI {
 				}
 			}
 			Random generator = new Random(System.nanoTime());
-			
-			
-			
-			// ERRORS OCCUR AT THIS LINE OF CODE
-			// ERRORS OCCUR AT THIS LINE OF CODE
-			// ERRORS OCCUR AT THIS LINE OF CODE
-			// ERRORS OCCUR AT THIS LINE OF CODE
 			int randomChoice = generator.nextInt(count);//pick a random best move
-			// ERRORS OCCUR AT THIS LINE OF CODE
-			// ERRORS OCCUR AT THIS LINE OF CODE
-			// ERRORS OCCUR AT THIS LINE OF CODE
-			// ERRORS OCCUR AT THIS LINE OF CODE
-			
-			
-			
-			
 			//make move
 			movex = tiesx[randomChoice];
 			movey = tiesy[randomChoice];
@@ -167,25 +154,7 @@ public class HeuristicAI implements AI {
 				}
 			}
 			Random generator = new Random(System.nanoTime());
-			
-			
-			
-			
-			// ERRORS OCCUR AT THIS LINE OF CODE
-			// ERRORS OCCUR AT THIS LINE OF CODE
-			// ERRORS OCCUR AT THIS LINE OF CODE
-			// ERRORS OCCUR AT THIS LINE OF CODE
 			int randomChoice = generator.nextInt(count);//pick a random best move
-			// ERRORS OCCUR AT THIS LINE OF CODE
-			// ERRORS OCCUR AT THIS LINE OF CODE
-			// ERRORS OCCUR AT THIS LINE OF CODE
-			// ERRORS OCCUR AT THIS LINE OF CODE
-			
-			
-			
-			
-			
-			
 			//make move
 			movex = tiesx[randomChoice];
 			movey = tiesy[randomChoice];
