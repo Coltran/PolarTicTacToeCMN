@@ -3,7 +3,7 @@
  */
 package game;
 
-import java.util.Arrays;
+import java.util.*;
 
 /**
  * @author
@@ -16,81 +16,99 @@ public class WinCheck {
 	 * @param x, y, board
 	 * @return result of Unify function
 	 */
-	public static boolean check(int x, int y, Board board) {
-
-		Character[][] win = new Character[7][4];
+	public static boolean check(int x, int y, Board board)
+	{
 		Character player = board.theBoard[x][y];
+		List<Character> winList = new ArrayList<Character>();
 		
 		//all values in of x are player (entire column is player)
 		for (int i = 0; i < 4; i++)
 		{
-			win[0][i] = board.theBoard[i][y];
+			winList.add(board.theBoard[i][y]);
 		}
+		if (unify(winList, player))
+			return true;
 		
+		winList.clear();
 		//all values of x+1,y+1 and x-1,y-1 are player (within bounds)
 		for (int i = x; i >= (x-3); i--)
 		{
 			if (i > y)
-				win[1][x-i] = board.theBoard[x-i][12-(i-y)];
+				winList.add(board.theBoard[x-i][12-(i-y)]);
 			else if ((y-i) > 11)
-				win[1][x-i] = board.theBoard[x-i][(y-i)-12];
+				winList.add(board.theBoard[x-i][(y-i)-12]);
 			else
-				win[1][x-i] = board.theBoard[x-i][y-i];
+				winList.add(board.theBoard[x-i][y-i]);
 		}
-		
+		if (unify(winList, player))
+			return true;
+
+		winList.clear();
 		//all values of x-1,y+1 and x+1,y-1 are player (within bounds)
 		for (int i = x; i >= (x-3); i--)
 		{
 			if ((y+i) > 11)
-				win[2][x-i] = board.theBoard[x-i][(y+i)-12];
+				winList.add(board.theBoard[x-i][(y+i)-12]);
 			else if (y < -i)
-				win[2][x-i] = board.theBoard[x-i][12+(y+i)];
+				winList.add(board.theBoard[x-i][12+(y+i)]);
 			else
-				win[2][x-i] = board.theBoard[x-i][y+i];
+				winList.add(board.theBoard[x-i][y+i]);
 		}
-		
+		if (unify(winList, player))
+			return true;
+
+		winList.clear();
 		//y-3,y-2,y-1 are player
 		for (int i = 0; i < 4; i++)
 		{
 			if (y-i < 0)
-				win[3][i] = board.theBoard[x][12+(y-i)];
+				winList.add(board.theBoard[x][12+(y-i)]);
 			else
-				win[3][i] = board.theBoard[x][y-i];
+				winList.add(board.theBoard[x][y-i]);
 		}
-		
+		if (unify(winList, player))
+			return true;
+
+		winList.clear();
 		//y-2,y-1,y+1 are player
 		for (int i = -1; i < 3; i++)
 		{
 			if (y-i < 0)
-				win[4][i+1] = board.theBoard[x][12+(y-i)];
+				winList.add(board.theBoard[x][12+(y-i)]);
 			else if (y-i > 11)
-				win[4][i+1] = board.theBoard[x][(y-i)-12];
+				winList.add(board.theBoard[x][(y-i)-12]);
 			else
-				win[4][i+1] = board.theBoard[x][y-i];
+				winList.add(board.theBoard[x][y-i]);
 		}
-		
+		if (unify(winList, player))
+			return true;
+
+		winList.clear();
 		//y-1,y+1,y+2 are player
 		for (int i = -2; i < 2; i++)
 		{
 			if (y-i < 0)
-				win[5][i+2] = board.theBoard[x][12+(y-i)];
+				winList.add(board.theBoard[x][12+(y-i)]);
 			else if (y-i > 11)
-				win[5][i+2] = board.theBoard[x][(y-i)-12];
+				winList.add(board.theBoard[x][(y-i)-12]);
 			else
-				win[5][i+2] = board.theBoard[x][y-i];
+				winList.add(board.theBoard[x][y-i]);
 		}
-		
+		if (unify(winList, player))
+			return true;
+
+		winList.clear();
 		//y+1,y+2,y+3 are player
 		for (int i = -3; i < 1; i++)
 		{
 			if (y-i > 11)
-				win[6][i+3] = board.theBoard[x][(y-i)-12];
+				winList.add(board.theBoard[x][(y-i)-12]);
 			else
-				win[6][i+3] = board.theBoard[x][y-i];
+				winList.add(board.theBoard[x][y-i]);
 		}
-		
-		Character[] checkVal = new Character[]{player,player,player,player};
-		return unify(win, checkVal, 0);
+		if (unify(winList, player))
+			return true;
+		return false;
 	}
 	
 	/**
@@ -98,21 +116,26 @@ public class WinCheck {
 	 * @param winCheck, winValue, i
 	 * @return unified
 	 */
-	private static boolean unify(Character[][] winCheck, Character[] winValue, int i)
+	private static boolean unify(List<Character> winList, Character player)
 	{
-		boolean unified = Arrays.equals(winCheck[i],winValue);
-		if (!unified && (i != 6))
+		boolean verbose = true; //main.Verbose;
+		if (verbose)
 		{
-			unified = unify(winCheck, winValue, i+1);
+			for (int i = 0; i < winList.size(); i++)
+			{
+				System.out.format("%c", winList.get(i));
+			}
+			System.out.println();
 		}
-		return unified;
+		if(winList.isEmpty())
+		{
+			return true;
+		}
+		if(winList.get(0) == player)
+		{
+			winList.remove(0);
+			return unify(winList, player);
+		}
+		return false;
 	}
-	
-//	private Character Unify(Character player, Character win)
-//	{
-//		if (player == win)
-//			return null;
-//		else
-//			return player;
-//	}
 }

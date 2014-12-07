@@ -92,6 +92,11 @@ public class NeuralNetAI implements AI {
 		}
 	}
 }
+//last state is last board state
+//the neural net is huge then, every state and every middle state yada yada
+//one hidden layer, but at least 20 nodes in the hidden layer, maybe more
+//train once, not every time we run?
+
 //Some websites
 
 //http://en.literateprograms.org/Perceptron_%28Java%29
