@@ -121,6 +121,7 @@ public class WinCheck {
 		boolean verbose = true; //main.Verbose;
 		if (verbose)
 		{
+			//need to find a value for blank line prints, right now prints nothing which doesn't show what we want
 			for (int i = 0; i < winList.size(); i++)
 			{
 				System.out.format("%c", winList.get(i));
