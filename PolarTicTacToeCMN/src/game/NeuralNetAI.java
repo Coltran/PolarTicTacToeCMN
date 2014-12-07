@@ -190,6 +190,9 @@ public class NeuralNetAI implements AI{
 		
 		//TODO now repeat this process for the output node, summing over the 30 (output weights * corresponding hiddenNode)
 			//devide by 30? and this will give you the value for the input game state, return this value.
+		
+		//Temp return to remove error
+		return 0;
 	}
 	
 	//play lots of games, training neural net on each game. 
