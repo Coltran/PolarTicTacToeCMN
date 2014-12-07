@@ -118,7 +118,7 @@ public class WinCheck {
 	 */
 	private static boolean unify(List<Character> winList, Character player)
 	{
-		boolean verbose = true; //main.Verbose;
+		boolean verbose = false; //main.Verbose;
 		if (verbose)
 		{
 			//need to find a value for blank line prints, right now prints nothing which doesn't show what we want

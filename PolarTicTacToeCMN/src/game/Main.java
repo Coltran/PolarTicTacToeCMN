@@ -127,11 +127,12 @@ public class Main
 							break;
 							
 						case 4:
+							int test1 = Integer.parseInt(JOptionPane.showInputDialog(null, "How many tests should it prepare on?"));
 							game.player1 = 'X';
-							//NearestNeighborAIAB nearestNeighborAIAB = new NearestNeighborAIAB('O');
+							NearestNeighborAIAB nearestNeighborAIAB = new NearestNeighborAIAB('O', test1);
 							game.resetGame();
 							game.printState();
-							//playGame(game.player1, nearestNeighborAIAB.player, null, nearestNeighborAIAB);
+							playGame(game.player1, nearestNeighborAIAB.player, null, nearestNeighborAIAB);
 							break;
 		
 						default:
@@ -169,7 +170,7 @@ public class Main
 						game.printState();
 						playGame(heuristicAI.player, nearestNeighborAI.player, heuristicAI, nearestNeighborAI);
 					}else if(aiOption1 == 0 && aiOption2 == 2){
-						HeuristicAI heuristicAI = new HeuristicAI('X'); //Heuristic AI
+						//HeuristicAI heuristicAI = new HeuristicAI('X'); //Heuristic AI
 						//NeuralNetAI neuralNetAI = new NeuralNetAI('O');
 						game.resetGame();
 						game.printState();

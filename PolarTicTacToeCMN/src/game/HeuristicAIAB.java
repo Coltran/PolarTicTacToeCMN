@@ -49,25 +49,6 @@ public class HeuristicAIAB implements AI {
 	 * @return
 	 */
 	private Integer lookAhead(Board board, Character thisPlayer, int depth, Game game, int alpha, int beta) {
-
-		int n = Heuristic(board, 2, 3);
-		//if max player
-		if(thisPlayer == player) {
-			if(n > alpha) {
-				alpha = n;
-			}
-			if(alpha >= beta) {
-				return n;
-			}
-		}
-		else if(thisPlayer != player) {
-			if(n < beta) {
-				beta = n;
-			}
-			if(beta <= alpha) {
-				return n;
-			}
-		}
 		boolean[][] moves = LegalMoves.Moves(board);//all available moves
 		Integer[][] values = new Integer[4][12];//stores heuristic values for each available move
 		int numberLegalMoves = 0;
@@ -102,9 +83,34 @@ public class HeuristicAIAB implements AI {
 						if(thisPlayer == 'X') {
 							otherPlayer = 'O';
 						}
-
-						//recursive function call
-						values[i][j] = lookAhead(candidate, otherPlayer, depth-1, game, alpha, beta);
+						
+						int n = Heuristic(candidate, i, j);
+						int alpha1 = alpha;
+						int beta1 = beta;
+						//if max player
+						if(thisPlayer != player) {
+							//update alpha if necessary
+							if(n > alpha) {
+								alpha1 = n;
+							}
+							if(alpha1 >= beta) {
+								values[i][j] = n;//prune
+							}
+						}
+						//if min player
+						else if(thisPlayer == player) {
+							//update beta if necessary
+							if(n < beta) {
+								beta1 = n;
+							}
+							if(beta1 <= alpha) {
+								values[i][j] = n;//prune
+							}
+						}
+						if(!((thisPlayer != player && alpha1 >= beta1) || (thisPlayer == player && beta1 <= alpha1))) {
+							//recursive function call
+							values[i][j] = lookAhead(candidate, otherPlayer, depth-1, game, alpha1, beta1);
+						}
 					}
 				}
 				//if we can't move there
