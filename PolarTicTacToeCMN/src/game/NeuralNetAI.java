@@ -18,7 +18,10 @@ public class NeuralNetAI implements AI{
 	private int movey;
 	int[][] hiddenWeights;
 	int[] outputWeights;
-
+	double[] inputNodes;
+	double[] hiddenNodes;
+	double outputNode;
+	
 	/**
 	 * 
 	 */
@@ -31,9 +34,12 @@ public class NeuralNetAI implements AI{
 			opponent = 'O';
 		}
 		//build neural net construct
-		int[][] hiddenWeights = new int[30][50];
+		inputNodes = new double[50];
+		hiddenWeights = new int[30][50];
 			//using 30 hidden nodes and 50 input nodes, we have 50 weights for each of the hidden nodes
-		int[] outputWeights = new int[30]; // we have one weight coming into our ourput node for each hidden node
+		hiddenNodes = new double[30];
+		outputWeights = new int[30]; // we have one weight coming into our ourput node for each hidden node
+		outputNode = 0;
 		learn();
 	}
 	
@@ -183,7 +189,6 @@ public class NeuralNetAI implements AI{
 		//for each board space, 0 represents open, 1 represents we have moved there, -1 represents opponent has moved there
 		//number moves made by y should be negative?
 		int playerMoves=0, oppenentMoves=0;
-		double[] inputNodes = new double[50];
 		for(int i=0; i<48; i++)
 		{
 			if(board.theBoard[i/12][i%12] == null)
@@ -205,8 +210,7 @@ public class NeuralNetAI implements AI{
 		inputNodes[49] = oppenentMoves;
 
 		//TODO for each hidden node, multiply each weight for that node by the value in the corresponding inputNode
-			//sum these 50 results and ?divide by 50? this will give you the value for that hidden node
-		double[] hiddenNodes = new double[30];
+			//sum these 50 results and divide by 50? this will give you the value for that hidden node
 		for (int i=0; i<1500; i++)
 		{
 			int x = i/50;
@@ -220,7 +224,6 @@ public class NeuralNetAI implements AI{
 		
 		//TODO now repeat this process for the output node, summing over the 30 (output weights * corresponding hiddenNode)
 			//divide by 30? and this will give you the value for the input game state, return this value.
-		double outputNode = 0;
 		for (int i=0; i<30; i++)
 		{
 			outputNode += outputWeights[i] * hiddenNodes[i];
@@ -234,33 +237,48 @@ public class NeuralNetAI implements AI{
 	private void learn() {
 		//TODO initialize hiddenWeights and and outputWeights to random number between -3 and 3 excluding 0
 		//loop once for each desired example
-		//hiddenWeights
-		//outputWeights
 		for(int j = 0; j <= 30; j++){
 			for(int k = 0; j <= 50; j++){
-				Random generator = new Random();
-				hiddenWeights[j][k] = generator.nextInt(3 - (-3) + 1) + (-3);
 				while(hiddenWeights[j][k] == 0){
-					Random generator2 = new Random();
-					hiddenWeights[j][k] = generator2.nextInt(3 - (-3) + 1) + (-3);
+					Random generator = new Random();
+					hiddenWeights[j][k] = generator.nextInt(7) + (-3);
 				}
 			}
 		}
 		
 		for(int l = 0; l <= 30; l++){
-			Random generator = new Random();
-			outputWeights[l] = generator.nextInt(3 - (-3) + 1) + (-3); 
 			while(outputWeights[l] == 0){
-				Random generator2 = new Random();
-				outputWeights[l] = generator2.nextInt(3 - (-3) + 1) + (-3);
+				Random generator = new Random();
+				outputWeights[l] = generator.nextInt(7) + (-3);
 			}
 		}
+		
+		int[][] hiddenWeightsPre1 = new int[30][50], hiddenWeightsPre2 = new int[30][50];;
+		int[] outputWeightsPre1 = new int[30], outputWeightsPre2 = new int[30];
+		double[] inputNodesPre1 = new double[50], inputNodesPre2 = new double[50];
+		double[] hiddenNodesPre1 = new double[30], hiddenNodesPre2 = new double[30];
+		double outputNodePre1 = 0, outputNodePre2 = 0;
+		
 		
 		for(int i=0; i<numberExamples; i++) {
 			Game trainingGame = new Game('X','O');//make a game
 			//TODO call the move method repeatedly but with alternating players to have the net play the game. 
 				//Before each move, make a copy of all the weights, after each move make a copy of all the node values (including output).
-				//we only need to save these weights and values going back two moves. 
+				//we only need to save these weights and values going back two moves.
+			
+			//Do a second move with other player, will have to figure that out.
+			hiddenWeightsPre2 = hiddenWeightsPre1;
+			hiddenWeightsPre1 = hiddenWeights;
+			outputWeightsPre2 = outputWeightsPre1;
+			outputWeightsPre1 = outputWeights;
+			move(trainingGame);//Will have to find a way to specify player
+			inputNodesPre2 = inputNodesPre1;
+			inputNodesPre1 = inputNodes;
+			hiddenNodesPre2 = hiddenNodesPre1;
+			hiddenNodesPre1 = hiddenNodes;
+			outputNodePre2 = outputNodePre1;
+			outputNodePre1 = outputNode;
+			
 			//TODO after each move other than the first, update all Weights
 				//to do this, for each node, subtract the most recent value from the previous value (this is the temporal difference part)
 					//for each weight coming into the node, multiply the difference by the inputs contribution and by the learning rate. 
