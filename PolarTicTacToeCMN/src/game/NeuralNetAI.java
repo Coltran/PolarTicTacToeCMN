@@ -60,6 +60,25 @@ public class NeuralNetAI implements AI{
 		boolean win = game.move(player, movex, movey);//make move
 		return win;//return if we won the game
 	}
+	
+	public boolean trainingMove(Game game, Character movePlayer) {
+		movex = 0;//best move in x direction (there should always be a valid move when this is called)
+		movey = 0;//best move in y direction ''
+		if(game.moveNumber == 0) {//just pick a random move if we're going first
+			Random generator = new Random(System.nanoTime());
+			movex = generator.nextInt(4);
+			movey = generator.nextInt(12);
+		}
+		else{
+			int ply = 2;//number of plys to search
+			int depth = ply*2;//moves to look ahead = ply * 2
+			lookAhead(game.board, movePlayer, depth, game);//call recursive lookahead function
+			//lookahead will set movex and movey to best values
+		}
+		boolean win = game.move(movePlayer, movex, movey);//make move
+		return win;//return if we won the game
+	}
+
 	/**
 	 * recursively checks ahead and returns best heuristic value
 	 * sets movex and movey corrosponding to the best move found
@@ -261,17 +280,17 @@ public class NeuralNetAI implements AI{
 		
 		
 		for(int i=0; i<numberExamples; i++) {
+			boolean gameDone = false;
 			Game trainingGame = new Game('X','O');//make a game
 			//TODO call the move method repeatedly but with alternating players to have the net play the game. 
 				//Before each move, make a copy of all the weights, after each move make a copy of all the node values (including output).
 				//we only need to save these weights and values going back two moves.
 			
-			//Do a second move with other player, will have to figure that out.
 			hiddenWeightsPre2 = hiddenWeightsPre1;
 			hiddenWeightsPre1 = hiddenWeights;
 			outputWeightsPre2 = outputWeightsPre1;
 			outputWeightsPre1 = outputWeights;
-			move(trainingGame);//Will have to find a way to specify player
+			trainingMove(trainingGame, 'X');//Will have to find a way to specify player
 			inputNodesPre2 = inputNodesPre1;
 			inputNodesPre1 = inputNodes;
 			hiddenNodesPre2 = hiddenNodesPre1;
@@ -279,18 +298,84 @@ public class NeuralNetAI implements AI{
 			outputNodePre2 = outputNodePre1;
 			outputNodePre1 = outputNode;
 			
-			//TODO after each move other than the first, update all Weights
-				//to do this, for each node, subtract the most recent value from the previous value (this is the temporal difference part)
-					//for each weight coming into the node, multiply the difference by the inputs contribution and by the learning rate. 
-					//the contribution (i'm not sure about this part as it's the gradient stuff) is something like
-					// the most recent input to that weight times the weight, or maybe how this changed from the previous time
-			//I think that's it. the lookahead, etc shouldn't have to be changed
+			while(!gameDone)
+			{
+				//Do a second move with other player, will have to figure that out.
+				hiddenWeightsPre2 = hiddenWeightsPre1;
+				hiddenWeightsPre1 = hiddenWeights;
+				outputWeightsPre2 = outputWeightsPre1;
+				outputWeightsPre1 = outputWeights;
+				trainingMove(trainingGame, 'O');//Will have to find a way to specify player
+				inputNodesPre2 = inputNodesPre1;
+				inputNodesPre1 = inputNodes;
+				hiddenNodesPre2 = hiddenNodesPre1;
+				hiddenNodesPre1 = hiddenNodes;
+				outputNodePre2 = outputNodePre1;
+				outputNodePre1 = outputNode;
+				
+				//TODO after each move other than the first, update all Weights
+					//to do this, for each node, subtract the most recent value from the previous value (this is the temporal difference part)
+						//for each weight coming into the node, multiply the difference by the inputs contribution and by the learning rate. 
+						//the contribution (i'm not sure about this part as it's the gradient stuff) is something like
+						// the most recent input to that weight times the weight, or maybe how this changed from the previous time
+				//I think that's it. the lookahead, etc shouldn't have to be changed
+				
+				//Other way around, subtract the previous value from the most recent value
+				//Need to not do this after first move somehow
+				int gamma = 1; //discount factor, can probably just be kept at 1
+				int reward = 0; //current reward, in book but not sure if we need
+				int alpha = 1; //learning rate, not sure what we want here
+				int contrib = 1; //input contribution, I thought this was just an integer then incremented every time a state was hit?
+				for(int j = 0; j<1500; j++)
+				{
+					int x = j/50;
+					int y = j%50;
+					hiddenWeights[x][y] = hiddenWeightsPre1[x][y] + (alpha * contrib * (reward + (gamma*hiddenWeights[x][y]) - hiddenWeightsPre1[x][y]));
+				}
+				for(int j = 0; j<30; j++)
+				{
+					outputWeights[j] = outputWeightsPre1[j] + (alpha * contrib * (reward + (gamma*outputWeights[j]) - outputWeightsPre1[j]));
+				}
+				
+				//Do a second move with other player, will have to figure that out.
+				hiddenWeightsPre2 = hiddenWeightsPre1;
+				hiddenWeightsPre1 = hiddenWeights;
+				outputWeightsPre2 = outputWeightsPre1;
+				outputWeightsPre1 = outputWeights;
+				trainingMove(trainingGame, 'X');//Will have to find a way to specify player
+				inputNodesPre2 = inputNodesPre1;
+				inputNodesPre1 = inputNodes;
+				hiddenNodesPre2 = hiddenNodesPre1;
+				hiddenNodesPre1 = hiddenNodes;
+				outputNodePre2 = outputNodePre1;
+				outputNodePre1 = outputNode;
+				
+				for(int j = 0; j<1500; j++)
+				{
+					int x = j/50;
+					int y = j%50;
+					hiddenWeights[x][y] = hiddenWeightsPre1[x][y] + (alpha * contrib * (reward + (gamma*hiddenWeights[x][y]) - hiddenWeightsPre1[x][y]));
+				}
+				for(int j = 0; j<30; j++)
+				{
+					outputWeights[j] = outputWeightsPre1[j] + (alpha * contrib * (reward + (gamma*outputWeights[j]) - outputWeightsPre1[j]));
+				}
+			}
 		}
 	}
 
 }
 
-
+//if U[currentBoard] does not exist then U[currentBoard] = reward
+//if s (previous state) exists then 
+	//N[s]++
+	//U[s] = U[s] + alpha*(N[s])*(r + gamma*U[s`] - U[s])
+//if s' is end state then
+	//s, a, r = null
+//else
+	//s = currentBaord
+	//a = pi[currenBoard]
+	//r = reward
 
 
 
