@@ -16,7 +16,7 @@ public class NeuralNetAI implements AI{
 	int numberExamples;//number of example games to run can be chosen by user
 	private int movex;
 	private int movey;
-	int[] hiddenWeights;
+	int[][] hiddenWeights;
 	int[] outputWeights;
 
 	/**
@@ -179,22 +179,55 @@ public class NeuralNetAI implements AI{
 	
 	//returns an evaluation of current state using neural net.
 	public int evaluate(Board board) {
-		int[] inputNodes = new int[50];
-		
-		//TODO iniitalize first 48 input nods to values of board locations, last 2 to number moves made by x and by y
-			//for each board space, 0 represents open, 1 represents we have moved there, -1 represents opponent has moved there
-			//number moves made by y should be negative?
-		
-		int[] hiddenNodes = new int[30];
-		//TODO for each hidden node,{ multiply each weight for that node by the value in the corresponding inputNode
+		//TODO initialize first 48 input nods to values of board locations, last 2 to number moves made by x and by y
+		//for each board space, 0 represents open, 1 represents we have moved there, -1 represents opponent has moved there
+		//number moves made by y should be negative?
+		int playerMoves=0, oppenentMoves=0;
+		double[] inputNodes = new double[50];
+		for(int i=0; i<48; i++)
+		{
+			if(board.theBoard[i/12][i%12] == null)
+			{
+				inputNodes[i] = 0;
+			}
+			else if(board.theBoard[i/12][i%12] == player)
+			{
+				inputNodes[i] = 1;
+				playerMoves++;
+			}
+			else
+			{
+				inputNodes[i] = -1;
+				oppenentMoves++;
+			}
+		}
+		inputNodes[48] = playerMoves;
+		inputNodes[49] = oppenentMoves;
+
+		//TODO for each hidden node, multiply each weight for that node by the value in the corresponding inputNode
 			//sum these 50 results and ?divide by 50? this will give you the value for that hidden node
-		//Not sure where weights are coming from
+		double[] hiddenNodes = new double[30];
+		for (int i=0; i<1500; i++)
+		{
+			int x = i/50;
+			int y = i%50;
+			hiddenNodes[x] += hiddenWeights[x][y] * inputNodes[y];
+			if(y == 49)
+			{
+				hiddenNodes[x] = hiddenNodes[x]/50.0;
+			}
+		}
 		
 		//TODO now repeat this process for the output node, summing over the 30 (output weights * corresponding hiddenNode)
 			//divide by 30? and this will give you the value for the input game state, return this value.
-		
-		//Temp return to remove error
-		return 0;
+		double outputNode = 0;
+		for (int i=0; i<30; i++)
+		{
+			outputNode += outputWeights[i] * hiddenNodes[i];
+		}
+		outputNode /= 30.0;
+
+		return (int)outputNode;
 	}
 	
 	//play lots of games, training neural net on each game. 
@@ -203,6 +236,26 @@ public class NeuralNetAI implements AI{
 		//loop once for each desired example
 		//hiddenWeights
 		//outputWeights
+		for(int j = 0; j <= 30; j++){
+			for(int k = 0; j <= 50; j++){
+				Random generator = new Random();
+				hiddenWeights[j][k] = generator.nextInt(3 - (-3) + 1) + (-3);
+				while(hiddenWeights[j][k] == 0){
+					Random generator2 = new Random();
+					hiddenWeights[j][k] = generator2.nextInt(3 - (-3) + 1) + (-3);
+				}
+			}
+		}
+		
+		for(int l = 0; l <= 30; l++){
+			Random generator = new Random();
+			outputWeights[l] = generator.nextInt(3 - (-3) + 1) + (-3); 
+			while(outputWeights[l] == 0){
+				Random generator2 = new Random();
+				outputWeights[l] = generator2.nextInt(3 - (-3) + 1) + (-3);
+			}
+		}
+		
 		for(int i=0; i<numberExamples; i++) {
 			Game trainingGame = new Game('X','O');//make a game
 			//TODO call the move method repeatedly but with alternating players to have the net play the game. 
