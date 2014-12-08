@@ -16,8 +16,8 @@ public class NeuralNetAI implements AI{
 	int numberExamples;//number of example games to run can be chosen by user
 	private int movex;
 	private int movey;
-	int[][] hiddenWeights;
-	int[] outputWeights;
+	double[][] hiddenWeights;
+	double[] outputWeights;
 	double[] inputNodes;
 	double[] hiddenNodes;
 	double outputNode;
@@ -35,10 +35,10 @@ public class NeuralNetAI implements AI{
 		}
 		//build neural net construct
 		inputNodes = new double[50];
-		hiddenWeights = new int[30][50];
+		hiddenWeights = new double[30][50];
 			//using 30 hidden nodes and 50 input nodes, we have 50 weights for each of the hidden nodes
 		hiddenNodes = new double[30];
-		outputWeights = new int[30]; // we have one weight coming into our ourput node for each hidden node
+		outputWeights = new double[30]; // we have one weight coming into our ourput node for each hidden node
 		outputNode = 0;
 		learn();
 	}
@@ -87,9 +87,9 @@ public class NeuralNetAI implements AI{
 	 * @param depth
 	 * @return
 	 */
-	private Integer lookAhead(Board board, Character thisPlayer, int depth, Game game) {
+	private Double lookAhead(Board board, Character thisPlayer, int depth, Game game) {
 		boolean[][] moves = LegalMoves.Moves(board);//all available moves
-		Integer[][] values = new Integer[4][12];//stores heuristic values for each available move
+		Double[][] values = new Double[4][12];//stores heuristic values for each available move
 		int numberLegalMoves = 0;
 		for(int i=0; i<4; i++) {
 			for(int j=0; j<12; j++) {
@@ -104,12 +104,12 @@ public class NeuralNetAI implements AI{
 							if(candidate.theBoard[i][j] == player) {
 								movex = i;
 								movey = j;
-								values[i][j] = 1;
+								values[i][j] = 1.0;
 								return values[i][j];//just return the winning move
 							}
 							//if our opponent won
 							else {
-								values[i][j] = -1;
+								values[i][j] = -1.0;
 							}
 						}
 						//if we need to evaluate the current board
@@ -135,11 +135,11 @@ public class NeuralNetAI implements AI{
 			}
 		}
 		if(numberLegalMoves == 0) {
-			return 0;
+			return 0.0;
 		}
 		//if us (max player)
 		if(thisPlayer == player) {
-			int maxvalue = -999999999;//maximum heuristic value of returned move
+			Double maxvalue = -999999999.0;//maximum heuristic value of returned move
 			for(int i=0; i<4; i++) {
 				for(int j=0; j<12; j++) {
 					if(values[i][j] != null && values[i][j] > maxvalue) {
@@ -169,7 +169,7 @@ public class NeuralNetAI implements AI{
 		}
 		//otherwise it's our opponent (min player)
 		else {
-			int minvalue = 999999999;//minimum heuristic value of returned move
+			Double minvalue = 999999999.0;//minimum heuristic value of returned move
 			for(int i=0; i<4; i++) {
 				for(int j=0; j<12; j++) {
 					if(values[i][j] != null && values[i][j] < minvalue) {
@@ -203,7 +203,7 @@ public class NeuralNetAI implements AI{
 	}
 	
 	//returns an evaluation of current state using neural net.
-	public int evaluate(Board board) {
+	public Double evaluate(Board board) {
 		//TODO initialize first 48 input nods to values of board locations, last 2 to number moves made by x and by y
 		//for each board space, 0 represents open, 1 represents we have moved there, -1 represents opponent has moved there
 		//number moves made by y should be negative?
@@ -249,7 +249,7 @@ public class NeuralNetAI implements AI{
 		}
 		outputNode /= 30.0;
 
-		return (int)outputNode;
+		return outputNode;
 	}
 	
 	//play lots of games, training neural net on each game. 
@@ -272,8 +272,8 @@ public class NeuralNetAI implements AI{
 			}
 		}
 		
-		int[][] hiddenWeightsPre1 = new int[30][50], hiddenWeightsPre2 = new int[30][50];;
-		int[] outputWeightsPre1 = new int[30], outputWeightsPre2 = new int[30];
+		double[][] hiddenWeightsPre1 = new double[30][50], hiddenWeightsPre2 = new double[30][50];;
+		double[] outputWeightsPre1 = new double[30], outputWeightsPre2 = new double[30];
 		double[] inputNodesPre1 = new double[50], inputNodesPre2 = new double[50];
 		double[] hiddenNodesPre1 = new double[30], hiddenNodesPre2 = new double[30];
 		double outputNodePre1 = 0, outputNodePre2 = 0;
@@ -321,7 +321,7 @@ public class NeuralNetAI implements AI{
 				
 				//Other way around, subtract the previous value from the most recent value
 				//Need to not do this after first move somehow
-				int gamma = 1; //discount factor, can probably just be kept at 1
+				double gamma = 1.0; //discount factor, can probably just be kept at 1
 				int reward = 0; //current reward, in book but not sure if we need
 				int alpha = 1; //learning rate, not sure what we want here
 				int contrib = 1; //input contribution, I thought this was just an integer then incremented every time a state was hit?
