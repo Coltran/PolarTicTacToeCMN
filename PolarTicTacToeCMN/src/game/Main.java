@@ -113,10 +113,10 @@ public class Main
 							int test1 = Integer.parseInt(JOptionPane.showInputDialog(null, "How many tests should it prepare on?"));
 							
 							game.player1 = 'X';
-							//NeuralNetAI neuralNetAI = new NeuralNetAI('O', test1);
+							NeuralNetAI neuralNetAI = new NeuralNetAI('O', test1);
 							game.resetGame();
 							game.printState();
-							//playGame(game.player1, neuralNetAI.player, null, neuralNetAI);
+							playGame(game.player1, neuralNetAI.player, null, neuralNetAI);
 							break;
 		
 						// Implement Alpha-Beta Pruning to heuristic function
@@ -172,11 +172,13 @@ public class Main
 						game.printState();
 						playGame(heuristicAI.player, nearestNeighborAI.player, heuristicAI, nearestNeighborAI);
 					}else if(aiOption1 == 0 && aiOption2 == 2){
-						//HeuristicAI heuristicAI = new HeuristicAI('X'); //Heuristic AI
-						//NeuralNetAI neuralNetAI = new NeuralNetAI('O');
+						int test = Integer.parseInt(JOptionPane.showInputDialog(null, "How many tests should it prepare on?"));
+						
+						HeuristicAI heuristicAI = new HeuristicAI('X'); //Heuristic AI
+						NeuralNetAI neuralNetAI = new NeuralNetAI('O', test);
 						game.resetGame();
 						game.printState();
-						//playGame(heuristicAI.player, neuralNetAI.player, heuristicAI, neuralNetAI);
+						playGame(heuristicAI.player, neuralNetAI.player, heuristicAI, neuralNetAI);
 					}else if(aiOption1 == 0 && aiOption2 == 3){
 						HeuristicAI heuristicAI = new HeuristicAI('X');
 						HeuristicAIAB heurAB = new HeuristicAIAB('O');
@@ -210,12 +212,13 @@ public class Main
 						playGame(nearestNeighborAI1.player, nearestNeighborAI2.player, nearestNeighborAI1, nearestNeighborAI2);
 					}else if(aiOption1 == 1 && aiOption2 == 2){
 						int test = Integer.parseInt(JOptionPane.showInputDialog(null, "How many tests should AI 1 prepare on?"));
+						int test2 = Integer.parseInt(JOptionPane.showInputDialog(null, "How many tests should AI 2 prepare on?"));
 
 						NearestNeighborAI nearestNeighborAI = new NearestNeighborAI('X', test);
-						//NeuralNetAI neuralNetAI = new NeuralNetAI('O');
+						NeuralNetAI neuralNetAI = new NeuralNetAI('O', test2);
 						game.resetGame();
 						game.printState();
-						//playGame(nearestNeighborAI.player, neuralNetAI.player, nearestNeighborAI, neuralNetAI);
+						playGame(nearestNeighborAI.player, neuralNetAI.player, nearestNeighborAI, neuralNetAI);
 					}else if(aiOption1 == 1 && aiOption2 == 3){
 						int test = Integer.parseInt(JOptionPane.showInputDialog(null, "How many tests should AI 1 prepare on?"));
 						
@@ -234,40 +237,47 @@ public class Main
 						game.printState();
 						playGame(nearestNeighborAI.player, NNAB.player, nearestNeighborAI, NNAB);
 					}else if(aiOption1 == 2 && aiOption2 == 0){
-						//NeuralNetAI neuralNetAI = new NeuralNetAI('X');
+						int test = Integer.parseInt(JOptionPane.showInputDialog(null, "How many tests should AI 1 prepare on?"));
+						
+						NeuralNetAI neuralNetAI = new NeuralNetAI('X', test);
 						HeuristicAI heuristicAI = new HeuristicAI('O'); //Heuristic AI
 						game.resetGame();
 						game.printState();
-						//playGame(neuralNetAI.player, heuristicAI.player, neuralNetAI, heuristicAI);
+						playGame(neuralNetAI.player, heuristicAI.player, neuralNetAI, heuristicAI);
 					}else if(aiOption1 == 2 && aiOption2 == 1){
-						int test = Integer.parseInt(JOptionPane.showInputDialog(null, "How many tests should AI 2 prepare on?"));
+						int test = Integer.parseInt(JOptionPane.showInputDialog(null, "How many tests should AI 1 prepare on?"));
+						int test2 = Integer.parseInt(JOptionPane.showInputDialog(null, "How many tests should AI 2 prepare on?"));
 
-						//NeuralNetAI neuralNetAI = new NeuralNetAI('X');
-						NearestNeighborAI nearestNeighborAI = new NearestNeighborAI('O', test);
+						NeuralNetAI neuralNetAI = new NeuralNetAI('X', test);
+						NearestNeighborAI nearestNeighborAI = new NearestNeighborAI('O', test2);
 						game.resetGame();
 						game.printState();
-						//playGame(neuralNetAI.player, nearestNeighborAI.player, neuralNetAI, nearestNeighborAI);
+						playGame(neuralNetAI.player, nearestNeighborAI.player, neuralNetAI, nearestNeighborAI);
 					}else if(aiOption1 == 2 && aiOption2 == 2){
-						//NeuralNetAI neuralNetAI1 = new NeuralNetAI('X');
-						//NeuralNetAI neuralNetAI2 = new NeuralNetAI('O');
+						int test = Integer.parseInt(JOptionPane.showInputDialog(null, "How many tests should AI 1 prepare on?"));
+						int test2 = Integer.parseInt(JOptionPane.showInputDialog(null, "How many tests should AI 2 prepare on?"));
+						
+						NeuralNetAI neuralNetAI1 = new NeuralNetAI('X', test);
+						NeuralNetAI neuralNetAI2 = new NeuralNetAI('O', test2);
 						game.resetGame();
 						game.printState();
-						//playGame(neuralNetAI1.player, neuralNetAI2.player, neuralNetAI1, neuralNetAI2);
+						playGame(neuralNetAI1.player, neuralNetAI2.player, neuralNetAI1, neuralNetAI2);
 					}else if(aiOption1 == 2 && aiOption2 == 3){
-						//NeuralNetAI neuralNetAI1 = new NeuralNetAI('X');
+						int test = Integer.parseInt(JOptionPane.showInputDialog(null, "How many tests should AI 1 prepare on?"));
+						
+						NeuralNetAI neuralNetAI1 = new NeuralNetAI('X', test);
 						HeuristicAIAB heurAB = new HeuristicAIAB('O');
 						game.resetGame();
 						game.printState();
-						//playGame(neuralNetAI.player, heurAB.player, neuralNetAI, heurAB);
+						playGame(neuralNetAI1.player, heurAB.player, neuralNetAI1, heurAB);
 					}else if(aiOption1 == 2 && aiOption2 == 4){
 						int test = Integer.parseInt(JOptionPane.showInputDialog(null, "How many tests should AI 2 prepare on?"));
 						
-						//NeuralNetAI neuralNetAI = new NeuralNetAI('X');
-						NearestNeighborAI nearestNeighborAI = new NearestNeighborAI('X', test);
+						NeuralNetAI neuralNetAI = new NeuralNetAI('X', test);
 						NearestNeighborAIAB NNAB = new NearestNeighborAIAB('O', test);
 						game.resetGame();
 						game.printState();
-						//playGame(neuralNetAI.player, NNAB.player, neuralNetAI, NNAB);
+						playGame(neuralNetAI.player, NNAB.player, neuralNetAI, NNAB);
 					}else if(aiOption1 == 3 && aiOption2 == 0){
 						HeuristicAIAB heurAB = new HeuristicAIAB('X');
 						HeuristicAI heuristicAI = new HeuristicAI('O');
@@ -283,11 +293,13 @@ public class Main
 						game.printState();
 						playGame(heurAB.player, nearestNeighborAI.player, heurAB, nearestNeighborAI);
 					}else if(aiOption1 == 3 && aiOption2 == 2){
+						int test = Integer.parseInt(JOptionPane.showInputDialog(null, "How many tests should AI 2 prepare on?"));
+						
 						HeuristicAIAB heurAB = new HeuristicAIAB('X');
-						//NeuralNetAI neuralNetAI = new NeuralNetAI('O');
+						NeuralNetAI neuralNetAI = new NeuralNetAI('O', test);
 						game.resetGame();
 						game.printState();
-						//playGame(heurAB.player, neuralNetAI.player, heurAB, neuralNetAI);
+						playGame(heurAB.player, neuralNetAI.player, heurAB, neuralNetAI);
 					}else if(aiOption1 == 3 && aiOption2 == 3){
 						HeuristicAIAB heurAB1 = new HeuristicAIAB('X');
 						HeuristicAIAB heurAB2 = new HeuristicAIAB('O');
@@ -321,12 +333,13 @@ public class Main
 						playGame(NNAB.player, nearestNeighborAI.player, NNAB, nearestNeighborAI);
 					}else if(aiOption1 == 4 && aiOption2 == 2){
 						int test = Integer.parseInt(JOptionPane.showInputDialog(null, "How many tests should AI 1 prepare on?"));
+						int test2 = Integer.parseInt(JOptionPane.showInputDialog(null, "How many tests should AI 2 prepare on?"));
 						
 						NearestNeighborAIAB NNAB = new NearestNeighborAIAB('X', test);
-						//NeuralNetAI neuralNetAI = new NeuralNetAI('O');
+						NeuralNetAI neuralNetAI = new NeuralNetAI('O', test2);
 						game.resetGame();
 						game.printState();
-						//playGame(NNAB.player, neuralNetAI.player, NNAB, neuralNetAI);
+						playGame(NNAB.player, neuralNetAI.player, NNAB, neuralNetAI);
 					}else if(aiOption1 == 4 && aiOption2 == 3){
 						int test = Integer.parseInt(JOptionPane.showInputDialog(null, "How many tests should AI 1 prepare on?"));
 						
