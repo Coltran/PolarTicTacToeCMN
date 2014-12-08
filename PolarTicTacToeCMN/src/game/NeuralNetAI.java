@@ -180,16 +180,18 @@ public class NeuralNetAI implements AI{
 	//returns an evaluation of current state using neural net.
 	public int evaluate(Board board) {
 		int[] inputNodes = new int[50];
+		
 		//TODO iniitalize first 48 input nods to values of board locations, last 2 to number moves made by x and by y
 			//for each board space, 0 represents open, 1 represents we have moved there, -1 represents opponent has moved there
 			//number moves made by y should be negative?
 		
 		int[] hiddenNodes = new int[30];
 		//TODO for each hidden node,{ multiply each weight for that node by the value in the corresponding inputNode
-			//sum these 50 results and ?devide by 50? this will give you the value for that hidden node
+			//sum these 50 results and ?divide by 50? this will give you the value for that hidden node
+		//Not sure where weights are coming from
 		
 		//TODO now repeat this process for the output node, summing over the 30 (output weights * corresponding hiddenNode)
-			//devide by 30? and this will give you the value for the input game state, return this value.
+			//divide by 30? and this will give you the value for the input game state, return this value.
 		
 		//Temp return to remove error
 		return 0;
@@ -199,6 +201,8 @@ public class NeuralNetAI implements AI{
 	private void learn() {
 		//TODO initialize hiddenWeights and and outputWeights to random number between -3 and 3 excluding 0
 		//loop once for each desired example
+		//hiddenWeights
+		//outputWeights
 		for(int i=0; i<numberExamples; i++) {
 			Game trainingGame = new Game('X','O');//make a game
 			//TODO call the move method repeatedly but with alternating players to have the net play the game. 
