@@ -32,7 +32,7 @@ public class HeuristicAIAB implements AI {
 			movey = generator.nextInt(12);
 		}
 		else{
-			int ply = 3;//number of plys to search
+			int ply = 2;//number of plys to search
 			int depth = ply*2;//moves to look ahead = ply * 2
 			lookAhead(game.board, player, depth, game, -999999999, 999999999);//call recursive lookahead function
 			//lookahead will set movex and movey to best values
