@@ -207,12 +207,20 @@ public class NeuralNetAI implements AI{
 			for(int k = 0; j <= 50; j++){
 				Random generator = new Random();
 				hiddenWeights[j][k] = generator.nextInt(3 - (-3) + 1) + (-3);
+				while(hiddenWeights[j][k] == 0){
+					Random generator2 = new Random();
+					hiddenWeights[j][k] = generator2.nextInt(3 - (-3) + 1) + (-3);
+				}
 			}
 		}
 		
 		for(int l = 0; l <= 30; l++){
 			Random generator = new Random();
 			outputWeights[l] = generator.nextInt(3 - (-3) + 1) + (-3); 
+			while(outputWeights[l] == 0){
+				Random generator2 = new Random();
+				outputWeights[l] = generator2.nextInt(3 - (-3) + 1) + (-3);
+			}
 		}
 		
 		for(int i=0; i<numberExamples; i++) {
