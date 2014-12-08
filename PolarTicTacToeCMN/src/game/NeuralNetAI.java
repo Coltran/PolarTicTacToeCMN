@@ -256,8 +256,8 @@ public class NeuralNetAI implements AI{
 	private void learn() {
 		//TODO initialize hiddenWeights and and outputWeights to random number between -3 and 3 excluding 0
 		//loop once for each desired example
-		for(int j = 0; j <= 30; j++){
-			for(int k = 0; j <= 50; j++){
+		for(int j = 0; j < 30; j++){
+			for(int k = 0; k < 50; k++){
 				while(hiddenWeights[j][k] == 0){
 					Random generator = new Random();
 					hiddenWeights[j][k] = generator.nextInt(7) + (-3);
@@ -265,7 +265,7 @@ public class NeuralNetAI implements AI{
 			}
 		}
 		
-		for(int l = 0; l <= 30; l++){
+		for(int l = 0; l < 30; l++){
 			while(outputWeights[l] == 0){
 				Random generator = new Random();
 				outputWeights[l] = generator.nextInt(7) + (-3);
@@ -278,14 +278,17 @@ public class NeuralNetAI implements AI{
 		double[] hiddenNodesPre1 = new double[30], hiddenNodesPre2 = new double[30];
 		double outputNodePre1 = 0, outputNodePre2 = 0;
 		
+		System.out.println("In learn, pre for");
 		
 		for(int i=0; i<numberExamples; i++) {
+			System.out.println("In for");
 			boolean gameDone = false;
 			Game trainingGame = new Game('X','O');//make a game
 			//TODO call the move method repeatedly but with alternating players to have the net play the game. 
 				//Before each move, make a copy of all the weights, after each move make a copy of all the node values (including output).
 				//we only need to save these weights and values going back two moves.
 			
+			System.out.println("made training game");
 			hiddenWeightsPre2 = hiddenWeightsPre1;
 			hiddenWeightsPre1 = hiddenWeights;
 			outputWeightsPre2 = outputWeightsPre1;
@@ -349,7 +352,7 @@ public class NeuralNetAI implements AI{
 				hiddenNodesPre1 = hiddenNodes;
 				outputNodePre2 = outputNodePre1;
 				outputNodePre1 = outputNode;
-				
+
 				for(int j = 0; j<1500; j++)
 				{
 					int x = j/50;
