@@ -16,7 +16,7 @@ public class NeuralNetAI implements AI{
 	int numberExamples;//number of example games to run can be chosen by user
 	private int movex;
 	private int movey;
-	int[] hiddenWeights;
+	int[][] hiddenWeights;
 	int[] outputWeights;
 
 	/**
@@ -203,6 +203,18 @@ public class NeuralNetAI implements AI{
 		//loop once for each desired example
 		//hiddenWeights
 		//outputWeights
+		for(int j = 0; j <= 30; j++){
+			for(int k = 0; j <= 50; j++){
+				Random generator = new Random();
+				hiddenWeights[j][k] = generator.nextInt(3 - (-3) + 1) + (-3);
+			}
+		}
+		
+		for(int l = 0; l <= 30; l++){
+			Random generator = new Random();
+			outputWeights[l] = generator.nextInt(3 - (-3) + 1) + (-3); 
+		}
+		
 		for(int i=0; i<numberExamples; i++) {
 			Game trainingGame = new Game('X','O');//make a game
 			//TODO call the move method repeatedly but with alternating players to have the net play the game. 
