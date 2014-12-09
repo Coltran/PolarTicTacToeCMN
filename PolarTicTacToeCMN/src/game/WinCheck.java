@@ -118,12 +118,17 @@ public class WinCheck {
 	 */
 	private static boolean unify(List<Character> winList, Character player)
 	{
-		boolean verbose = false; //main.Verbose;
-		if (verbose)
+		System.out.println("");
+		
+		if (Main.winVerbose)
 		{
 			//need to find a value for blank line prints, right now prints nothing which doesn't show what we want
 			for (int i = 0; i < winList.size(); i++)
 			{
+				if (winList.get(i) == 0)
+				{
+					System.out.format("%c", '/');
+				}
 				System.out.format("%c", winList.get(i));
 			}
 			System.out.println();

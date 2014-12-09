@@ -23,6 +23,7 @@ public class NeuralNetAI implements AI{
 	double outputNode;
 	int[][] hiddenFreq;
 	int[] outputFreq;
+	boolean training;
 	
 	/**
 	 * 
@@ -32,6 +33,7 @@ public class NeuralNetAI implements AI{
 		player = playerChoice;
 		numberExamples = inNumberExamples;
 		opponent = 'X';
+		training = false;
 		if(playerChoice == 'X') {
 			opponent = 'O';
 		}
@@ -76,8 +78,10 @@ public class NeuralNetAI implements AI{
 		else{
 			int ply = 2;//number of plys to search
 			int depth = ply*2;//moves to look ahead = ply * 2
+			training = true;
 			lookAhead(game.board, movePlayer, depth, game);//call recursive lookahead function
 			//lookahead will set movex and movey to best values
+			training = false;
 		}
 		boolean win = game.move(movePlayer, movex, movey);//make move
 		return win;//return if we won the game
@@ -146,6 +150,9 @@ public class NeuralNetAI implements AI{
 			Double maxvalue = -500000000000000000000000000000000000000000.0;//-99999999999999.0;//maximum heuristic value of returned move
 			for(int i=0; i<4; i++) {
 				for(int j=0; j<12; j++) {
+					if(Main.neuralVerbose && !training) {
+						System.out.format("depth = %d x = %d y = %d Value = %f\n", depth, i, j, values[i][j]);
+					}
 					if(values[i][j] != null && values[i][j] > maxvalue) {
 						maxvalue = values[i][j];
 					}
@@ -176,6 +183,9 @@ public class NeuralNetAI implements AI{
 			Double minvalue = 500000000000000000000000000000000000000000.0;//99999999999999.0;//minimum heuristic value of returned move
 			for(int i=0; i<4; i++) {
 				for(int j=0; j<12; j++) {
+					if(Main.neuralVerbose && !training) {
+						System.out.format("depth = %d x = %d y = %d Value = %f\n", depth, i, j, values[i][j]);
+					}
 					if(values[i][j] != null && values[i][j] < minvalue) {
 						minvalue = values[i][j];
 						movex = i;
@@ -191,7 +201,7 @@ public class NeuralNetAI implements AI{
 				for(int j=0; j<12; j++) {
 					if(values[i][j] != null && values[i][j] == minvalue) {//if we found one of the best moves
 						tiesx[count] = i;//add x value to list
-						tiesy[count] = j;//add coorosponding y value to list
+						tiesy[count] = j;//add corresponding y value to list
 						count++;//increment count
 					}
 				}
