@@ -112,6 +112,9 @@ public class HeuristicAI implements AI {
 			int maxvalue = -999999999;//maximum heuristic value of returned move
 			for(int i=0; i<4; i++) {
 				for(int j=0; j<12; j++) {
+					if(Main.heuristicVerbose) {
+						System.out.format("depth = %d x = %d y = %d Value = %d\n", depth, i, j, values[i][j]);
+					}
 					if(values[i][j] != null && values[i][j] > maxvalue) {
 						maxvalue = values[i][j];
 					}
@@ -142,6 +145,9 @@ public class HeuristicAI implements AI {
 			int minvalue = 999999999;//minimum heuristic value of returned move
 			for(int i=0; i<4; i++) {
 				for(int j=0; j<12; j++) {
+					if(Main.heuristicVerbose) {
+						System.out.format("depth = %d x = %d y = %d Value = %d\n", depth, i, j, values[i][j]);
+					}
 					if(values[i][j] != null && values[i][j] < minvalue) {
 						minvalue = values[i][j];
 						movex = i;
