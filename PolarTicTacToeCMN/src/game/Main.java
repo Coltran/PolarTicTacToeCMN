@@ -6,7 +6,11 @@ public class Main {
 	static Character player1 = null;
 	static Character player2 = null;
 	static Game game = new Game(player1, player2);
-	static boolean verbose = false;
+	static boolean heuristicVerbose = false;
+	static boolean nearestVerbose = false;
+	static boolean neuralVerbose = false;
+	static boolean abVerbose = false;
+	static boolean winVerbose = false;
 
 	public static void main(String[] args) {
 		boolean done = false; // Boolean for while loop below
@@ -34,6 +38,20 @@ public class Main {
 
 		String[] playerVariable = { "X", "O" };
 
+		if(winVerbose)
+		{
+			System.out.println("Selects sets of 4 values from the board, using rules:");
+			System.out.println("  -  All values of x, y unchaged (entire column)");
+			System.out.println("  -  All values of x+1,y+1 and x-1,y-1 within bounds (diagonal from lower left)");
+			System.out.println("  -  All values of x-1,y+1 and x+1,y-1 within bounds (diagonal from lower right)");
+			System.out.println("  -  y-3,y-2,y-1,y, x unchanged (row)");
+			System.out.println("  -  y-2,y-1,y,y+1, x unchanged (row)");
+			System.out.println("  -  y-1,y,y+1,y+2, x unchanged (row)");
+			System.out.println("  -  y,y+1,y+2,y+3, x unchanged (row)");
+			System.out.println("Use resolution with unification to check the resulting V, V, V, V (where V is X, O, or null)");
+			System.out.println("  against P, P, P, P (where P is player and is X or O)");
+		}
+		
 		while (!done) {
 			int choice = JOptionPane.showOptionDialog(null, "Options",
 					"Pick an Option", JOptionPane.YES_NO_CANCEL_OPTION,

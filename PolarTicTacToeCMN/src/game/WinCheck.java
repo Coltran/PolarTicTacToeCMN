@@ -21,7 +21,7 @@ public class WinCheck {
 		Character player = board.theBoard[x][y];
 		List<Character> winList = new ArrayList<Character>();
 		
-		//all values in of x are player (entire column is player)
+		//all values of x are player (entire column is player)
 		for (int i = 0; i < 4; i++)
 		{
 			winList.add(board.theBoard[i][y]);
@@ -118,8 +118,6 @@ public class WinCheck {
 	 */
 	private static boolean unify(List<Character> winList, Character player)
 	{
-		System.out.println("");
-		
 		if (Main.winVerbose)
 		{
 			//need to find a value for blank line prints, right now prints nothing which doesn't show what we want
