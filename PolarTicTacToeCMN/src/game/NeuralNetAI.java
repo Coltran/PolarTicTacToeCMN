@@ -145,7 +145,7 @@ public class NeuralNetAI implements AI{
 			Double maxvalue = -500000000000000000000000000000000000000000.0;//-99999999999999.0;//maximum heuristic value of returned move
 			for(int i=0; i<4; i++) {
 				for(int j=0; j<12; j++) {
-					if(Main.neuralVerbose && !training) {
+					if(Main.neuralVerbose && !training && values[i][j] != null) {
 						System.out.format("depth = %d x = %d y = %d Value = %f\n", depth, i, j, values[i][j]);
 					}
 					if(values[i][j] != null && values[i][j] > maxvalue) {
@@ -178,7 +178,7 @@ public class NeuralNetAI implements AI{
 			Double minvalue = 500000000000000000000000000000000000000000.0;//99999999999999.0;//minimum heuristic value of returned move
 			for(int i=0; i<4; i++) {
 				for(int j=0; j<12; j++) {
-					if(Main.neuralVerbose && !training) {
+					if(Main.neuralVerbose && !training && values[i][j] != null) {
 						System.out.format("depth = %d x = %d y = %d Value = %f\n", depth, i, j, values[i][j]);
 					}
 					if(values[i][j] != null && values[i][j] < minvalue) {

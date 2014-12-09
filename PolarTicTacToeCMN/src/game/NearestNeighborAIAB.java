@@ -111,7 +111,7 @@ public class NearestNeighborAIAB implements AI{
 							}
 							if(alpha1 >= beta) {
 								if(Main.abVerbose) {
-									System.out.format("min node: alpha = %d beta = %d Pruning", alpha, beta);
+									System.out.format("min node: alpha = %d beta = %d Pruning\n", alpha, beta);
 								}
 								values[i][j] = n;//prune
 							}
@@ -124,7 +124,7 @@ public class NearestNeighborAIAB implements AI{
 							}
 							if(beta1 <= alpha) {
 								if(Main.abVerbose) {
-									System.out.format("max node: alpha = %d beta = %d Pruning", alpha, beta);
+									System.out.format("max node: alpha = %d beta = %d Pruning\n", alpha, beta);
 								}
 								values[i][j] = n;//prune
 							}
