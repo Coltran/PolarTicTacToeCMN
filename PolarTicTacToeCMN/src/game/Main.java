@@ -50,6 +50,7 @@ public class Main {
 			System.out.println("  -  y,y+1,y+2,y+3, x unchanged (row)");
 			System.out.println("Use resolution with unification to check the resulting V, V, V, V (where V is X, O, or null)");
 			System.out.println("  against P, P, P, P (where P is player and is X or O)");
+			System.out.println("");
 		}
 		
 		while (!done) {
