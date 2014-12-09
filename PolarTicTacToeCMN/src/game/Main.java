@@ -27,10 +27,10 @@ public class Main {
 		 * Temporal Different Neural Network Heuristic Function Naive
 		 * Bayes/Nearest Neighbor/Decision Tree
 		 */
-		String[] aiChoices = { "Basic Game Heuristic",
+		String[] aiChoices = { "Basic Heuristic",
 				"Nearest Neighbor Heuristic",
-				"Temporal Difference Neural Network", "HeuristicAIAB",
-				"NearestNeighborAIAB", "NeuralNetAIAB" };
+				"TD Neural Net", "HeuristicAB",
+				"NearestNeighborAB", "NeuralNetAB" };
 
 		/*
 		 * Player choose either be either X or O
