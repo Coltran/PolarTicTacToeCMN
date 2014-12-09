@@ -7,6 +7,7 @@ public class Main
 	static Character player1 = null;
 	static Character player2 = null;
 	static Game game = new Game(player1, player2);
+	boolean verbose = false;
 
 	public static void main(String[] args)
 	{
@@ -400,7 +401,12 @@ public class Main
 					count++;
 					if(game.done) {
 						done = true;
-						System.out.println("AI 1 Wins!");
+						if(game.winningPlayer1 != null){
+							System.out.println("AI 1 Wins!");	
+						}
+						else{
+							System.out.println("Cat's game!");
+						}
 					}
 				}
 				//else 
@@ -429,7 +435,12 @@ public class Main
 						if (game.move(player1, p1x, p1y) == true)
 						{
 							done = true;
-							System.out.println("Player 1 Wins!");
+							if(game.winningPlayer1 != null){
+								System.out.println("Player 1 Wins!");	
+							}
+							else{
+								System.out.println("Cat's game!");
+							}
 						}
 					}
 					else
@@ -447,7 +458,12 @@ public class Main
 					count++;
 					if(game.done) {
 						done = true;
-						System.out.println("AI 2 Wins!");
+						if(game.winningPlayer1 != null){
+							System.out.println("AI 2 Wins!");	
+						}
+						else{
+							System.out.println("Cat's game!");
+						}
 					}
 				}
 				//else 
@@ -471,7 +487,12 @@ public class Main
 						if (game.move(player2, p2x, p2y) == true)
 						{
 							done = true;
-							System.out.println("Player 2 wins!");
+							if(game.winningPlayer1 != null){
+								System.out.println("Player 2 Wins!");	
+							}
+							else{
+								System.out.println("Cat's game!");
+							}
 						}
 					}
 					else

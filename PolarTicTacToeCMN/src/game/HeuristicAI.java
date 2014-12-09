@@ -66,11 +66,20 @@ public class HeuristicAI implements AI {
 							//if we can win
 							if(candidate.theBoard[i][j] == player) {
 								values[i][j] = 10000;
-								return values[i][j];//just return the winning move
+								if(depth == 0) {
+									movex = i;
+									movey = j;
+									return values[i][j];//just return the winning move
+								}
 							}
 							//if our opponent won
 							else {
 								values[i][j] = -10000;
+								if(depth == 1) {
+									movex = i;
+									movey = j;
+									return values[i][j];//just return the winning move
+								}
 							}
 						}
 						//if we need to evaluate the current board

@@ -9,7 +9,7 @@ import java.util.Random;
  * @author Coltran
  *
  */
-public class NeuralNetAI implements AI{
+public class NeuralNetAIAB implements AI{
 	
 	public Character player;//not used currently
 	private Character opponent;
@@ -28,7 +28,7 @@ public class NeuralNetAI implements AI{
 	 * 
 	 */
 	//constructor 
-	public NeuralNetAI(Character playerChoice, int inNumberExamples) {
+	public NeuralNetAIAB(Character playerChoice, int inNumberExamples) {
 		player = playerChoice;
 		numberExamples = inNumberExamples;
 		opponent = 'X';
@@ -58,7 +58,7 @@ public class NeuralNetAI implements AI{
 		else{
 			int ply = 2;//number of plys to search
 			int depth = ply*2;//moves to look ahead = ply * 2
-			lookAhead(game.board, player, depth, game);//call recursive lookahead function
+			lookAhead(game.board, player, depth, game, -9999999999999999999.0, 999999999999999999.0);//call recursive lookahead function
 			//lookahead will set movex and movey to best values
 		}
 		boolean win = game.move(player, movex, movey);//make move
@@ -76,7 +76,7 @@ public class NeuralNetAI implements AI{
 		else{
 			int ply = 2;//number of plys to search
 			int depth = ply*2;//moves to look ahead = ply * 2
-			lookAhead(game.board, movePlayer, depth, game);//call recursive lookahead function
+			lookAhead(game.board, movePlayer, depth, game, -9999999999999999999.0, 999999999999999999.0);//call recursive lookahead function
 			//lookahead will set movex and movey to best values
 		}
 		boolean win = game.move(movePlayer, movex, movey);//make move
@@ -91,7 +91,7 @@ public class NeuralNetAI implements AI{
 	 * @param depth
 	 * @return
 	 */
-	private Double lookAhead(Board board, Character thisPlayer, int depth, Game game) {
+	private Double lookAhead(Board board, Character thisPlayer, int depth, Game game, double alpha, double beta) {
 		boolean[][] moves = LegalMoves.Moves(board);//all available moves
 		Double[][] values = new Double[4][12];//stores heuristic values for each available move
 		int numberLegalMoves = 0;
@@ -128,8 +128,34 @@ public class NeuralNetAI implements AI{
 						if(thisPlayer == 'X') {
 							otherPlayer = 'O';
 						}
-						//recursive function call
-						values[i][j] = lookAhead(candidate, otherPlayer, depth-1, game);
+						double n = evaluate(candidate);
+						double alpha1 = alpha;
+						double beta1 = beta;
+						//if next player is max player
+						if(thisPlayer != player) {
+							//update alpha if necessary
+							if(n > alpha) {
+								alpha1 = n;
+							}
+							if(alpha1 >= beta) {
+								values[i][j] = n;//prune
+							}
+						}
+						//if next player is min player
+						else if(thisPlayer == player) {
+							//update beta if necessary
+							if(n < beta) {
+								beta1 = n;
+							}
+							if(beta1 <= alpha) {
+								values[i][j] = n;//prune
+							}
+						}
+						//if we didn't prune
+						if(!((thisPlayer != player && alpha1 >= beta1) || (thisPlayer == player && beta1 <= alpha1))) {
+							//recursive function call
+							values[i][j] = lookAhead(candidate, otherPlayer, depth-1, game, alpha1, beta1);
+						}
 					}
 				}
 				//if we can't move there

@@ -6,6 +6,7 @@ public class Game {
 	public Character player1, player2;
 	public boolean done;
 	public Character winningPlayer;
+	public Character winningPlayer1;
 	public int moveNumber;
 	
 	//constructor
@@ -15,6 +16,7 @@ public class Game {
 		player2 = playerChoice2;
 		done = false;
 		winningPlayer = null;
+		winningPlayer1 = null;
 		moveNumber = 0;
 		resetBoard();
 	}
@@ -26,6 +28,9 @@ public class Game {
 		moveNumber++;
 		boolean win = WinCheck.check(x,y, board);
 		if(win == true || moveNumber == 48) {
+			if(win == true) {
+				winningPlayer1 = player;
+			}
 			done = true;
 			return true;
 		}
@@ -37,6 +42,7 @@ public class Game {
 		resetBoard();
 		done = false;
 		winningPlayer = null;
+		winningPlayer1 = null;
 		moveNumber = 0;
 	}
 	//resets the game
