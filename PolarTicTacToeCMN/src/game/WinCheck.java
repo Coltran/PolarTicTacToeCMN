@@ -133,12 +133,20 @@ public class WinCheck {
 		}
 		if(winList.isEmpty())
 		{
+			if (Main.winVerbose)
+			{
+				System.out.println("Unification shows a win");
+			}
 			return true;
 		}
 		if(winList.get(0) == player)
 		{
 			winList.remove(0);
 			return unify(winList, player);
+		}
+		if (Main.winVerbose)
+		{
+			System.out.println("No more values to unify");
 		}
 		return false;
 	}

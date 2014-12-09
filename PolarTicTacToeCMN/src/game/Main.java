@@ -129,6 +129,7 @@ public class Main {
 						System.exit(0);
 						break;
 					}
+					break;
 
 					// Nearest Neighbor Heuristic
 				case 1:
@@ -166,6 +167,7 @@ public class Main {
 						System.exit(0);
 						break;
 					}
+					break;
 
 					// temporal Difference Neural Network Heuristic
 				case 2:
@@ -199,6 +201,7 @@ public class Main {
 						System.exit(0);
 						break;
 					}
+					break;
 					// Implement Alpha-Beta Pruning to heuristic function
 				case 3:
 					playerVariables = JOptionPane.showOptionDialog(null,
@@ -227,6 +230,7 @@ public class Main {
 						System.exit(0);
 						break;
 					}
+					break;
 				case 4:
 					playerVariables = JOptionPane.showOptionDialog(null,
 							"X or O", "Choose X or O",
@@ -258,6 +262,7 @@ public class Main {
 						System.exit(0);
 						break;
 					}
+					break;
 				case 5:
 					playerVariables = JOptionPane.showOptionDialog(null,
 							"X or O", "Choose X or O",
@@ -289,6 +294,7 @@ public class Main {
 						System.exit(0);
 						break;
 					}
+					break;
 
 				default:
 					System.exit(0);

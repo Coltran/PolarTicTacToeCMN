@@ -12,7 +12,6 @@ import java.util.Random;
 public class NeuralNetAI implements AI{
 	
 	public Character player;//not used currently
-	private Character opponent;
 	int numberExamples;//number of example games to run can be chosen by user
 	private int movex;
 	private int movey;
@@ -32,11 +31,7 @@ public class NeuralNetAI implements AI{
 	public NeuralNetAI(Character playerChoice, int inNumberExamples) {
 		player = playerChoice;
 		numberExamples = inNumberExamples;
-		opponent = 'X';
 		training = false;
-		if(playerChoice == 'X') {
-			opponent = 'O';
-		}
 		//build neural net construct
 		inputNodes = new double[50];
 		hiddenWeights = new double[30][50];
