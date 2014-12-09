@@ -687,7 +687,7 @@ public class Main {
 					game.printState();
 					playGame(neuralNetAIAB.player, nearestNeighborAIAB.player, neuralNetAIAB,
 							nearestNeighborAIAB);
-				} else if(aiOption1 == 5 && aiOption2 == 4){
+				} else if(aiOption1 == 5 && aiOption2 == 5){
 					int test = Integer.parseInt(JOptionPane.showInputDialog(null, "How many tests should AI 1 prepare on?"));
 					int test2 = Integer.parseInt(JOptionPane.showInputDialog(null, "How many tests should AI 2 prepare on?"));
 					
@@ -698,6 +698,7 @@ public class Main {
 					playGame(neuralNetAIAB.player, neuralNetAIAB2.player, neuralNetAIAB,
 							neuralNetAIAB2);
 				}
+				
 
 				break;
 

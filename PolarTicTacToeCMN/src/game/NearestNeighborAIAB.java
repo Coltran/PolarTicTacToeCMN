@@ -26,7 +26,7 @@ public class NearestNeighborAIAB implements AI{
 	//constructor 
 	public NearestNeighborAIAB(Character playerChoice, int inNumberExamples) {
 		player = playerChoice;
-		examples = new Board[inNumberExamples][48];//48 is maximum possible moves in a game
+		examples = new Board[inNumberExamples][49];//48 is maximum possible moves in a game
 		numberExamples = inNumberExamples;
 		similarity = new int[inNumberExamples];
 		result = new Character[inNumberExamples];
