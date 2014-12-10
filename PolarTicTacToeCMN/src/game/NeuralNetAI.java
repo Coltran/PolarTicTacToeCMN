@@ -210,7 +210,7 @@ public class NeuralNetAI implements AI{
 	
 	//returns an evaluation of current state using neural net.
 	public Double evaluate(Board board) {
-		//TODO initialize first 48 input nods to values of board locations, last 2 to number moves made by x and by y
+		//initialize first 48 input nods to values of board locations, last 2 to number moves made by x and by y
 		//for each board space, 0 represents open, 1 represents we have moved there, -1 represents opponent has moved there
 		//number moves made by y should be negative?
 		int playerMoves=0, oppenentMoves=0;
@@ -234,7 +234,7 @@ public class NeuralNetAI implements AI{
 		inputNodes[48] = playerMoves;
 		inputNodes[49] = oppenentMoves;
 
-		//TODO for each hidden node, multiply each weight for that node by the value in the corresponding inputNode
+		//for each hidden node, multiply each weight for that node by the value in the corresponding inputNode
 			//sum these 50 results and divide by 50? this will give you the value for that hidden node
 		for (int i=0; i<1500; i++)
 		{
@@ -247,7 +247,7 @@ public class NeuralNetAI implements AI{
 			}
 		}
 		
-		//TODO now repeat this process for the output node, summing over the 30 (output weights * corresponding hiddenNode)
+		//now repeat this process for the output node, summing over the 30 (output weights * corresponding hiddenNode)
 			//divide by 30? and this will give you the value for the input game state, return this value.
 		for (int i=0; i<30; i++)
 		{
@@ -260,7 +260,7 @@ public class NeuralNetAI implements AI{
 	
 	//play lots of games, training neural net on each game. 
 	private void learn() {
-		//TODO initialize hiddenWeights and and outputWeights to random number between -3 and 3 excluding 0
+		//initialize hiddenWeights and and outputWeights to random number between -3 and 3 excluding 0
 		//loop once for each desired example
 		for(int j = 0; j < 30; j++){
 			for(int k = 0; k < 50; k++){
@@ -284,7 +284,7 @@ public class NeuralNetAI implements AI{
 		for(int i=0; i<numberExamples; i++) {
 			boolean gameDone = false;
 			Game trainingGame = new Game('X','O');//make a game
-			//TODO call the move method repeatedly but with alternating players to have the net play the game. 
+			//call the move method repeatedly but with alternating players to have the net play the game. 
 				//Before each move, make a copy of all the weights, after each move make a copy of all the node values (including output).
 				//we only need to save these weights and values going back two moves.
 			
@@ -299,7 +299,7 @@ public class NeuralNetAI implements AI{
 				outputWeightsPre1 = outputWeights;
 				gameDone = trainingMove(trainingGame, 'O');//Will have to find a way to specify player
 				
-				//TODO after each move other than the first, update all Weights
+				//after each move other than the first, update all Weights
 					//to do this, for each node, subtract the most recent value from the previous value (this is the temporal difference part)
 						//for each weight coming into the node, multiply the difference by the inputs contribution and by the learning rate. 
 						//the contribution (i'm not sure about this part as it's the gradient stuff) is something like
