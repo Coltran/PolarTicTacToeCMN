@@ -1,6 +1,8 @@
 /**
- * 
- */
+* @author Coltran Hophan-Nichols, Nick Burgard, Michael Lehmann
+* This class Implements the WinCheck method to check for a win 
+* using resolution with unification
+*/
 package game;
 
 import java.util.*;
