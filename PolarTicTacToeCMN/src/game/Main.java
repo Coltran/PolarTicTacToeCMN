@@ -10,11 +10,11 @@ public class Main {
 	static Character player1 = null;
 	static Character player2 = null;
 	static Game game = new Game(player1, player2);
-	static boolean heuristicVerbose = false;
-	static boolean nearestVerbose = false;
-	static boolean neuralVerbose = false;
-	static boolean abVerbose = false;
-	static boolean winVerbose = false;
+	static boolean heuristicVerbose = false; //Shows heuristic board state evaluation
+	static boolean nearestVerbose = false;   //Shows nearest neighbor board state evaluation
+	static boolean neuralVerbose = false;    //Shows neural network board state evaluation
+	static boolean abVerbose = false;        //Shows alpha-beta pruning
+	static boolean winVerbose = false;       //Shows wincheck resolution with unification
 
 	public static void main(String[] args) {
 		boolean done = false; // Boolean for while loop below
@@ -42,6 +42,7 @@ public class Main {
 
 		String[] playerVariable = { "X", "O" };
 
+                //Prints out wincheck rules
 		if(winVerbose)
 		{
 			System.out.println("Selects sets of 4 values from the board, using rules:");
@@ -236,6 +237,7 @@ public class Main {
 						break;
 					}
 					break;
+					//Alpha beta pruning with nearest neighbor
 				case 4:
 					playerVariables = JOptionPane.showOptionDialog(null,
 							"X or O", "Choose X or O",
@@ -268,6 +270,7 @@ public class Main {
 						break;
 					}
 					break;
+					//alpha beta pruning with neural network
 				case 5:
 					playerVariables = JOptionPane.showOptionDialog(null,
 							"X or O", "Choose X or O",
@@ -718,8 +721,9 @@ public class Main {
 	
 	public static void playGame(Character person1, Character person2, AI ai1, AI ai2)
 	{
-		int count = 0;
-		boolean done = false;
+		int count = 0;  //Count how many moves have been made
+		boolean done = false; //Until game is over
+		
 		Character player1 = person1;
 		Character player2 = person2;
 
@@ -729,10 +733,11 @@ public class Main {
 		int p2x = 0;
 		int p2y = 0;
 		
-		String[] xOptions = { "A", "B", "C", "D" };
+		String[] xOptions = { "A", "B", "C", "D" };  //Rows
 		String[] yOptions = { "1", "2", "3", "4", "5", "6", "7", "8", "9",
-				"10", "11", "12" };
+				"10", "11", "12" }; //Columns
 
+                //Play game!
 		while (!done)
 		{
 			if (count % 2 == 0)
