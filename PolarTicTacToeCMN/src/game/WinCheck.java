@@ -133,6 +133,7 @@ public class WinCheck {
 			}
 			System.out.println();
 		}
+		//results are unified, win found
 		if(winList.isEmpty())
 		{
 			if (Main.winVerbose)
@@ -141,6 +142,7 @@ public class WinCheck {
 			}
 			return true;
 		}
+		//value is unified, recursivly call unify on updated theta
 		if(winList.get(0) == player)
 		{
 			winList.remove(0);
@@ -150,6 +152,7 @@ public class WinCheck {
 		{
 			System.out.println("No more values to unify");
 		}
+		//never retunred true, so false is returned
 		return false;
 	}
 }
