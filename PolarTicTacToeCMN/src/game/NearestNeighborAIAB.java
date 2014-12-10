@@ -1,14 +1,11 @@
 /**
- * 
- */
+* @author Coltran Hophan-Nichols, Nick Burgard, Michael Lehmann
+* This class Implements the Nearest Neighbor AI with alpha-beta pruning
+*/
 package game;
 
 import java.util.Random;
 
-/**
- * @author Coltran
- *
- */
 public class NearestNeighborAIAB implements AI{
 	
 	public Character player;//not used currently
