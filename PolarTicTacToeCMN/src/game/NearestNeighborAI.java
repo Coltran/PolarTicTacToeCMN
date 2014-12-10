@@ -1,14 +1,11 @@
 /**
- * 
- */
+* @author Coltran Hophan-Nichols, Nick Burgard, Michael Lehmann
+* This class Implements the Nearest Neighbor AI
+*/
 package game;
 
 import java.util.Random;
 
-/**
- * @author Coltran
- *
- */
 public class NearestNeighborAI implements AI{
 	
 	public Character player;//not used currently
