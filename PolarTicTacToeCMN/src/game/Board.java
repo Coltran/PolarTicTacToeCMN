@@ -1,12 +1,9 @@
 /**
- * 
- */
+* @author Coltran Hophan-Nichols, Nick Burgard, Michael Lehmann
+*
+*/
 package game;
 
-/**
- * @author Coltran
- *
- */
 class Board {
 
 	public Character[][] theBoard;
