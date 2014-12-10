@@ -1,12 +1,13 @@
 /**
- * 
- */
+* @author Coltran Hophan-Nichols, Nick Burgard, Michael Lehmann
+* This class Implements the Heuristic based AI to play Polar Tic Tac Toe
+* Instantiate with HeuristicAI name = new HeuristicAI(playerChoice)
+* where playerChoice is 'X' or 'O'
+* To have the AI make a move: name.move(game)
+* where game is a Game
+*/
 package game;
 
-/**
- * @author 
- * 
- */
 public class LegalMoves {
 
 	/**
