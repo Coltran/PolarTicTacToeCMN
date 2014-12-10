@@ -12,16 +12,17 @@ import java.util.Random;
 
 public class HeuristicAIAB implements AI {
 
-	public Character player;
-	private int movex;
-	private int movey;
+	public Character player;//who we're playing as
+	private int movex;//best move x coordinate
+	private int movey;//best move y coordinate
 
 	/**
-	 * 
+	 * constructor
 	 */
 	public HeuristicAIAB(Character playerChoice) {
-		player = playerChoice;
+		player = playerChoice;//set who we're playing as
 	}
+	//makes next move on given game
 	public boolean move(Game game) {
 		movex = 0;//best move in x direction (there should always be a valid move when this is called)
 		movey = 0;//best move in y direction ''
@@ -37,7 +38,7 @@ public class HeuristicAIAB implements AI {
 			//lookahead will set movex and movey to best values
 		}
 		boolean win = game.move(player, movex, movey);//make move
-		return win;//return if we wone the game
+		return win;//return if we won the game
 	}
 	/**
 	 * recursively checks ahead and returns best heuristic value
@@ -50,11 +51,11 @@ public class HeuristicAIAB implements AI {
 	private Integer lookAhead(Board board, Character thisPlayer, int depth, Game game, int alpha, int beta) {
 		boolean[][] moves = LegalMoves.Moves(board);//all available moves
 		Integer[][] values = new Integer[4][12];//stores heuristic values for each available move
-		int numberLegalMoves = 0;
+		int numberLegalMoves = 0;//counts the number of available moves at given depth
 		for(int i=0; i<4; i++) {
 			for(int j=0; j<12; j++) {
 				if(moves[i][j]==true) {//if we can move there...
-					numberLegalMoves++;
+					numberLegalMoves++;//then it's an available move
 					Board candidate = Board.clone(board);//copy the board to pass forward
 					candidate.theBoard[i][j] = thisPlayer;//make move on copy
 					//if we don't need to search any farther
@@ -65,9 +66,9 @@ public class HeuristicAIAB implements AI {
 								values[i][j] = 10000;
 								return values[i][j];//just return the winning move
 							}
-							//if our opponent won
+							//if our opponent can win
 							else {
-								values[i][j] = -10000;
+								values[i][j] = -10000;//avoid state
 							}
 						}
 						//if we need to evaluate the current board
@@ -82,7 +83,7 @@ public class HeuristicAIAB implements AI {
 						if(thisPlayer == 'X') {
 							otherPlayer = 'O';
 						}
-						
+						//get current value
 						int n = Heuristic(candidate, i, j);
 						int alpha1 = alpha;
 						int beta1 = beta;
@@ -93,6 +94,7 @@ public class HeuristicAIAB implements AI {
 								alpha1 = n;
 							}
 							if(alpha1 >= beta) {
+								//used for testing and demonstration
 								if(Main.abVerbose) {
 									System.out.format("min node: alpha = %d beta = %d Pruning\n", alpha, beta);
 								}
@@ -106,12 +108,14 @@ public class HeuristicAIAB implements AI {
 								beta1 = n;
 							}
 							if(beta1 <= alpha) {
+								//used for testing and demonstration
 								if(Main.abVerbose) {
 									System.out.format("max node: alpha = %d beta = %d Pruning\n", alpha, beta);
 								}
 								values[i][j] = n;//prune
 							}
 						}
+						//if we didn't prune
 						if(!((thisPlayer != player && alpha1 >= beta1) || (thisPlayer == player && beta1 <= alpha1))) {
 							//recursive function call
 							values[i][j] = lookAhead(candidate, otherPlayer, depth-1, game, alpha1, beta1);
@@ -124,8 +128,9 @@ public class HeuristicAIAB implements AI {
 				}
 			}
 		}
+		//if no available moves
 		if(numberLegalMoves == 0) {
-			return 0;
+			return 0;//then it's a tie return tie value
 		}
 		//if us (max player)
 		if(thisPlayer == player) {
@@ -162,8 +167,9 @@ public class HeuristicAIAB implements AI {
 			int minvalue = 999999999;//minimum heuristic value of returned move
 			for(int i=0; i<4; i++) {
 				for(int j=0; j<12; j++) {
+					//if we cound a new min value
 					if(values[i][j] != null && values[i][j] < minvalue) {
-						minvalue = values[i][j];
+						minvalue = values[i][j];//set it as current minimum
 						movex = i;
 						movey = j;
 					}
@@ -201,7 +207,7 @@ public class HeuristicAIAB implements AI {
 	int Heuristic(Board board, int movex, int movey) {
 		int value2 = 4;//value of 2 in a row
 		int value3 = 9;//value of 3 in a row is this + 2*value2
-		int value = 0;
+		int value = 0;//value of the board
 		Character opponent;
 		if(player == 'X') {
 			opponent = 'O';

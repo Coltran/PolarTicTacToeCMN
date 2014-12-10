@@ -7,7 +7,7 @@ package game;
 public class LegalMoves {
 
 	/**
-	 * Returns all legal moves that can be made for a given game state
+	 * Returns all legal moves that can be made for a given game state in the form of a 2d boolean array
 	 */
 	public static boolean[][] Moves(Board board) {
 		//array that holds all legal spaces to move to

@@ -14,8 +14,8 @@ public class NearestNeighborAIAB implements AI{
 	Character result[];//holds the results for all the example games (x,o or d)
 	int numberExamples;//number of example games to run can be chosen by user
 	int similarity[];//holds the similarity to each example at the same turn level
-	private int movex;
-	private int movey;
+	private int movex;//x coordinate for best move at given time
+	private int movey;//y coordinate for best move at given time
 
 	/**
 	 * 
@@ -27,13 +27,15 @@ public class NearestNeighborAIAB implements AI{
 		numberExamples = inNumberExamples;
 		similarity = new int[inNumberExamples];
 		result = new Character[inNumberExamples];
+		//determine opponent
 		opponent = 'X';
 		if(playerChoice == 'X') {
 			opponent = 'O';
 		}
+		//train on test games
 		learn();
 	}
-	
+	//makes the next move for given game
 	public boolean move(Game game) {
 		movex = 0;//best move in x direction (there should always be a valid move when this is called)
 		movey = 0;//best move in y direction ''
@@ -62,11 +64,11 @@ public class NearestNeighborAIAB implements AI{
 	private Integer lookAhead(Board board, Character thisPlayer, int depth, Game game, int alpha, int beta) {
 		boolean[][] moves = LegalMoves.Moves(board);//all available moves
 		Integer[][] values = new Integer[4][12];//stores heuristic values for each available move
-		int numberLegalMoves = 0;
+		int numberLegalMoves = 0;//counts number of available moves
 		for(int i=0; i<4; i++) {
 			for(int j=0; j<12; j++) {
 				if(moves[i][j]==true) {//if we can move there...
-					numberLegalMoves++;
+					numberLegalMoves++;//then its an available move
 					Board candidate = Board.clone(board);//copy the board to pass forward
 					candidate.theBoard[i][j] = thisPlayer;//make move on copy
 					//if we don't need to search any farther
@@ -96,7 +98,7 @@ public class NearestNeighborAIAB implements AI{
 						if(thisPlayer == 'X') {
 							otherPlayer = 'O';
 						}
-						
+						//determine current prediction
 						int n = predict(candidate);
 						int alpha1 = alpha;
 						int beta1 = beta;
@@ -107,6 +109,7 @@ public class NearestNeighborAIAB implements AI{
 								alpha1 = n;
 							}
 							if(alpha1 >= beta) {
+								//used for testing and demonstration
 								if(Main.abVerbose) {
 									System.out.format("min node: alpha = %d beta = %d Pruning\n", alpha, beta);
 								}
@@ -120,6 +123,7 @@ public class NearestNeighborAIAB implements AI{
 								beta1 = n;
 							}
 							if(beta1 <= alpha) {
+								//used for testing and demonstration
 								if(Main.abVerbose) {
 									System.out.format("max node: alpha = %d beta = %d Pruning\n", alpha, beta);
 								}
@@ -139,16 +143,18 @@ public class NearestNeighborAIAB implements AI{
 				}
 			}
 		}
+		//if we reached here and mo moves are available then it's a tie
 		if(numberLegalMoves == 0) {
-			return 0;
+			return 0;//return tie value
 		}
 		//if us (max player)
 		if(thisPlayer == player) {
 			int maxvalue = -999999999;//maximum heuristic value of returned move
 			for(int i=0; i<4; i++) {
 				for(int j=0; j<12; j++) {
+					//if we found a new maximum
 					if(values[i][j] != null && values[i][j] > maxvalue) {
-						maxvalue = values[i][j];
+						maxvalue = values[i][j];//set it as max so far
 					}
 				}
 			}
@@ -177,8 +183,9 @@ public class NearestNeighborAIAB implements AI{
 			int minvalue = 999999999;//minimum heuristic value of returned move
 			for(int i=0; i<4; i++) {
 				for(int j=0; j<12; j++) {
+					//if we found a new min value
 					if(values[i][j] != null && values[i][j] < minvalue) {
-						minvalue = values[i][j];
+						minvalue = values[i][j];//set as minimum so far
 						movex = i;
 						movey = j;
 					}
@@ -239,12 +246,15 @@ public class NearestNeighborAIAB implements AI{
 				maxLocation = example;//set max location to location of new max
 			}
 		}
+		//if we think we'll win
 		if(result[maxLocation] == player) {
 			return 1;
 		}
+		//if we think we'll loose
 		else if(result[maxLocation] == opponent) {
 			return -1;
 		}
+		//if we think it'll be a tie
 		else {
 			return 0;
 		}

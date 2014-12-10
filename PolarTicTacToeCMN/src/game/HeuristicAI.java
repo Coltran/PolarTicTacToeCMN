@@ -12,16 +12,17 @@ import java.util.Random;
 
 public class HeuristicAI implements AI {
 	
-	public Character player;
-	private int movex;
-	private int movey;
+	public Character player;//who we're playing as
+	private int movex;//best move x coordinate
+	private int movey;//best move y coordinate
 
 	/**
-	 * 
+	 * constructor
 	 */
 	public HeuristicAI(Character playerChoice) {
-		player = playerChoice;
+		player = playerChoice;//set who we're playing as
 	}
+	//makes the next move when called
 	public boolean move(Game game) {
 		movex = 0;//best move in x direction (there should always be a valid move when this is called)
 		movey = 0;//best move in y direction ''
@@ -63,6 +64,7 @@ public class HeuristicAI implements AI {
 							//if we can win
 							if(candidate.theBoard[i][j] == player) {
 								values[i][j] = 10000;
+								//if we can win this turn
 								if(depth == 0) {
 									movex = i;
 									movey = j;
@@ -72,10 +74,11 @@ public class HeuristicAI implements AI {
 							//if our opponent won
 							else {
 								values[i][j] = -10000;
+								//if our opponent could win on next turn
 								if(depth == 1) {
 									movex = i;
 									movey = j;
-									return values[i][j];//just return the winning move
+									return values[i][j];//we always try to block it
 								}
 							}
 						}
@@ -101,19 +104,22 @@ public class HeuristicAI implements AI {
 				}
 			}
 		}
+		//if no moves available, it's a tie
 		if(numberLegalMoves == 0) {
-			return 0;
+			return 0;//return tie value
 		}
 		//if us (max player)
 		if(thisPlayer == player) {
 			int maxvalue = -999999999;//maximum heuristic value of returned move
 			for(int i=0; i<4; i++) {
 				for(int j=0; j<12; j++) {
+					//used for testing and demonstration
 					if(Main.heuristicVerbose && values[i][j] != null) {
 						System.out.format("depth = %d x = %d y = %d Value = %d\n", depth, i, j, values[i][j]);
 					}
+					//if we found a new best move
 					if(values[i][j] != null && values[i][j] > maxvalue) {
-						maxvalue = values[i][j];
+						maxvalue = values[i][j];//set it as best move so far
 					}
 				}
 			}
@@ -142,11 +148,13 @@ public class HeuristicAI implements AI {
 			int minvalue = 999999999;//minimum heuristic value of returned move
 			for(int i=0; i<4; i++) {
 				for(int j=0; j<12; j++) {
+					//used for testing and demonstration
 					if(Main.heuristicVerbose && values[i][j] != null) {
 						System.out.format("depth = %d x = %d y = %d Value = %d\n", depth, i, j, values[i][j]);
 					}
+					//if we found a new best value for min player
 					if(values[i][j] != null && values[i][j] < minvalue) {
-						minvalue = values[i][j];
+						minvalue = values[i][j];//set it as best so far
 						movex = i;
 						movey = j;
 					}
@@ -185,7 +193,7 @@ public class HeuristicAI implements AI {
 	private int Heuristic(Board board, int movex, int movey) {
 		int value2 = 4;//value of 2 in a row
 		int value3 = 9;//value of 3 in a row is this + 2*value2
-		int value = 0;
+		int value = 0;//value of board
 		Character opponent;
 		if(player == 'X') {
 			opponent = 'O';

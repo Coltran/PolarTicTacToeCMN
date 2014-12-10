@@ -14,26 +14,25 @@ public class NearestNeighborAI implements AI{
 	Character result[];//holds the results for all the example games (x,o or d)
 	int numberExamples;//number of example games to run can be chosen by user
 	int similarity[];//holds the similarity to each example at the same turn level
-	private int movex;
-	private int movey;
+	private int movex;//best move in x direction at given time
+	private int movey;//best move in y direction at given time
 
-	/**
-	 * 
-	 */
 	//constructor 
 	public NearestNeighborAI(Character playerChoice, int inNumberExamples) {
-		player = playerChoice;
-		examples = new Board[inNumberExamples][49];//48 is maximum possible moves in a game
+		player = playerChoice;//set who we're playing at
+		examples = new Board[inNumberExamples][49];//48 is maximum possible moves in a game + 1 checking for tie
 		numberExamples = inNumberExamples;
 		similarity = new int[inNumberExamples];
 		result = new Character[inNumberExamples];
+		//determine opponent 
 		opponent = 'X';
 		if(playerChoice == 'X') {
 			opponent = 'O';
 		}
+		//train the classifier
 		learn();
 	}
-	
+	//makes the next move on the provided game
 	public boolean move(Game game) {
 		movex = 0;//best move in x direction (there should always be a valid move when this is called)
 		movey = 0;//best move in y direction ''
@@ -62,11 +61,11 @@ public class NearestNeighborAI implements AI{
 	private Integer lookAhead(Board board, Character thisPlayer, int depth, Game game) {
 		boolean[][] moves = LegalMoves.Moves(board);//all available moves
 		Integer[][] values = new Integer[4][12];//stores heuristic values for each available move
-		int numberLegalMoves = 0;
+		int numberLegalMoves = 0;//counts number of available moves
 		for(int i=0; i<4; i++) {
 			for(int j=0; j<12; j++) {
 				if(moves[i][j]==true) {//if we can move there...
-					numberLegalMoves++;
+					numberLegalMoves++;//then it's an available move
 					Board candidate = Board.clone(board);//copy the board to pass forward
 					candidate.theBoard[i][j] = thisPlayer;//make move on copy
 					//if we don't need to search any farther
@@ -86,7 +85,7 @@ public class NearestNeighborAI implements AI{
 						}
 						//if we need to evaluate the current board
 						else {
-							values[i][j] = predict(board);//call heuristic and save returned value
+							values[i][j] = predict(board);//classify and save returned value
 						}
 					}
 					//if we need to look farther ahead
@@ -106,8 +105,9 @@ public class NearestNeighborAI implements AI{
 				}
 			}
 		}
+		//if no move available and we reached here it's a tie
 		if(numberLegalMoves == 0) {
-			return 0;
+			return 0;//return tie value
 		}
 		//if us (max player)
 		if(thisPlayer == player) {
@@ -117,8 +117,9 @@ public class NearestNeighborAI implements AI{
 					if(Main.nearestVerbose && values[i][j] != null) {
 						System.out.format("depth = %d x = %d y = %d Value = %d\n", depth, i, j, values[i][j]);
 					}
+					//if we found a new max value
 					if(values[i][j] != null && values[i][j] > maxvalue) {
-						maxvalue = values[i][j];
+						maxvalue = values[i][j];//set it as the max so far
 					}
 				}
 			}
@@ -150,8 +151,9 @@ public class NearestNeighborAI implements AI{
 					if(Main.nearestVerbose && values[i][j] != null) {
 						System.out.format("depth = %d x = %d y = %d Value = %d\n", depth, i, j, values[i][j]);
 					}
+					//if we found a new min value
 					if(values[i][j] != null && values[i][j] < minvalue) {
-						minvalue = values[i][j];
+						minvalue = values[i][j];//set it as min so far
 						movex = i;
 						movey = j;
 					}
@@ -212,12 +214,15 @@ public class NearestNeighborAI implements AI{
 				maxLocation = example;//set max location to location of new max
 			}
 		}
+		//if we think we'll win
 		if(result[maxLocation] == player) {
 			return 1;
 		}
+		//if we think we'll loose
 		else if(result[maxLocation] == opponent) {
 			return -1;
 		}
+		//if we think we'l tie
 		else {
 			return 0;
 		}

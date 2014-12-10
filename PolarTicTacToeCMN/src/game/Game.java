@@ -38,6 +38,7 @@ public class Game {
 			return false;
 		}
 	}
+	//resets the game to starting condition so another game can be played without re-instantiating the game class
 	public void resetGame() {
 		resetBoard();
 		done = false;
