@@ -1,14 +1,11 @@
 /**
- * 
- */
+* @author Coltran Hophan-Nichols, Nick Burgard, Michael Lehmann
+* This class Implements the Neural Net AI with temperal-difference
+*/
 package game;
 
 import java.util.Random;
 
-/**
- * @author Coltran
- *
- */
 public class NeuralNetAI implements AI{
 	
 	public Character player;//not used currently
