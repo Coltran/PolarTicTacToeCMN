@@ -1,12 +1,9 @@
 /**
- * 
- */
+* @author Coltran Hophan-Nichols, Nick Burgard, Michael Lehmann
+*
+*/
 package game;
 
-/**
- * @author Coltran
- *
- */
 public interface AI {
 
 	/**
