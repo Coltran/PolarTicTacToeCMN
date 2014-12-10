@@ -57,6 +57,7 @@ public class NeuralNetAIAB implements AI{
 		return win;//return if we won the game
 	}
 	
+	//Training move function that allows for player input, unlike play move function
 	public boolean trainingMove(Game game, Character movePlayer) {
 		movex = 0;//best move in x direction (there should always be a valid move when this is called)
 		movey = 0;//best move in y direction ''
@@ -76,7 +77,7 @@ public class NeuralNetAIAB implements AI{
 	}
 
 	/**
-	 * recursively checks ahead and returns best heuristic value
+	 * recursively checks ahead and returns best value
 	 * sets movex and movey corrosponding to the best move found
 	 * @param board
 	 * @param thisPlayer
@@ -167,6 +168,9 @@ public class NeuralNetAIAB implements AI{
 		}
 		//if us (max player)
 		if(thisPlayer == player) {
+			//comparison breaks when using DOUBLE_MAX or any type of scientific notation (5.0E50)
+			//for some reason Java does not like running a numerical comparison when one number is written like that
+			//so just used a very small number here
 			Double maxvalue = -500000000000000000000000000000000000000000.0;//-99999999999999.0;//maximum heuristic value of returned move
 			for(int i=0; i<4; i++) {
 				for(int j=0; j<12; j++) {
@@ -197,6 +201,9 @@ public class NeuralNetAIAB implements AI{
 		}
 		//otherwise it's our opponent (min player)
 		else {
+			//comparison breaks when using DOUBLE_MAX or any type of scientific notation (5.0E50)
+			//for some reason Java does not like running a numerical comparison when one number is written like that
+			//so just used a very large number here
 			Double minvalue = 500000000000000000000000000000000000000000.0;//99999999999999.0;//minimum heuristic value of returned move
 			for(int i=0; i<4; i++) {
 				for(int j=0; j<12; j++) {
@@ -232,9 +239,8 @@ public class NeuralNetAIAB implements AI{
 	
 	//returns an evaluation of current state using neural net.
 	public Double evaluate(Board board) {
-		//TODO initialize first 48 input nods to values of board locations, last 2 to number moves made by x and by y
+		//initialize first 48 input nods to values of board locations, last 2 to number moves made by x and by y
 		//for each board space, 0 represents open, 1 represents we have moved there, -1 represents opponent has moved there
-		//number moves made by y should be negative?
 		int playerMoves=0, oppenentMoves=0;
 		for(int i=0; i<48; i++)
 		{
@@ -256,8 +262,8 @@ public class NeuralNetAIAB implements AI{
 		inputNodes[48] = playerMoves;
 		inputNodes[49] = oppenentMoves;
 
-		//TODO for each hidden node, multiply each weight for that node by the value in the corresponding inputNode
-			//sum these 50 results and divide by 50? this will give you the value for that hidden node
+		//for each hidden node, multiply each weight for that node by the value in the corresponding inputNode
+			//sum these 50 results and divide by 50 this will give you the value for that hidden node
 		for (int i=0; i<1500; i++)
 		{
 			int x = i/50;
@@ -269,8 +275,8 @@ public class NeuralNetAIAB implements AI{
 			}
 		}
 		
-		//TODO now repeat this process for the output node, summing over the 30 (output weights * corresponding hiddenNode)
-			//divide by 30? and this will give you the value for the input game state, return this value.
+		//now repeat this process for the output node, summing over the 30 (output weights * corresponding hiddenNode)
+			//divide by 30 and this will give you the value for the input game state, return this value.
 		for (int i=0; i<30; i++)
 		{
 			outputNode += outputWeights[i] * hiddenNodes[i];
@@ -282,8 +288,7 @@ public class NeuralNetAIAB implements AI{
 	
 	//play lots of games, training neural net on each game. 
 	private void learn() {
-		//TODO initialize hiddenWeights and and outputWeights to random number between -3 and 3 excluding 0
-		//loop once for each desired example
+		//initialize hiddenWeights and and outputWeights to random number between -3 and 3 excluding 0
 		for(int j = 0; j < 30; j++){
 			for(int k = 0; k < 50; k++){
 				while(hiddenWeights[j][k] == 0){
@@ -303,66 +308,58 @@ public class NeuralNetAIAB implements AI{
 		double[][] hiddenWeightsPre1 = new double[30][50];
 		double[] outputWeightsPre1 = new double[30];
 		
+		//run one game for each desired example
 		for(int i=0; i<numberExamples; i++) {
-			boolean gameDone = false;
+			bboolean gameDone = false;
 			Game trainingGame = new Game('X','O');//make a game
-			//TODO call the move method repeatedly but with alternating players to have the net play the game. 
-				//Before each move, make a copy of all the weights, after each move make a copy of all the node values (including output).
-				//we only need to save these weights and values going back two moves.
 			
+			//keep track of previous states
 			hiddenWeightsPre1 = hiddenWeights;
 			outputWeightsPre1 = outputWeights;
-			gameDone = trainingMove(trainingGame, 'X');//Will have to find a way to specify player
+			gameDone = trainingMove(trainingGame, 'X');//use trainingMove so player can be specified
 
 			while(!gameDone)
 			{
-				//Do a second move with other player, will have to figure that out.
+				//keep track of previous states
 				hiddenWeightsPre1 = hiddenWeights;
 				outputWeightsPre1 = outputWeights;
-				gameDone = trainingMove(trainingGame, 'O');//Will have to find a way to specify player
-				
-				//TODO after each move other than the first, update all Weights
-					//to do this, for each node, subtract the most recent value from the previous value (this is the temporal difference part)
-						//for each weight coming into the node, multiply the difference by the inputs contribution and by the learning rate. 
-						//the contribution (i'm not sure about this part as it's the gradient stuff) is something like
-						// the most recent input to that weight times the weight, or maybe how this changed from the previous time
-				//I think that's it. the lookahead, etc shouldn't have to be changed
-				
-				//Other way around, subtract the previous value from the most recent value
-				//Need to not do this after first move somehow
-				double gamma = 1.0; //discount factor, can probably just be kept at 1
+				gameDone = trainingMove(trainingGame, 'O');//use trainingMove so player can be specified
+	
+				double gamma = 0.9; //discount factor, can probably just be kept at 1
 				int reward = 0; //current reward, in book but not sure if we need
-				int alpha = 1; //learning rate, not sure what we want here
-				int contrib = 1; //input contribution, I thought this was just an integer then incremented every time a state was hit?
+				double alpha = .8;
+				//use mod to avoid nested for loops
 				for(int j = 0; j<1500; j++)
 				{
 					int x = j/50;
 					int y = j%50;
-					//hiddenFreq[x][y]++;
-					hiddenWeights[x][y] = hiddenWeightsPre1[x][y] + (alpha * contrib * (reward + (gamma*hiddenWeights[x][y]) - hiddenWeightsPre1[x][y]));
+					hiddenFreq[x][y]++; //increment state frequency
+					hiddenWeights[x][y] = hiddenWeightsPre1[x][y] + (alpha * hiddenFreq[x][y] * (reward + (gamma*hiddenWeights[x][y]) - hiddenWeightsPre1[x][y]));
 				}
 				for(int j = 0; j<30; j++)
 				{
-					//outputFreq[j]++;
-					outputWeights[j] = outputWeightsPre1[j] + (alpha * contrib * (reward + (gamma*outputWeights[j]) - outputWeightsPre1[j]));
+					outputFreq[j]++; //increment state frequency
+					outputWeights[j] = outputWeightsPre1[j] + (alpha * outputFreq[j] * (reward + (gamma*outputWeights[j]) - outputWeightsPre1[j]));
 				}
 				
-				//Do a second move with other player, will have to figure that out.
+				//Do a second move with other player
+				//keep track of previous states
 				hiddenWeightsPre1 = hiddenWeights;
 				outputWeightsPre1 = outputWeights;
 				gameDone = trainingMove(trainingGame, 'X');
-
+				
+				//use mod to avoid nested for loops
 				for(int j = 0; j<1500; j++)
 				{
 					int x = j/50;
 					int y = j%50;
-					//hiddenFreq[x][y]++;
-					hiddenWeights[x][y] = hiddenWeightsPre1[x][y] + (alpha * contrib * (reward + (gamma*hiddenWeights[x][y]) - hiddenWeightsPre1[x][y]));
+					hiddenFreq[x][y]++; //increment state frequency
+					hiddenWeights[x][y] = hiddenWeightsPre1[x][y] + (alpha * hiddenFreq[x][y] * (reward + (gamma*hiddenWeights[x][y]) - hiddenWeightsPre1[x][y]));
 				}
 				for(int j = 0; j<30; j++)
 				{
-					//outputFreq[j]++;
-					outputWeights[j] = outputWeightsPre1[j] + (alpha * contrib * (reward + (gamma*outputWeights[j]) - outputWeightsPre1[j]));
+					outputFreq[j]++; //increment state frequency
+					outputWeights[j] = outputWeightsPre1[j] + (alpha * outputFreq[j] * (reward + (gamma*outputWeights[j]) - outputWeightsPre1[j]));
 				}
 			}
 		}
