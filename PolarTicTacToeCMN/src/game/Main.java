@@ -1,3 +1,7 @@
+/**
+* @author Coltran Hophan-Nichols, Nick Burgard, Michael Lehmann
+* This is the main class
+*/
 package game;
 
 import javax.swing.JOptionPane;
